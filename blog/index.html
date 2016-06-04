@@ -6,6 +6,11 @@ title: thellimist - Blog
 
 <ul class="posts">
    {% for post in site.posts %}
-     <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
+     <li><span>{{ post.date | date_to_string }}</span> &raquo;
+        {% if post.proxyurl == null %}
+            <a href="{{ post.url }}">{{ post.title }}</a></li>
+        {% else %}
+            <a href="{{ post.proxyurl }}">{{ post.title }}</a></li>
+        {% endif %}
    {% endfor %}
 </ul>
