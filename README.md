@@ -1,3 +1,8 @@
 # [thellimist.com](thellimist.com)
 
-My personal website
+## Run
+```
+gem install jekyll bundler
+bundle install
+bundle exec jekyll serve
+```
