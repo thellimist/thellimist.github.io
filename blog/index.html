@@ -1,0 +1,16 @@
+---
+layout: default
+title: thellimist - Blog
+---
+<h1>Blog Posts</h1>
+
+<ul class="posts">
+   {% for post in site.posts %}
+     <li><span>{{ post.date | date_to_string }}</span> &raquo;
+        {% if post.proxyurl == null %}
+            <a href="{{ post.url }}">{{ post.title }}</a></li>
+        {% else %}
+            <a href="{{ post.proxyurl }}">{{ post.title }}</a></li>
+        {% endif %}
+   {% endfor %}
+</ul>
