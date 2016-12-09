@@ -1,3 +1,7 @@
 name: Thellimist's site
 markdown: kramdown
 highlighter: rouge
+gems:
+  - jekyll-redirect-from
+whitelist:
+  - jekyll-redirect-from
