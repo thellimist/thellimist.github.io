@@ -5,3 +5,5 @@ gems:
   - jekyll-redirect-from
 whitelist:
   - jekyll-redirect-from
+url: https://thellimist.com
+enforce_ssl: thellimist.com
