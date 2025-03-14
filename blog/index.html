@@ -1,6 +1,6 @@
 ---
 layout: default
-title: thellimist - Blog
+title: Kan Yilmaz - Blog
 ---
 <h1>Blog Posts</h1>
 
@@ -8,17 +8,15 @@ title: thellimist - Blog
 <script src="https://medium-widget.pixelpoint.io/widget.js"></script>
 <script>MediumWidget.Init({renderTo: '#medium-widget', params: {"resource":"https://medium.com/@thellimist/how-to-make-decisions-work-b40fe9e97a72","postsPerLine":2,"limit":10,"picture":"big","fields":["description","author","claps","publishAt"],"ratio":"landscape"}})</script>
 
-<ul class="posts">
-
-
-    <h2>Full List</h2>
-
-   {% for post in site.posts %}
-     <li><span>{{ post.date | date_to_string }}</span> &raquo;
-        {% if post.proxyurl == null %}
-            <a href="{{ post.url }}">{{ post.title }}</a></li>
-        {% else %}
-            <a href="{{ post.proxyurl }}">{{ post.title }}</a></li>
-        {% endif %}
-   {% endfor %}
+<ul class="post-list">
+  {% for post in site.posts %}
+    <li class="post-row">
+      {% if post.proxyurl %}
+        <a class="post-title" href="{{ post.proxyurl }}" target="_blank">{{ post.title }}</a>
+      {% else %}
+        <a class="post-title" href="{{ post.url }}" target="_blank">{{ post.title }}</a>
+      {% endif %}
+      <span class="post-date">{{ post.date | date: "%d/%m/%Y" }}</span>
+    </li>
+  {% endfor %}
 </ul>
