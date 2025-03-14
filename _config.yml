@@ -3,7 +3,10 @@ markdown: kramdown
 highlighter: rouge
 plugins:
   - jekyll-redirect-from
+  - jekyll-remote-theme
 whitelist:
   - jekyll-redirect-from
 url: https://kanyilmaz.me
 enforce_ssl: http://kanyilmaz.me
+google_analytics: G-92V8ZN63H4
+remote_theme: jekyll/minimaplugins:
