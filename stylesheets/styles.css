@@ -192,6 +192,19 @@ section > * {
   font-weight: 700;
 }
 
+.nav-brand h1 a {
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.nav-brand h1 a:hover {
+  color: var(--text-primary);
+}
+
+.nav-brand h1 a::after {
+  display: none;
+}
+
 /* Simplified navigation with only 3 primary links */
 .nav-links {
   display: flex;
