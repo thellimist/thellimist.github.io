@@ -2,14 +2,14 @@
 layout: default
 title:  "Happiness in 5 Minutes"
 date:   2019-7-23
-image: "/assets/posts/happy.png"
+image: "/assets/posts/happy.jpg"
 ---
 
 # Happiness in 5 Minutes
 
 5 Minute Journal is a habit with [asymmetrical positive value](https://www.youtube.com/watch?list=WL&t=2858&v=m_56L8EGLIk&feature=youtu.be). The habit consists of every morning and evening answering a set of questions. I will explain each section and how it improved my life.
 
-![](/assets/posts/happy.png)
+![](/assets/posts/happy.jpg)
 
 ## Morning Entries
 
