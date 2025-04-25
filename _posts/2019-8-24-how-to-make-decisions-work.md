@@ -150,4 +150,4 @@ All decisions
 
 Heuristics by definition are tactics which lead to practical methods; not guaranteed to be optimal, perfect, or rational, but instead sufficient for reaching an immediate goal.
 
-Cognitive biases frequently play a role in our decision-making process. Be aware of your biases and make use of the heuristics in the least bad way.
+[Cognitive biases](https://en.wikipedia.org/wiki/List_of_cognitive_biases) frequently play a role in our decision-making process. Be aware of your biases and make use of the heuristics in the [least bad](https://mmpractices.com/mental_models/inversion/) way.
