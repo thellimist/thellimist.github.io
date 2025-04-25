@@ -407,7 +407,6 @@ td {
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between;
   }
 
   /* Hamburger menu button */
@@ -419,26 +418,23 @@ td {
     font-size: 24px;
     cursor: pointer;
     padding: var(--space-1);
-    margin-right: var(--space-2);
-    order: 1; /* Ensure it's first */
+    margin-right: var(--space-1);
+    position: relative;
+  }
+
+  .mobile-menu-button::after {
+    display: none;
+  }
+
+  .mobile-menu-button:hover,
+  .mobile-menu-button:focus {
+    color: var(--accent);
   }
 
   .nav-brand {
-    order: 2; /* Put brand after hamburger */
-    flex: 1;
-    text-align: center;
+    margin-right: auto;
   }
 
-  .nav-brand h1 {
-    font-size: 20px;
-    margin: 0;
-  }
-
-  .nav-social {
-    order: 3; /* Put social icons last */
-  }
-
-  /* Hide regular nav links by default */
   .nav-links {
     display: none;
     position: absolute;
@@ -451,7 +447,6 @@ td {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
 
-  /* Show nav links when menu is open */
   .nav-links.mobile-open {
     display: flex;
     flex-direction: column;
@@ -460,9 +455,25 @@ td {
 
   .nav-links a {
     padding: var(--space-2);
-    display: block;
-    width: 100%;
-    text-align: left;
+    display: inline-block;
+    text-align: center;
+    width: auto;
+    margin: 0 auto;
+  }
+
+  /* Fix the active/hover underline for mobile nav links */
+  .nav-links a::after {
+    display: none;
+  }
+
+  .nav-links a.active,
+  .nav-links a:hover {
+    color: var(--accent);
+  }
+
+  .nav-social {
+    display: flex;
+    gap: var(--space-1);
   }
 
   .content-wrapper {
@@ -470,7 +481,6 @@ td {
     margin-top: 0;
   }
 
-  /* Ensure post content doesn't get hidden under the fixed header */
   .post-content {
     padding-top: var(--space-2);
   }
@@ -486,19 +496,36 @@ td {
     display: none;
   }
 
-  .nav-links {
+  .nav-wrapper {
     display: flex;
-    gap: var(--space-3);
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-3);
   }
 
   .nav-brand {
-    flex: none;
-    text-align: left;
+    flex: 0 0 auto;
   }
 
-  .nav-wrapper {
-    justify-content: flex-start;
-    gap: var(--space-4);
+  .nav-links {
+    display: flex;
+    gap: var(--space-3);
+    justify-content: center;
+    flex: 1;
+  }
+
+  .nav-social {
+    display: flex;
+    gap: var(--space-1);
+    flex: 0 0 auto;
+  }
+
+  .content-wrapper {
+    max-width: 1200px;
+    margin: 40px auto 0;
+    padding: 0 var(--space-3);
   }
 }
 
