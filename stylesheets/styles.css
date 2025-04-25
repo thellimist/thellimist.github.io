@@ -38,6 +38,7 @@ body {
   line-height: 1.55; /* Slightly improved for Inter font */
   font-size: 17px; /* Adjusted for better readability with Inter */
   transition: all 0.2s ease;
+  padding-top: 72px; /* Add padding to account for fixed header */
 }
 
 /* Improved typography with restricted styles */
@@ -391,28 +392,113 @@ td {
   border-bottom: 1px solid var(--border);
 }
 
-/* Responsive improvements */
+/* Mobile navigation styles */
 @media screen and (max-width: 768px) {
-  h1 {
-    font-size: 28px;
+  .top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
   }
-  
-  h2 {
-    font-size: 22px;
-  }
-  
+
   .nav-wrapper {
+    padding: 0 var(--space-2);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Hamburger menu button */
+  .mobile-menu-button {
+    display: block;
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 24px;
+    cursor: pointer;
+    padding: var(--space-1);
+    margin-right: var(--space-2);
+    order: 1; /* Ensure it's first */
+  }
+
+  .nav-brand {
+    order: 2; /* Put brand after hamburger */
+    flex: 1;
+    text-align: center;
+  }
+
+  .nav-brand h1 {
+    font-size: 20px;
+    margin: 0;
+  }
+
+  .nav-social {
+    order: 3; /* Put social icons last */
+  }
+
+  /* Hide regular nav links by default */
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg);
+    padding: var(--space-2);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  /* Show nav links when menu is open */
+  .nav-links.mobile-open {
+    display: flex;
     flex-direction: column;
     gap: var(--space-2);
-    padding: var(--space-1) var(--space-2);
   }
-  
-  .nav-links {
-    justify-content: center;
+
+  .nav-links a {
+    padding: var(--space-2);
+    display: block;
+    width: 100%;
+    text-align: left;
   }
-  
+
   .content-wrapper {
-    margin-top: 120px;
+    padding: var(--space-2);
+    margin-top: 0;
+  }
+
+  /* Ensure post content doesn't get hidden under the fixed header */
+  .post-content {
+    padding-top: var(--space-2);
+  }
+
+  h1 {
+    margin-top: var(--space-2);
+  }
+}
+
+/* Desktop styles */
+@media screen and (min-width: 769px) {
+  .mobile-menu-button {
+    display: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: var(--space-3);
+  }
+
+  .nav-brand {
+    flex: none;
+    text-align: left;
+  }
+
+  .nav-wrapper {
+    justify-content: flex-start;
+    gap: var(--space-4);
   }
 }
 

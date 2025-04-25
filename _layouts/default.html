@@ -19,6 +19,9 @@
   <body>
     <nav class="top-nav">
       <div class="nav-wrapper">
+        <button class="mobile-menu-button" aria-label="Toggle menu">
+          <i class="fas fa-bars"></i>
+        </button>
         <div class="nav-brand">
           <h1>Kan Yilmaz</h1>
         </div>
@@ -46,6 +49,24 @@
     
     <script src="/javascripts/scale.fix.js"></script>
 
+    <!-- Mobile menu toggle script -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const menuButton = document.querySelector('.mobile-menu-button');
+        const navLinks = document.querySelector('.nav-links');
+        
+        menuButton.addEventListener('click', function() {
+          navLinks.classList.toggle('mobile-open');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!event.target.closest('.nav-wrapper')) {
+            navLinks.classList.remove('mobile-open');
+          }
+        });
+      });
+    </script>
     
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-92V8ZN63H4"></script>
