@@ -4,19 +4,79 @@ title: Kan Yilmaz - Blog
 ---
 <h1>Blog Posts</h1>
 
-  <div id="medium-widget"></div>
-<script src="https://medium-widget.pixelpoint.io/widget.js"></script>
-<script>MediumWidget.Init({renderTo: '#medium-widget', params: {"resource":"https://medium.com/@thellimist/how-to-make-decisions-work-b40fe9e97a72","postsPerLine":2,"limit":10,"picture":"big","fields":["description","author","claps","publishAt"],"ratio":"landscape"}})</script>
-
-<ul class="post-list">
+<div class="post-grid">
   {% for post in site.posts %}
-    <li class="post-row">
-      {% if post.proxyurl %}
-        <a class="post-title" href="{{ post.proxyurl }}" target="_blank">{{ post.title }}</a>
-      {% else %}
-        <a class="post-title" href="{{ post.url }}" target="_blank">{{ post.title }}</a>
-      {% endif %}
-      <span class="post-date">{{ post.date | date: "%d/%m/%Y" }}</span>
-    </li>
+    {% assign bg_color = forloop.index | modulo: 8 %}
+    {% assign bg_color = bg_color | plus: 1 %}
+    {% if post.proxyurl %}
+      {% assign post_url = post.proxyurl %}
+      {% assign target_blank = 'target="_blank"' %}
+    {% else %}
+      {% assign post_url = post.url %}
+      {% assign target_blank = '' %}
+    {% endif %}
+    <div class="post-card">
+      <a href="{{ post_url }}" class="post-card-link" {{ target_blank }}>
+        <div class="post-image-placeholder bg-color-{{ bg_color }}">
+          {% if post.image %}
+          <img class="lazy-image" 
+               data-src="{{ post.image }}" 
+               data-srcset="{{ post.image }} 1x, {{ post.image }} 2x"
+               alt="{{ post.title }}">
+          {% endif %}
+        </div>
+        <div class="post-card-content">
+          <h2 class="post-card-title">
+            {{ post.title }}
+          </h2>
+          <div class="post-card-meta">
+            <span class="post-card-date">{{ post.date | date: "%Y/%m/%d" }}</span>
+            {% if post.tags %}
+            <div class="post-card-tags">
+              {% for tag in post.tags limit:3 %}
+                <span class="post-tag">{{ tag }}</span>
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </a>
+    </div>
   {% endfor %}
-</ul>
+</div>
+
+<script>
+  // Lazy loading images
+  document.addEventListener("DOMContentLoaded", function() {
+    const lazyImages = document.querySelectorAll('.lazy-image');
+    
+    if ("IntersectionObserver" in window) {
+      const imageObserver = new IntersectionObserver(function(entries, observer) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            const image = entry.target;
+            image.src = image.dataset.src;
+            if (image.dataset.srcset) {
+              image.srcset = image.dataset.srcset;
+            }
+            image.classList.add("loaded");
+            imageObserver.unobserve(image);
+          }
+        });
+      });
+      
+      lazyImages.forEach(function(image) {
+        imageObserver.observe(image);
+      });
+    } else {
+      // Fallback for browsers without IntersectionObserver support
+      lazyImages.forEach(function(image) {
+        image.src = image.dataset.src;
+        if (image.dataset.srcset) {
+          image.srcset = image.dataset.srcset;
+        }
+        image.classList.add("loaded");
+      });
+    }
+  });
+</script>

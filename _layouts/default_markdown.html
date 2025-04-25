@@ -9,7 +9,7 @@
 
     <link rel="stylesheet" href="{{ site.url }}/stylesheets/styles.css">
     <link rel="stylesheet" href="{{ site.url }}/stylesheets/pygment_trac.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
@@ -22,20 +22,19 @@
         <h1>Kan Yilmaz</h1>
 
         <ul class="social">
-          <li><a href="mailto:mufuyil@gmail.com" class="fa fa-envelope"></a><br></li>
-          <li><a href="https://github.com/thellimist" class="fa fa-github-square"></a><br></li>
-          <li><a href="https://stackoverflow.com/users/4335588" class="fa fa-stack-overflow"></a><br></li>
-          <li><a href="https://facebook.com/thellimist" class="fa fa-facebook-square"></a><br></li>
-          <li><a href="https://linkedin.com/in/thellimist" class="fa fa-linkedin-square "></a><br></li>
-          <li><a href="https://twitter.com/thellimist" class="fa fa-twitter"></a><br></li>
+          <li><a href="mailto:kan.yilmaz.me@gmail.com" class="fa-solid fa-envelope" target="_blank"></a></li>
+          <li><a href="https://twitter.com/thellimist" class="fa-brands fa-x-twitter" target="_blank"></a></li>
+          <li><a href="https://linkedin.com/in/thellimist" class="fa-brands fa-linkedin" target="_blank"></a></li>
+          <li><a href="https://github.com/thellimist" class="fa-brands fa-github" target="_blank"></a></li>
+          <li><a href="https://stackoverflow.com/users/4335588" class="fa-brands fa-stack-overflow" target="_blank"></a></li>
+          <li><a href="/assets/resume.pdf" class="fa-solid fa-file-lines" target="_blank"></a></li>
         </ul>
 
         <p></p>
         <p class="navigation">
-          <a href="/">Home</a><br>
-          <a href="/about/">About</a><br>
-          <a href="/assets/resume.pdf" target="_blank">Resume</a><br>
-          <a href="/blog/">Blog</a><br>
+          <a href="/" {% if page.url == '/' %}class="active"{% endif %}>Home</a><br>
+          <a href="/about/" {% if page.url == '/about/' %}class="active"{% endif %}>About</a><br>
+          <a href="/blog/" {% if page.url == '/blog/' %}class="active"{% endif %}>Blog</a><br>
         </p>
       </header>
       <section>

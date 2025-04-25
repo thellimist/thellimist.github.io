@@ -1,312 +1,914 @@
-@import url(https://fonts.googleapis.com/css?family=Lato:300italic,700italic,300,700);
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* Enhanced color variables for better contrast and theming */
+:root {
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  
+  /* Light theme (default) */
+  --bg: #fff;
+  --text-primary: #222;
+  --text-muted: #555;
+  --accent: #2563eb;
+  --border: #e2e2e2;
+  --card-bg: #f9f9f9;
+}
+
+/* Dark theme - can be activated with a class on body */
+.dark-theme {
+  --bg: #121212;
+  --text-primary: #e9e9e9;
+  --text-muted: #a0a0a0;
+  --accent: #3b82f6;
+  --border: #333;
+  --card-bg: #1e1e1e;
+}
 
 body {
-  padding:50px;
-  font:14px/1.5 Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color:#777;
-  font-weight:300;
+  padding: 0;
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
+  color: var(--text-primary);
+  font-weight: 400; /* Optimal for Inter font */
+  background-color: var(--bg);
+  line-height: 1.55; /* Slightly improved for Inter font */
+  font-size: 17px; /* Adjusted for better readability with Inter */
+  transition: all 0.2s ease;
 }
 
+/* Improved typography with restricted styles */
 h1, h2, h3, h4, h5, h6 {
-  color:#222;
-  margin:0 0 20px;
-}
-
-p, ul, ol, table, pre, dl {
-  margin:0 0 20px;
-}
-
-h1, h2, h3 {
-  line-height:1.1;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-3);
+  letter-spacing: -0.01em; /* Slightly tighter letter spacing for headings with Inter */
 }
 
 h1 {
-  font-size:28px;
+  font-size: clamp(32px, 4vw, 40px);
+  line-height: 1.2;
+  font-weight: 700; /* Adjusted for Inter */
+  margin-bottom: var(--space-4);
 }
 
 h2 {
-  color:#393939;
+  font-size: 24px;
+  line-height: 1.3;
+  font-weight: 600; /* Adjusted for Inter */
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-3);
 }
 
+/* Simplified heading hierarchy - only use h1 and h2 for most content */
 h3, h4, h5, h6 {
-  color:#494949;
+  font-size: 20px;
+  line-height: 1.4;
+  font-weight: 600; /* Adjusted for Inter */
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-2);
 }
 
+/* Updated paragraph and text styling for Inter */
+p, ul, ol, table, pre, dl {
+  margin: 0 0 var(--space-3);
+  max-width: 70ch; /* Optimal reading width */
+  line-height: 1.65; /* Improved line height for Inter */
+}
+
+/* Improved link styling with micro-interactions */
 a {
-  color:#39c;
-  font-weight:400;
-  text-decoration:none;
+  color: var(--accent);
+  text-decoration: none;
+  position: relative;
+  transition: color 0.15s ease-out;
+  font-weight: 500; /* Slightly stronger weight for links with Inter */
 }
 
-a small {
-  font-size:11px;
-  color:#777;
-  margin-top:-0.6em;
-  display:block;
+a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.15s ease-out;
 }
 
-.wrapper {
-  width:860px;
-  margin:0 auto;
+a:hover {
+  color: var(--accent);
 }
 
-blockquote {
-  border-left:1px solid #e5e5e5;
-  margin:0;
-  padding:0 0 0 20px;
-  font-style:italic;
-}
-
-code, pre {
-  font-family:Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal;
-  color:#333;
-  font-size:12px;
-}
-
-pre {
-  padding:8px 15px;
-  background: #f8f8f8;
-  border-radius:5px;
-  border:1px solid #e5e5e5;
-  overflow-x: auto;
-}
-
-table {
-  width:100%;
-  border-collapse:collapse;
-}
-
-th, td {
-  text-align:left;
-  padding:5px 10px;
-  border-bottom:1px solid #e5e5e5;
-}
-
-dt {
-  color:#444;
-  font-weight:700;
-}
-
-th {
-  color:#444;
-}
-
-img {
-  max-width:100%;
-}
-
-header {
-  width:270px;
-  float:left;
-  position:fixed;
-}
-
-header ul {
-  list-style:none;
-  height:40px;
-
-  padding:0;
-
-  background: #eee;
-  background: -moz-linear-gradient(top, #f8f8f8 0%, #dddddd 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f8f8f8), color-stop(100%,#dddddd));
-  background: -webkit-linear-gradient(top, #f8f8f8 0%,#dddddd 100%);
-  background: -o-linear-gradient(top, #f8f8f8 0%,#dddddd 100%);
-  background: -ms-linear-gradient(top, #f8f8f8 0%,#dddddd 100%);
-  background: linear-gradient(top, #f8f8f8 0%,#dddddd 100%);
-
-  border-radius:5px;
-  border:1px solid #d2d2d2;
-  box-shadow:inset #fff 0 1px 0, inset rgba(0,0,0,0.03) 0 -1px 0;
-  width:270px;
-}
-
-header li {
-  width:89px;
-  float:left;
-  border-right:1px solid #d2d2d2;
-  height:40px;
-}
-
-header ul a {
-  line-height:1;
-  font-size:11px;
-  color:#999;
-  display:block;
-  text-align:center;
-  padding-top:6px;
-  height:40px;
-}
-
-strong {
-  color:#222;
-  font-weight:700;
-}
-
-header ul li + li {
-  width:88px;
-  border-left:1px solid #fff;
-}
-
-header ul li + li + li {
-  border-right:none;
-  width:89px;
-}
-
-header ul a strong {
-  font-size:14px;
-  display:block;
-  color:#222;
-}
-
-header p.navigation a {
-  font-size:16px;
-  color:#494949;
-  font-weight:800;
-}
-
-header p.view a {
-  font-size:16px;
-}
-
-section {
-  width:500px;
-  float:right;
-  padding-bottom:50px;
-}
-
-small {
-  font-size:11px;
-}
-
-hr {
-  border:0;
-  background:#e5e5e5;
-  height:1px;
-  margin:0 0 20px;
-}
-
-footer {
-  width:270px;
-  float:left;
-  position:fixed;
-  bottom:50px;
-}
-
-@media print, screen and (max-width: 960px) {
-
-  div.wrapper {
-    width:auto;
-    margin:0;
-  }
-
-  header, section, footer {
-    float:none;
-    position:static;
-    width:auto;
-  }
-
-  header {
-    padding-right:320px;
-  }
-
-  section {
-    border:1px solid #e5e5e5;
-    border-width:1px 0;
-    padding:20px 0;
-    margin:0 0 20px;
-  }
-
-  header a small {
-    display:inline;
-  }
-
-  header ul {
-    position:absolute;
-    right:50px;
-    top:52px;
-  }
-}
-
-@media print, screen and (max-width: 720px) {
-  body {
-    word-wrap:break-word;
-  }
-
-  header {
-    padding:0;
-  }
-
-  header ul, header p.view, p.navigation {
-    position:static;
-  }
-
-  pre, code {
-    word-wrap:normal;
-  }
-}
-
-@media print, screen and (max-width: 480px) {
-  body {
-    padding:15px;
-  }
-
-  header ul {
-    display:none;
-  }
-}
-
-@media print {
-  body {
-    padding:0.4in;
-    font-size:12pt;
-    color:#444;
-  }
-}
-
-ul.social {
-  border: none;
-  margin-bottom: 70px;
-  height: auto;
+a:hover::after {
   width: 100%;
-  text-align: center;
-  display: block;
-  -webkit-padding-start: 0px !important;
 }
 
-ul.social li {
-  font-size: 1.5em;
-  width: 35px;
-  float: left;
+/* Active link state */
+a.active {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+a.active::after {
+  width: 100%;
+}
+
+/* Button styling with micro-interactions */
+.btn {
+  display: inline-block;
+  padding: var(--space-1) var(--space-2);
+  border-radius: 4px;
+  font-weight: 600;
+  transition: all 0.15s ease-out;
   border: none;
-  height: 35px;
+  cursor: pointer;
 }
 
+.btn-primary {
+  background-color: var(--accent);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8; /* Darker shade */
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Improved content container */
+.content-wrapper {
+  max-width: 1000px;
+  margin: 80px auto 0;
+  padding: 0 var(--space-3);
+}
+
+/* Centered content with optimal reading width */
+section {
+  max-width: 720px;
+  width: 100%;
+  padding: var(--space-4) 0;
+  margin: 0 auto;
+  overflow-x: visible; /* Ensure no horizontal scrolling is hidden */
+  box-sizing: border-box; /* Include padding in width calculations */
+}
+
+section > * {
+  max-width: 100%; /* Ensure all content respects container */
+}
+
+/* Improved navigation */
+.top-nav {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: var(--space-2) 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.nav-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-brand h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* Simplified navigation with only 3 primary links */
+.nav-links {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.nav-links a {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 16px;
+  padding: var(--space-1) var(--space-2);
+  border-radius: 4px;
+}
+
+/* Refined navigation icon improvements */
+.nav-social {
+  display: flex;
+  gap: 1px; /* Tighter spacing between icons */
+  align-items: center;
+}
+
+.nav-social a {
+  color: var(--text-primary);
+  font-size: 18px; /* Smaller icon size */
+  opacity: 0.6;
+  transition: opacity 0.15s ease;
+  padding: 6px; /* Smaller padding */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-social a:hover {
+  opacity: 1;
+  color: var(--accent);
+}
+
+/* Remove underline effect from social icons */
+.nav-social a::after {
+  display: none;
+}
+
+/* Active nav link highlighting */
+.nav-links a[aria-current="page"] {
+  border-bottom: 2px solid var(--accent);
+}
+
+/* Enhance nav link active states */
+.nav-links a.active {
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  font-weight: 600;
+}
+
+/* Active state for sidebar navigation */
+.navigation a.active {
+  color: var(--accent);
+  font-weight: 600;
+  position: relative;
+  padding-left: 5px;
+}
+
+.navigation a.active::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--accent);
+}
+
+/* Improved blog post list */
 .post-list {
+  width: 100%;
   list-style: none;
   padding: 0;
-  margin: 0;
+  max-width: 70ch; /* Optimal reading width */
+  margin: 0 auto;
 }
 
 .post-row {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1px 0;
-  border: none;
+  flex-direction: row; /* Change to row layout */
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+  justify-content: space-between; /* Space between title and date */
+  align-items: baseline; /* Align items at their text baseline */
+  padding: var(--space-1) 0; /* Reduced padding */
+  border-bottom: 1px solid var(--border); /* Keep only bottom border */
+  transition: transform 0.15s ease-out;
+}
+
+.post-row:hover {
+  transform: translateY(-1px);
+  background-color: rgba(0,0,0,0.01); /* Subtle hover effect */
 }
 
 .post-title {
-  text-decoration: none;
   font-size: 16px;
-  max-width: 80%;
+  font-weight: 400;
+  margin: 0; /* Remove margin */
+  flex: 1; /* Take available space */
+  padding-right: var(--space-2); /* Add right padding */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .post-date {
-  color: #666;
-  /* font-size: 14px; */
-  flex-shrink: 0;
+  color: var(--text-muted);
+  font-size: 14px;
+  margin: 0; /* Remove margin */
+  flex-shrink: 0; /* Prevent date from shrinking */
+  text-align: right;
+}
+
+/* Hide excerpt by default */
+.post-excerpt {
+  display: none;
+}
+
+/* Improved blog post content */
+.post-content {
+  font-size: clamp(16px, 1.8vw, 18px);
+  line-height: 1.5;
+  width: 100%;
+  max-width: 70ch;
+  margin: 0 auto;
+}
+
+.post-content p {
+  margin-bottom: var(--space-3);
+}
+
+.post-content h1,
+.post-content h2 {
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-2);
+}
+
+.post-content ul,
+.post-content ol {
+  margin-bottom: var(--space-3);
+  padding-left: var(--space-3);
+}
+
+.post-content li {
+  margin-bottom: var(--space-1);
+}
+
+/* Improved blockquote */
+.post-content blockquote {
+  background-color: rgba(0,0,0,0.03);
+  border-left: 3px solid var(--accent);
+  padding: var(--space-2);
+  margin: var(--space-3) 0;
+  font-style: italic;
+}
+
+/* Improved code blocks */
+.post-content code {
+  background: rgba(0,0,0,0.05);
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-size: 15px;
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+}
+
+.post-content pre {
+  background: rgba(0,0,0,0.05);
+  padding: var(--space-2);
+  border-radius: 5px;
+  overflow-x: auto;
+  margin: var(--space-2) 0;
+  border: none;
+}
+
+/* Improved table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--space-3) 0;
+  font-size: 15px;
+}
+
+th {
+  background-color: rgba(0,0,0,0.03);
+  font-weight: 600;
+  text-align: left;
+  padding: var(--space-2);
+  border-bottom: 2px solid var(--border);
+}
+
+td {
+  padding: var(--space-2);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Responsive improvements */
+@media screen and (max-width: 768px) {
+  h1 {
+    font-size: 28px;
+  }
+  
+  h2 {
+    font-size: 22px;
+  }
+  
+  .nav-wrapper {
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-2);
+  }
+  
+  .nav-links {
+    justify-content: center;
+  }
+  
+  .content-wrapper {
+    margin-top: 120px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  body {
+    padding: var(--space-1);
+  }
+  
+  section {
+    padding: var(--space-2) 0;
+  }
+  
+  .content-wrapper {
+    margin-top: 140px;
+    padding: 0 var(--space-1);
+  }
+  
+  .post-row {
+    padding: var(--space-1) 0;
+  }
+  
+  .post-title {
+    font-size: 15px;
+    max-width: 70%;
+  }
+  
+  .post-date {
+    font-size: 13px;
+  }
+}
+
+/* Dark mode toggle (can be activated with JavaScript) */
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-1);
+  color: var(--text-muted);
+  font-size: 18px;
+  transition: color 0.15s ease;
+}
+
+.theme-toggle:hover {
+  color: var(--accent);
+}
+
+/* Footer for secondary links */
+.site-footer {
+  margin-top: var(--space-6);
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+  flex-wrap: wrap;
+}
+
+/* Footer social icons adjustments */
+.footer-social a {
+  font-size: 16px; /* Smaller footer icons */
+  padding: 4px;
+}
+
+.footer-social {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+  margin: var(--space-3) 0;
+}
+
+.footer-social a:hover {
+  opacity: 1;
+  color: var(--accent);
+}
+
+.footer-social a::after {
+  display: none;
+}
+
+.copyright {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+/* Hide extra icons on first load - add a details/summary wrapper in HTML */
+.icon-details {
+  position: relative;
+}
+
+.icon-details summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.icon-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.icon-details[open] .nav-social {
+  display: flex;
+}
+
+.icon-details:not([open]) .nav-social {
+  display: none;
+}
+
+.icon-details:not([open]) .primary-icon {
+  display: block;
+}
+
+/* New blog post card layout */
+.post-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.post-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.post-card-link::after {
+  display: none; /* Remove the default underline effect from links */
+}
+
+.post-card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  height: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  width: 100%;
+  cursor: pointer; /* Add pointer cursor to indicate clickable */
+}
+
+.post-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.post-image-placeholder {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background-color: #f0f0f0;
+  position: relative;
+  overflow: hidden;
+}
+
+.post-image-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+.post-card-content {
+  padding: 16px; /* Consistent padding on all sides */
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.post-card-title {
+  font-size: 20px;
+  line-height: 1.3;
+  margin-top: 0; /* Ensure no top margin */
+  margin-bottom: 16px; /* Increased from 12px to add more space between title and meta */
+  font-weight: 700; /* Inter works well with this weight */
+  color: var(--text-primary); /* Ensure consistent text color */
+  letter-spacing: -0.01em; /* Slight letter spacing adjustment for Inter */
+}
+
+.post-card-title a {
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.post-card-title a:hover {
+  color: var(--accent);
+}
+
+.post-card-title a::after {
+  display: none;
+}
+
+.post-card-excerpt {
+  display: none;
+}
+
+.post-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: auto;
+  font-size: 14px;
+}
+
+.post-card-date {
+  color: var(--text-muted);
+}
+
+.post-card-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.post-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  background-color: rgba(37, 99, 235, 0.1);
+  color: var(--accent);
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Lazy loading image styles */
+.lazy-image {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.lazy-image.loaded {
+  opacity: 1;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .post-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .post-card {
+    max-width: 100%;
+  }
+}
+
+/* Ensure the content width is appropriate for reading - 70ch max */
+@media screen and (min-width: 1200px) {
+  .content-wrapper {
+    max-width: 1200px;
+  }
+  
+  .post-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Colorful placeholder backgrounds */
+.bg-color-1 { background-color: #FF6B6B; }
+.bg-color-2 { background-color: #4ECDC4; }
+.bg-color-3 { background-color: #FFD166; }
+.bg-color-4 { background-color: #6A0572; }
+.bg-color-5 { background-color: #6B76FF; }
+.bg-color-6 { background-color: #45B69C; }
+.bg-color-7 { background-color: #FF8066; }
+.bg-color-8 { background-color: #7209B7; }
+
+/* Post content images */
+section img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  width: 100%; /* Make images take full width */
+  margin: 24px 0;
+  border-radius: 4px;
+}
+
+/* Table wrapper to ensure proper containment */
+.table-wrapper {
+  width: 100%;
+  overflow-x: visible; /* Don't cut off the table */
+  margin: 24px 0;
+  max-width: 100%; /* Ensure the wrapper takes full width */
+}
+
+/* Table styling for post content */
+section table {
+  width: 100%;
+  max-width: 100%;
+  margin: 24px 0;
+  border-collapse: collapse;
+  font-size: 15px;
+  line-height: 1.5;
+  table-layout: auto; /* Allow columns to size naturally */
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Add subtle striping for better readability - but not for header row */
+section table > tbody > tr:nth-child(even) {
+  background-color: rgba(0,0,0,0.01);
+}
+
+/* Remove ALL problematic rules for first row styling */
+/* NEW CLEAN TABLE STYLING */
+/* Basic cell styling */
+section table th,
+section table td {
+  padding: 12px 16px;
+  vertical-align: top;
+  border: 1px solid var(--border);
+  word-wrap: break-word; 
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Header styling - ONLY apply to th elements */
+section table th {
+  background-color: var(--accent);
+  color: white;
+  font-weight: 600;
+  text-align: left;
+}
+
+/* Normal cell styling */
+section table td {
+  background-color: transparent;
+  color: var(--text-primary);
+  font-weight: normal;
+}
+
+/* Make sure the first row data cells are NOT styled as headers */
+section table > tbody > tr > td {
+  background-color: transparent;
+  color: var(--text-primary);
+}
+
+/* Reset column widths for all markdown tables to be more flexible */
+section table td:first-child,
+section table td:nth-child(2),
+section table td:nth-child(3) {
+  width: auto; /* Reset fixed widths to auto for consistent table styling */
+}
+
+/* Apply consistent styling to all table cells with bold text */
+section table td strong,
+section table td b {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Add custom class for markdown table sizing */
+section table.markdown-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+section table.markdown-table td {
+  white-space: normal; /* Allow text to wrap */
+}
+
+/* Make tables responsive */
+@media screen and (max-width: 600px) {
+  section table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    font-size: 14px;
+  }
+  
+  section table th {
+    white-space: nowrap;
+  }
+  
+  section table td {
+    padding: 10px 12px;
+  }
+  
+  section table td,
+  section table th {
+    word-break: break-word;
+  }
+  
+  section table td:first-child {
+    white-space: normal;
+  }
+  
+  section table td:first-child,
+  section table td:nth-child(2),
+  section table td:nth-child(3) {
+    width: auto; /* Remove fixed widths on mobile */
+  }
+}
+
+/* Blockquote styling */
+section blockquote {
+  padding: 16px 24px;
+  margin: 24px 0;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-left: 4px solid var(--accent);
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+/* Fix for blockquote paragraph margin issue */
+section blockquote p {
+  margin-bottom: 0; /* Remove bottom margin from paragraphs in blockquotes */
+}
+
+/* Strong elements in headings */
+section h1 strong, 
+section h2 strong, 
+section h3 strong {
+  font-weight: 800;
+}
+
+/* Strikethrough styling */
+section del {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+/* Improved paragraph spacing */
+section p {
+  margin-bottom: 20px;
+}
+
+/* Fix for long words */
+section p, section li {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+p {
+  margin: 0 0 var(--space-3);
+  color: var(--text-secondary);
+}
+
+strong {
+  font-weight: 600; /* Adjusted for Inter - not too heavy */
+  color: var(--text-primary);
+}
+
+/* Strong elements in table cells */
+section table td strong,
+section table td b {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Sidebar social icon spacing adjustments */
+ul.social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 0;
+  margin: 0 0 15px 0;
+  list-style: none;
+  justify-content: flex-start;
+}
+
+ul.social li {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+}
+
+ul.social li a {
+  padding: 8px;
+  display: inline-block;
+  font-size: 20px;
+  color: var(--text-primary);
+  transition: color 0.15s ease;
+}
+
+ul.social li a:hover {
+  color: var(--accent);
+}
+
+ul.social li a::after {
+  display: none;
 }
