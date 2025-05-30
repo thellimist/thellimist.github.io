@@ -1052,3 +1052,65 @@ ul.social li a:hover {
 ul.social li a::after {
   display: none;
 }
+
+/* Modern dropdown style for details/summary */
+details {
+  margin: 1em 0;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  transition: box-shadow 0.2s;
+  padding: 0.5em 1em;
+}
+
+details[open] {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  background: var(--card-bg);
+}
+
+summary {
+  font-weight: 600;
+  font-size: 1.1em;
+  cursor: pointer;
+  outline: none;
+  padding: 0.1em 0;
+  color: var(--text-primary);
+  transition: color 0.2s;
+  list-style: none;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+details summary:before {
+  content: "▶";
+  display: inline-block;
+  margin-right: 0.8em;
+  transition: transform 0.2s;
+  font-size: 0.5em;
+  vertical-align: middle;
+  position: relative;
+  top: -0.05em;
+}
+
+details[open] summary:before {
+  content: "▼";
+  transform: rotate(0deg);
+  font-size: 0.5em;
+  vertical-align: middle;
+  position: relative;
+  top: -0.05em;
+}
+
+details ul {
+  margin: 0.5em 0 0 1.5em;
+  padding: 0;
+}
+
+details li {
+  margin: 0.3em 0;
+  font-size: 1em;
+  color: var(--text-primary);
+}
