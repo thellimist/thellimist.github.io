@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>{{ page.title }}</title>
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico">
+
+    <link rel="stylesheet" href="{{ site.url }}/stylesheets/styles.css">
+    <link rel="stylesheet" href="{{ site.url }}/stylesheets/pygment_trac.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+    <meta property="og:title" content="{{ page.title }}">
+    <meta property="og:description" content="{{ page.excerpt | strip_html | truncate: 160 }}">
+    {% if page.image %}
+    <meta property="og:image" content="{{ site.url }}{{ page.image }}">
+    {% endif %}
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ site.url }}{{ page.url }}">
+    <meta property="twitter:title" content="{{ page.title }}">
+    <meta property="twitter:description" content="{{ page.excerpt | strip_html | truncate: 160 }}">
+    {% if page.image %}
+    <meta property="twitter:image" content="{{ site.url }}{{ page.image }}">
+    {% endif %}
+  </head>
+  <body>
+    <nav class="top-nav">
+      <div class="nav-wrapper">
+        <button class="mobile-menu-button" aria-label="Toggle menu">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="nav-brand">
+          <h1><a href="/">Kan Yilmaz</a></h1>
+        </div>
+        <div class="nav-links">
+          <a href="/" {% if page.url == '/' %}class="active"{% endif %}>Home</a>
+          <a href="/about/" {% if page.url == '/about/' %}class="active"{% endif %}>About</a>
+          <a href="/blog/" {% if page.url == '/blog/' %}class="active"{% endif %}>Blog</a>
+        </div>
+        <div class="nav-social">
+          <a href="mailto:kan.yilmaz.me@gmail.com" class="fa-solid fa-envelope" target="_blank"></a>
+          <a href="https://twitter.com/thellimist" class="fa-brands fa-x-twitter" target="_blank"></a>
+          <a href="https://linkedin.com/in/thellimist" class="fa-brands fa-linkedin" target="_blank"></a>
+          <a href="https://github.com/thellimist" class="fa-brands fa-github" target="_blank"></a>
+          <a href="https://stackoverflow.com/users/4335588" class="fa-brands fa-stack-overflow" target="_blank"></a>
+        </div>
+      </div>
+    </nav>
+    
+    <div class="content-wrapper">
+      {{ content }}
+    </div>
+    
+    <script src="/javascripts/scale.fix.js"></script>
+
+    <!-- Mobile menu toggle script -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const menuButton = document.querySelector('.mobile-menu-button');
+        const navLinks = document.querySelector('.nav-links');
+        
+        menuButton.addEventListener('click', function() {
+          navLinks.classList.toggle('mobile-open');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!event.target.closest('.nav-wrapper')) {
+            navLinks.classList.remove('mobile-open');
+          }
+        });
+      });
+    </script>
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-92V8ZN63H4"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-92V8ZN63H4');
+    </script>
+
+  </body>
+</html>

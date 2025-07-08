@@ -1,0 +1,421 @@
+---
+layout: no-section
+title: Kan Yilmaz - Dark Chocolate Tier List
+---
+
+<div class="chocolate-tier-list">
+    <h1>Dark Chocolate Tier List</h1>
+    
+    <div class="tier-list-container">
+        <div class="tier-row">
+            <div class="tier-label tier-s">S</div>
+            <div class="tier-items" id="tier-s"></div>
+        </div>
+        
+        <div class="tier-row">
+            <div class="tier-label tier-a">A</div>
+            <div class="tier-items" id="tier-a"></div>
+        </div>
+        
+        <div class="tier-row">
+            <div class="tier-label tier-b">B</div>
+            <div class="tier-items" id="tier-b"></div>
+        </div>
+        
+        <div class="tier-row">
+            <div class="tier-label tier-c">C</div>
+            <div class="tier-items" id="tier-c"></div>
+        </div>
+        
+        <div class="tier-row">
+            <div class="tier-label tier-d">D</div>
+            <div class="tier-items" id="tier-d"></div>
+        </div>
+        
+        <div class="tier-row">
+            <div class="tier-label tier-f">F</div>
+            <div class="tier-items" id="tier-f"></div>
+        </div>
+    </div>
+</div>
+
+<style>
+.chocolate-tier-list {
+    margin: 2rem 0;
+}
+
+.chocolate-tier-list h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    color: var(--text-primary);
+}
+
+.tier-list-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.tier-row {
+    display: flex;
+    margin-bottom: 1rem;
+    height: 140px;
+    align-items: stretch;
+}
+
+.tier-row:last-child {
+    margin-bottom: 0;
+}
+
+.tier-label {
+    width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    border-radius: 8px 0 0 8px;
+}
+
+.tier-label.tier-s {
+    background: #ff7f7f;
+    background: linear-gradient(135deg, #ff7f7f 0%, #ff5555 100%);
+}
+
+.tier-label.tier-a {
+    background: #ffbf7f;
+    background: linear-gradient(135deg, #ffbf7f 0%, #ff9955 100%);
+}
+
+.tier-label.tier-b {
+    background: #ffff7f;
+    background: linear-gradient(135deg, #ffff7f 0%, #ffcc55 100%);
+}
+
+.tier-label.tier-c {
+    background: #7fff7f;
+    background: linear-gradient(135deg, #7fff7f 0%, #55cc55 100%);
+}
+
+.tier-label.tier-d {
+    background: #7fbfff;
+    background: linear-gradient(135deg, #7fbfff 0%, #5599ff 100%);
+}
+
+.tier-label.tier-f {
+    background: #bf7fbf;
+    background: linear-gradient(135deg, #bf7fbf 0%, #9955ff 100%);
+}
+
+.tier-items {
+    flex: 1;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    padding: 0 0.5rem;
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+    align-items: center;
+    overflow-x: auto;
+}
+
+.chocolate-item {
+    position: relative;
+    width: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chocolate-image {
+    width: 100%;
+    height: 80%;
+    object-fit: contain;
+    background: var(--bg-secondary);
+}
+
+.chocolate-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.chocolate-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.8rem;
+    text-align: center;
+    height: 20%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.5rem;
+    line-height: 1.1;
+    word-wrap: break-word;
+    overflow: hidden;
+}
+
+.simple-tooltip {
+    background: white;
+    border: 2px solid #007acc;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    max-width: 300px;
+    color: #333;
+    pointer-events: auto;
+}
+
+.simple-tooltip a {
+    color: #007acc;
+    text-decoration: underline;
+}
+
+.simple-tooltip a:hover {
+    color: #005580;
+    text-decoration: underline;
+}
+
+
+@media (max-width: 768px) {
+    .tier-label {
+        width: 60px;
+        font-size: 1.5rem;
+    }
+    
+    .tier-row {
+        height: 120px;
+    }
+    
+    .chocolate-item {
+        width: 100px;
+        height: calc(100% - 0.75rem);
+    }
+}
+
+@media (max-width: 480px) {
+    .tier-label {
+        width: 40px;
+        font-size: 1.2rem;
+    }
+    
+    .tier-row {
+        height: 100px;
+    }
+    
+    .tier-items {
+        padding: 0.25rem;
+        gap: 0.25rem;
+    }
+    
+    .chocolate-item {
+        width: 80px;
+        height: calc(100% - 0.5rem);
+    }
+    
+    .chocolate-tooltip {
+        display: none;
+    }
+}
+</style>
+
+<script>
+// Function to load chocolates from JSON file
+async function loadChocolates() {
+    try {
+        const response = await fetch('/chocolate/chocolates.json');
+        const chocolates = await response.json();
+        renderChocolates(chocolates);
+        return Promise.resolve();
+    } catch (error) {
+        console.error('Error loading chocolates:', error);
+        // Fallback to empty tier list if JSON fails to load
+        renderChocolates([]);
+        return Promise.resolve();
+    }
+}
+
+// Function to render chocolates in their respective tiers
+function renderChocolates(chocolates) {
+    // Clear existing items
+    document.querySelectorAll('.tier-items').forEach(container => {
+        container.innerHTML = '';
+    });
+    
+    // Group chocolates by tier
+    const chocolatesByTier = chocolates.reduce((acc, chocolate) => {
+        const tier = chocolate.tier.toLowerCase();
+        if (!acc[tier]) acc[tier] = [];
+        acc[tier].push(chocolate);
+        return acc;
+    }, {});
+    
+    // Render each chocolate in its tier
+    Object.entries(chocolatesByTier).forEach(([tier, items]) => {
+        const container = document.getElementById(`tier-${tier}`);
+        if (container) {
+            items.forEach(chocolate => {
+                const item = createChocolateElement(chocolate);
+                container.appendChild(item);
+            });
+        }
+    });
+}
+
+// Function to create a chocolate item element
+function createChocolateElement(chocolate) {
+    const item = document.createElement('div');
+    item.className = 'chocolate-item';
+    
+    // Create image or placeholder
+    const img = document.createElement('img');
+    img.src = chocolate.picture || '/assets/no_image.png';
+    img.alt = chocolate.name;
+    img.className = 'chocolate-image';
+    item.appendChild(img);
+    
+    // Add name below image
+    const name = document.createElement('div');
+    name.className = 'chocolate-name';
+    name.textContent = chocolate.name;
+    item.appendChild(name);
+    
+    // Adjust font size for longer names
+    setTimeout(() => {
+        adjustFontSize(name);
+    }, 0);
+    
+    // Add tooltip data attributes
+    let tooltipContent = '';
+    
+    if (chocolate.brand) {
+        tooltipContent += `<strong>Brand:</strong> ${chocolate.brand}<br>`;
+    }
+    
+    if (chocolate.country) {
+        tooltipContent += `<strong>Country:</strong> ${chocolate.country}<br>`;
+    }
+    
+    if (chocolate.location) {
+        tooltipContent += `<strong>Location:</strong> <a href="${chocolate.location}" target="_blank" style="color: #007acc; text-decoration: underline;">View on Maps</a><br>`;
+    }
+    
+    if (chocolate.comments) {
+        tooltipContent += `<strong>Comments:</strong> ${chocolate.comments}`;
+    }
+    
+    
+    item.setAttribute('data-toggle', 'tooltip');
+    item.setAttribute('data-html', 'true');
+    item.setAttribute('data-placement', 'top');
+    item.setAttribute('data-original-title', tooltipContent);
+    item.setAttribute('title', tooltipContent);
+
+    
+    return item;
+}
+
+// Function to adjust font size to fit container
+function adjustFontSize(element) {
+    const maxWidth = element.offsetWidth - 10; // Account for padding
+    const maxHeight = element.offsetHeight;
+    let fontSize = 16; // Start with default size in pixels
+    
+    element.style.fontSize = fontSize + 'px';
+    
+    // Reduce font size until text fits
+    while ((element.scrollWidth > maxWidth || element.scrollHeight > maxHeight) && fontSize > 8) {
+        fontSize -= 0.5;
+        element.style.fontSize = fontSize + 'px';
+    }
+}
+
+// Initialize tooltips
+function initializeTooltips() {
+    const tooltipItems = document.querySelectorAll('[data-toggle="tooltip"]');
+    let hideTimeout;
+    
+    tooltipItems.forEach(item => {
+        item.addEventListener('mouseenter', function(e) {
+            // Clear any pending hide timeout
+            if (hideTimeout) {
+                clearTimeout(hideTimeout);
+                hideTimeout = null;
+            }
+            
+            // Remove existing tooltip if any
+            const existingTooltip = document.querySelector('.simple-tooltip');
+            if (existingTooltip) {
+                existingTooltip.remove();
+            }
+            
+            const tooltip = document.createElement('div');
+            tooltip.className = 'simple-tooltip';
+            tooltip.innerHTML = this.getAttribute('data-original-title');
+            tooltip.id = 'tooltip-' + Math.random().toString(36).substr(2, 9);
+            
+            document.body.appendChild(tooltip);
+            
+            const rect = this.getBoundingClientRect();
+            const tooltipRect = tooltip.getBoundingClientRect();
+            
+            tooltip.style.position = 'absolute';
+            tooltip.style.left = (rect.left + rect.width / 2 - tooltipRect.width / 2) + 'px';
+            tooltip.style.top = (rect.top - tooltipRect.height - 10) + 'px';
+            tooltip.style.zIndex = '1000';
+            
+            this.tooltipId = tooltip.id;
+            
+            // Allow hovering over the tooltip itself
+            tooltip.addEventListener('mouseenter', function() {
+                if (hideTimeout) {
+                    clearTimeout(hideTimeout);
+                    hideTimeout = null;
+                }
+            });
+            
+            tooltip.addEventListener('mouseleave', function() {
+                hideTimeout = setTimeout(() => {
+                    tooltip.remove();
+                }, 100);
+            });
+        });
+        
+        item.addEventListener('mouseleave', function(e) {
+            // Delay hiding to allow moving to tooltip
+            hideTimeout = setTimeout(() => {
+                if (this.tooltipId) {
+                    const tooltip = document.getElementById(this.tooltipId);
+                    if (tooltip) {
+                        tooltip.remove();
+                    }
+                    this.tooltipId = null;
+                }
+            }, 100);
+        });
+    });
+}
+
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    loadChocolates().then(() => {
+        initializeTooltips();
+    });
+});
+</script>

@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Lindt Excellence 70%",
+        "tier": "C",
+        "brand": "Lindt",
+        "picture": "/assets/chocolate-images/lindt-70.png",
+        "country": "Switzerland",
+        "location": "https://maps.google.com/maps?q=Kilchberg,+Switzerland",
+        "comments": "Test"
+    },
+    {
+        "name": "Tarihi Beyoglu Cikolatacisi Bitter Findikli",
+        "tier": "S",
+        "brand": "Tarihi Beyoglu Cikolatacisi",
+        "picture": "/assets/chocolate-images/tarihi_findikli-beyoglu-cikolatasi-bitter.jpg",
+        "country": "Turkiye",
+        "location": "https://maps.app.goo.gl/7QCmHUUHddFzWgFA9",
+        "comments": ""
+    }
+]

@@ -1,0 +1,46 @@
+name: Optimize Chocolate Images
+
+on:
+  push:
+    paths:
+      - 'assets/chocolate-images/**'
+  pull_request:
+    paths:
+      - 'assets/chocolate-images/**'
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check which images need optimization
+        id: check_images
+        run: |
+          echo "Checking for images larger than 800KB..."
+          LARGE_IMAGES=$(find assets/chocolate-images -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" \) -size +800k 2>/dev/null || true)
+          
+          if [ -z "$LARGE_IMAGES" ]; then
+            echo "No images larger than 800KB found. Skipping optimization."
+            echo "optimize_needed=false" >> $GITHUB_OUTPUT
+          else
+            echo "Found images larger than 800KB:"
+            echo "$LARGE_IMAGES"
+            echo "optimize_needed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Optimize large chocolate images
+        if: steps.check_images.outputs.optimize_needed == 'true'
+        uses: calibreapp/image-actions@main
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          jpegQuality: 80
+          pngQuality: 80
+          webpQuality: 80
+          ignorePaths: 'node_modules/**,dist/**,.git/**'
+          compressOnly: true
+
+      - name: Skip optimization
+        if: steps.check_images.outputs.optimize_needed == 'false'
+        run: echo "All images are already under 800KB. No optimization needed."
