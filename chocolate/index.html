@@ -4,6 +4,9 @@ title: Kan Yilmaz - Dark Chocolate Tier List
 ---
 
 <div class="chocolate-tier-list">
+    <div class="construction-banner">
+        🚧 Under Construction - More chocolates being added! 🚧
+    </div>
     <h1>Dark Chocolate Tier List</h1>
     
     <div class="tier-list-container">
@@ -42,6 +45,28 @@ title: Kan Yilmaz - Dark Chocolate Tier List
 <style>
 .chocolate-tier-list {
     margin: 2rem 0;
+}
+
+.construction-banner {
+    background: #ffcc00;
+    background-size: 40px 40px;
+    color: #333;
+    text-align: center;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes slide {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 40px 0;
+    }
 }
 
 .chocolate-tier-list h1 {
@@ -117,18 +142,20 @@ title: Kan Yilmaz - Dark Chocolate Tier List
     display: flex;
     flex-wrap: nowrap;
     gap: 0.5rem;
-    padding: 0 0.5rem;
+    padding: 0.5rem;
     background: var(--bg-primary);
     border: 2px solid var(--border-color);
     border-left: none;
     border-radius: 0 8px 8px 0;
     align-items: center;
     overflow-x: auto;
+    overflow-y: hidden;
 }
 
 .chocolate-item {
     position: relative;
     width: 120px;
+    height: 120px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -200,12 +227,12 @@ title: Kan Yilmaz - Dark Chocolate Tier List
     }
     
     .tier-row {
-        height: 120px;
+        min-height: 140px;
     }
     
     .chocolate-item {
         width: 100px;
-        height: calc(100% - 0.75rem);
+        height: 100px;
     }
 }
 
@@ -216,7 +243,7 @@ title: Kan Yilmaz - Dark Chocolate Tier List
     }
     
     .tier-row {
-        height: 100px;
+        height: 120px;
     }
     
     .tier-items {
@@ -226,11 +253,15 @@ title: Kan Yilmaz - Dark Chocolate Tier List
     
     .chocolate-item {
         width: 80px;
-        height: calc(100% - 0.5rem);
     }
     
-    .chocolate-tooltip {
-        display: none;
+    .simple-tooltip {
+        font-size: 0.8rem;
+        padding: 0.5rem;
+        max-width: 200px;
+        position: fixed !important;
+        left: 50% !important;
+        transform: translateX(-50%);
     }
 }
 </style>
@@ -376,9 +407,19 @@ function initializeTooltips() {
             const tooltipRect = tooltip.getBoundingClientRect();
             
             tooltip.style.position = 'absolute';
-            tooltip.style.left = (rect.left + rect.width / 2 - tooltipRect.width / 2) + 'px';
-            tooltip.style.top = (rect.top - tooltipRect.height - 10) + 'px';
             tooltip.style.zIndex = '1000';
+            
+            // Check if mobile
+            if (window.innerWidth <= 480) {
+                // Center horizontally on mobile
+                tooltip.style.left = '50%';
+                tooltip.style.transform = 'translateX(-50%)';
+                tooltip.style.top = (rect.top - tooltipRect.height - 10) + 'px';
+            } else {
+                // Normal positioning for desktop
+                tooltip.style.left = (rect.left + rect.width / 2 - tooltipRect.width / 2) + 'px';
+                tooltip.style.top = (rect.top - tooltipRect.height - 10) + 'px';
+            }
             
             this.tooltipId = tooltip.id;
             
