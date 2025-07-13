@@ -1,46 +1,80 @@
-name: Optimize Chocolate Images
+name: Compress Heavy Images
 
+# Automatically compress images larger than 1MB when pushed to the repository
 on:
   push:
     paths:
-      - 'assets/chocolate-images/**'
-  pull_request:
-    paths:
-      - 'assets/chocolate-images/**'
+      - 'assets/**/*.png'
+      - 'assets/**/*.jpg'
+      - 'assets/**/*.jpeg'
+      - 'assets/**/*.gif'
 
 jobs:
-  optimize:
+  compress:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Check which images need optimization
-        id: check_images
-        run: |
-          echo "Checking for images larger than 800KB..."
-          LARGE_IMAGES=$(find assets/chocolate-images -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" \) -size +800k 2>/dev/null || true)
-          
-          if [ -z "$LARGE_IMAGES" ]; then
-            echo "No images larger than 800KB found. Skipping optimization."
-            echo "optimize_needed=false" >> $GITHUB_OUTPUT
-          else
-            echo "Found images larger than 800KB:"
-            echo "$LARGE_IMAGES"
-            echo "optimize_needed=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Optimize large chocolate images
-        if: steps.check_images.outputs.optimize_needed == 'true'
-        uses: calibreapp/image-actions@main
         with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          jpegQuality: 80
-          pngQuality: 80
-          webpQuality: 80
-          ignorePaths: 'node_modules/**,dist/**,.git/**'
-          compressOnly: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.head_ref }}
 
-      - name: Skip optimization
-        if: steps.check_images.outputs.optimize_needed == 'false'
-        run: echo "All images are already under 800KB. No optimization needed."
+      - name: Find images larger than 1MB
+        id: find_large
+        run: |
+          echo "Finding images larger than 1MB in assets/..."
+          mapfile -t FILES < <(find assets -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.gif' \) -size +1024k)
+          
+          if [ ${#FILES[@]} -eq 0 ]; then
+            echo "No images larger than 1MB found"
+          else
+            echo "Found ${#FILES[@]} large images:"
+            printf '%s\n' "${FILES[@]}"
+          fi
+          
+          # Save outputs
+          echo "files=$(IFS=','; echo "${FILES[*]}")" >> "$GITHUB_OUTPUT"
+          echo "count=${#FILES[@]}" >> "$GITHUB_OUTPUT"
+
+      - name: Compress images with imagemin
+        if: steps.find_large.outputs.count != '0'
+        run: |
+          echo "Compressing ${steps.find_large.outputs.count} images..."
+          
+          # Install imagemin with plugins
+          npm install -g imagemin-cli imagemin-mozjpeg imagemin-pngquant imagemin-gifsicle
+          
+          # Process each file
+          IFS=',' read -ra FILE_ARRAY <<< "${{ steps.find_large.outputs.files }}"
+          for file in "${FILE_ARRAY[@]}"; do
+            echo "Processing: $file"
+            imagemin "$file" \
+              --plugin=mozjpeg='{"quality": 85}' \
+              --plugin=pngquant='{"quality": [0.8, 0.9]}' \
+              --plugin=gifsicle='{"optimizationLevel": 3}' \
+              > "${file}.tmp"
+            
+            # Only replace if compression was successful and file is smaller
+            if [ -f "${file}.tmp" ] && [ $(stat -f%z "${file}.tmp" 2>/dev/null || stat -c%s "${file}.tmp") -lt $(stat -f%z "$file" 2>/dev/null || stat -c%s "$file") ]; then
+              mv "${file}.tmp" "$file"
+              echo "✓ Compressed: $file"
+            else
+              rm -f "${file}.tmp"
+              echo "✗ Skipped: $file (no size reduction)"
+            fi
+          done
+
+      - name: Commit compressed images
+        if: steps.find_large.outputs.count != '0'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Check if there are changes
+          if git diff --quiet; then
+            echo "No files were compressed"
+          else
+            git add assets/
+            git commit -m "🗜️ Compress images larger than 1MB"
+            git push
+          fi
