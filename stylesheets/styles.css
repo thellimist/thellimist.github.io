@@ -1114,3 +1114,17 @@ details li {
   font-size: 1em;
   color: var(--text-primary);
 }
+
+/* Spoiler tag styles - Discord/Reddit style hidden text */
+.spoiler {
+  background: #d3d3d3;
+  color: #d3d3d3;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.spoiler:hover {
+  color: #333333;
+}
