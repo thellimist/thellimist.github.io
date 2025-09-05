@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "Which Norms of Today Will Be Tomorrow’s Atrocities?"
+title: "We Are Barbaric, Here Is Why?"
 date: 2025-09-05
 image: "/assets/posts/pain_barbar.jpeg"
 ---
 
-# Which Norms of Today Will Be Tomorrow’s Atrocities?
+We Are Barbaric, Here Is Why?
 
 ![](/assets/posts/pain_barbar.jpeg)
 
