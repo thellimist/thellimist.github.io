@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "We Are Barbaric, Here Is Why?"
+title: "We Are Barbaric, Here Is Why"
 date: 2025-09-05
 image: "/assets/posts/pain_barbar.jpeg"
 ---
 
-# We Are Barbaric, Here Is Why?
+# We Are Barbaric, Here Is Why
 
 ![](/assets/posts/pain_barbar.jpeg)
 
