@@ -13,7 +13,7 @@
         "tier": "S",
         "brand": "Tarihi Beyoglu Cikolatacisi",
         "picture": "/assets/chocolate-images/tarihi_findikli-beyoglu-cikolatasi-bitter.jpg",
-        "country": "Turkiye",
+        "country": "Istanbul",
         "location": "https://maps.app.goo.gl/7QCmHUUHddFzWgFA9",
         "comments": "First hazelnut chocolate in the world"
     },
@@ -23,6 +23,123 @@
         "brand": "Fossa Chocolate",
         "picture": "/assets/chocolate-images/fossa-ph-73.jpg",
         "country": "Singapore",
+        "location": "",
+        "comments": ""
+    },
+    {
+        "name": "Soma Chocolatemaker - Guasare Venezuela",
+        "tier": "A",
+        "brand": "Soma Chocolatemaker",
+        "picture": "/assets/chocolate-images/soma-venezuela.png",
+        "country": "Toronto",
+        "location": "https://maps.app.goo.gl/YULp9K4Kr6C8cdYM7",
+        "comments": ""
+    },
+    {
+        "name": "Hu - Salty Dark Chocolate",
+        "tier": "C",
+        "brand": "Hu",
+        "picture": "/assets/chocolate-images/hu-salt-dark.png",
+        "country": "Global",
+        "location": "",
+        "comments": ""
+    },
+    {
+        "name": "Ritter Sport - Dark Chocolate With  Whole Hazelnuts",
+        "tier": "C",
+        "brand": "Ritter Sport",
+        "picture": "/assets/chocolate-images/rittersport-hazelnut.png",
+        "country": "Global",
+        "location": "",
+        "comments": ""
+    },
+    {
+        "name": "Sedra",
+        "tier": "S",
+        "brand": "Sedra",
+        "picture": "/assets/chocolate-images/sedra.jpeg",
+        "country": "Turkiye",
+        "location": "https://www.instagram.com/sedrachocolate/",
+        "comments": "It's chocolate spread, best tasting also heathiest I have had with no vegetable oil and only 10% sugar. Need to order by DMs"
+    },
+    {
+        "name": "Mr. Bucket - 75% Dark Davao, Philipines",
+        "tier": "A",
+        "brand": "Mr. Bucket",
+        "picture": "/assets/chocolate-images/mrbucket-75.png",
+        "country": "Singapore",
+        "location": "https://maps.app.goo.gl/YPQArpNnzwrSrUgi9",
+        "comments": ""
+    },
+    {
+        "name": "Mr. Bucket - 82% Dark Anaimalai, India",
+        "tier": "B",
+        "brand": "Mr. Bucket",
+        "picture": "/assets/chocolate-images/mrbucket-82.png",
+        "country": "Singapore",
+        "location": "https://maps.app.goo.gl/YPQArpNnzwrSrUgi9",
+        "comments": ""
+    },
+    {
+        "name": "Venchi - Nocciolata Fondente  70% Dark Chocolate With Hazelnutes",
+        "tier": "B",
+        "brand": "Venchi",
+        "picture": "/assets/chocolate-images/venchi-70.png",
+        "country": "Global",
+        "location": "",
+        "comments": ""
+    },
+    {
+        "name": "Koko Black, Hazelnut & Cocoa Bits",
+        "tier": "C",
+        "brand": "Koko Black",
+        "picture": "/assets/chocolate-images/kokoblack.png",
+        "country": "Global",
+        "location": "",
+        "comments": ""
+    },
+    {
+        "name": "M&S - Dark Chocolate - 75% Dominican Republic",
+        "tier": "C",
+        "brand": "M&S",
+        "picture": "/assets/chocolate-images/ms-75.png",
+        "country": "Global",
+        "location": "",
+        "comments": ""
+    },
+    {
+        "name": "M&S - Dark Chocolate - 72% Ecuador",
+        "tier": "C",
+        "brand": "M&S",
+        "picture": "/assets/chocolate-images/ms-72.png",
+        "country": "Global",
+        "location": "",
+        "comments": ""
+    },
+    {
+        "name": "Ülker - Bitter Cikolata 60%",
+        "tier": "D",
+        "brand": "Ülker",
+        "picture": "/assets/chocolate-images/ulker-60.png",
+        "country": "Turkiye",
+        "location": "",
+        "comments": ""
+    },
+    {
+        "name": "Valor - Almendras 70%",
+        "tier": "D",
+        "brand": "Valor",
+        "picture": "/assets/chocolate-images/valor-70-almond.png",
+        "country": "Global",
+        "location": "",
+        "comments": ""
+    },
+    {
+        "name": "Valor - Cocoa Natural 82%",
+        "tier": "D",
+        "brand": "Valor",
+        "picture": "/assets/chocolate-images/valor-82.png",
+        "country": "Global",
         "location": "",
         "comments": ""
     }
