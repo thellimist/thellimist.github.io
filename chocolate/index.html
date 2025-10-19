@@ -4,40 +4,47 @@ title: Kan Yilmaz - Dark Chocolate Tier List
 ---
 
 <div class="chocolate-tier-list">
-    <div class="construction-banner">
-        🚧 Under Construction - More chocolates being added! 🚧
-    </div>
     <h1>Dark Chocolate Tier List</h1>
-    
+
+    <div class="filter-container">
+        <div class="filter-group">
+            <label for="country-filter">Country:</label>
+            <select id="country-filter">
+                <option value="">All Countries</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="brand-filter">Brand:</label>
+            <select id="brand-filter">
+                <option value="">All Brands</option>
+            </select>
+        </div>
+    </div>
+
     <div class="tier-list-container">
         <div class="tier-row">
-            <div class="tier-label tier-s">S</div>
+            <div class="tier-label tier-s" data-toggle="tooltip" data-html="true" data-original-title="<strong>Best of the best</strong>" title="Best of the best">S</div>
             <div class="tier-items" id="tier-s"></div>
         </div>
-        
+
         <div class="tier-row">
-            <div class="tier-label tier-a">A</div>
+            <div class="tier-label tier-a" data-toggle="tooltip" data-html="true" data-original-title="<strong>Amazing</strong>" title="Amazing">A</div>
             <div class="tier-items" id="tier-a"></div>
         </div>
-        
+
         <div class="tier-row">
-            <div class="tier-label tier-b">B</div>
+            <div class="tier-label tier-b" data-toggle="tooltip" data-html="true" data-original-title="<strong>Great</strong>" title="Great">B</div>
             <div class="tier-items" id="tier-b"></div>
         </div>
-        
+
         <div class="tier-row">
-            <div class="tier-label tier-c">C</div>
+            <div class="tier-label tier-c" data-toggle="tooltip" data-html="true" data-original-title="<strong>Edible</strong>" title="Edible">C</div>
             <div class="tier-items" id="tier-c"></div>
         </div>
-        
+
         <div class="tier-row">
-            <div class="tier-label tier-d">D</div>
+            <div class="tier-label tier-d" data-toggle="tooltip" data-html="true" data-original-title="<strong>Meh</strong>" title="Meh">D</div>
             <div class="tier-items" id="tier-d"></div>
-        </div>
-        
-        <div class="tier-row">
-            <div class="tier-label tier-f">F</div>
-            <div class="tier-items" id="tier-f"></div>
         </div>
     </div>
 </div>
@@ -58,6 +65,59 @@ title: Kan Yilmaz - Dark Chocolate Tier List
     font-weight: bold;
     font-size: 1.1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.filter-container {
+    max-width: 1200px;
+    margin: 0 auto 2rem auto;
+    padding: 0 1.5rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filter-group label {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+.filter-group select {
+    padding: 0.6rem 2.5rem 0.6rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-secondary);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 12px;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    min-width: 150px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.filter-group select:hover {
+    border-color: #007acc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filter-group select:focus {
+    outline: none;
+    border-color: #007acc;
+    box-shadow: 0 0 0 3px rgba(0, 122, 204, 0.15);
 }
 
 @keyframes slide {
@@ -267,19 +327,78 @@ title: Kan Yilmaz - Dark Chocolate Tier List
 </style>
 
 <script>
+// Global variable to store all chocolates
+let allChocolates = [];
+
 // Function to load chocolates from JSON file
 async function loadChocolates() {
     try {
         const response = await fetch('/chocolate/chocolates.json');
         const chocolates = await response.json();
+        allChocolates = chocolates;
+        populateFilters(chocolates);
         renderChocolates(chocolates);
         return Promise.resolve();
     } catch (error) {
         console.error('Error loading chocolates:', error);
         // Fallback to empty tier list if JSON fails to load
+        allChocolates = [];
         renderChocolates([]);
         return Promise.resolve();
     }
+}
+
+// Function to populate filter dropdowns
+function populateFilters(chocolates) {
+    const countries = new Set();
+    const brands = new Set();
+
+    chocolates.forEach(chocolate => {
+        if (chocolate.country) countries.add(chocolate.country);
+        if (chocolate.brand) brands.add(chocolate.brand);
+    });
+
+    const countryFilter = document.getElementById('country-filter');
+    const brandFilter = document.getElementById('brand-filter');
+
+    // Sort and add countries
+    Array.from(countries).sort().forEach(country => {
+        const option = document.createElement('option');
+        option.value = country;
+        option.textContent = country;
+        countryFilter.appendChild(option);
+    });
+
+    // Sort and add brands
+    Array.from(brands).sort().forEach(brand => {
+        const option = document.createElement('option');
+        option.value = brand;
+        option.textContent = brand;
+        brandFilter.appendChild(option);
+    });
+
+    // Add event listeners
+    countryFilter.addEventListener('change', applyFilters);
+    brandFilter.addEventListener('change', applyFilters);
+}
+
+// Function to apply filters
+function applyFilters() {
+    const selectedCountry = document.getElementById('country-filter').value;
+    const selectedBrand = document.getElementById('brand-filter').value;
+
+    let filteredChocolates = allChocolates;
+
+    if (selectedCountry) {
+        filteredChocolates = filteredChocolates.filter(c => c.country === selectedCountry);
+    }
+
+    if (selectedBrand) {
+        filteredChocolates = filteredChocolates.filter(c => c.brand === selectedBrand);
+    }
+
+    renderChocolates(filteredChocolates);
+    initializeTooltips();
 }
 
 // Function to render chocolates in their respective tiers
@@ -377,74 +496,119 @@ function adjustFontSize(element) {
     }
 }
 
+// Global tooltip state
+let tooltipState = {
+    hideTimeout: null,
+    activeTooltip: null,
+    scrollListenerAdded: false
+};
+
+// Remove all tooltips
+function removeAllTooltips() {
+    const tooltips = document.querySelectorAll('.simple-tooltip');
+    tooltips.forEach(t => t.remove());
+    tooltipState.activeTooltip = null;
+}
+
 // Initialize tooltips
 function initializeTooltips() {
     const tooltipItems = document.querySelectorAll('[data-toggle="tooltip"]');
-    let hideTimeout;
-    
+
+    // Add scroll listener only once
+    if (!tooltipState.scrollListenerAdded) {
+        window.addEventListener('scroll', removeAllTooltips, true);
+        tooltipState.scrollListenerAdded = true;
+    }
+
+    // Remove old event listeners by cloning and replacing elements
     tooltipItems.forEach(item => {
+        // Skip if already has tooltip handler
+        if (item.hasTooltipHandler) return;
+        item.hasTooltipHandler = true;
+
         item.addEventListener('mouseenter', function(e) {
             // Clear any pending hide timeout
-            if (hideTimeout) {
-                clearTimeout(hideTimeout);
-                hideTimeout = null;
+            if (tooltipState.hideTimeout) {
+                clearTimeout(tooltipState.hideTimeout);
+                tooltipState.hideTimeout = null;
             }
-            
-            // Remove existing tooltip if any
-            const existingTooltip = document.querySelector('.simple-tooltip');
-            if (existingTooltip) {
-                existingTooltip.remove();
-            }
-            
+
+            // Remove existing tooltips
+            removeAllTooltips();
+
             const tooltip = document.createElement('div');
             tooltip.className = 'simple-tooltip';
             tooltip.innerHTML = this.getAttribute('data-original-title');
             tooltip.id = 'tooltip-' + Math.random().toString(36).substr(2, 9);
-            
+
             document.body.appendChild(tooltip);
-            
-            const rect = this.getBoundingClientRect();
-            const tooltipRect = tooltip.getBoundingClientRect();
-            
-            tooltip.style.position = 'absolute';
-            tooltip.style.zIndex = '1000';
-            
-            // Check if mobile
-            if (window.innerWidth <= 480) {
-                // Center horizontally on mobile
-                tooltip.style.left = '50%';
-                tooltip.style.transform = 'translateX(-50%)';
-                tooltip.style.top = (rect.top - tooltipRect.height - 10) + 'px';
-            } else {
-                // Normal positioning for desktop
-                tooltip.style.left = (rect.left + rect.width / 2 - tooltipRect.width / 2) + 'px';
-                tooltip.style.top = (rect.top - tooltipRect.height - 10) + 'px';
-            }
-            
-            this.tooltipId = tooltip.id;
-            
-            // Allow hovering over the tooltip itself
-            tooltip.addEventListener('mouseenter', function() {
-                if (hideTimeout) {
-                    clearTimeout(hideTimeout);
-                    hideTimeout = null;
+            tooltipState.activeTooltip = tooltip;
+
+            // Use requestAnimationFrame for more accurate positioning
+            requestAnimationFrame(() => {
+                const rect = this.getBoundingClientRect();
+                const tooltipRect = tooltip.getBoundingClientRect();
+
+                tooltip.style.position = 'fixed';
+                tooltip.style.zIndex = '10000';
+
+                // Check if mobile
+                if (window.innerWidth <= 480) {
+                    // Center horizontally on mobile
+                    tooltip.style.left = '50%';
+                    tooltip.style.transform = 'translateX(-50%)';
+                    tooltip.style.top = Math.max(5, rect.top - tooltipRect.height - 10) + 'px';
+                } else {
+                    // Normal positioning for desktop
+                    let left = rect.left + rect.width / 2 - tooltipRect.width / 2;
+
+                    // Ensure tooltip doesn't go off-screen
+                    if (left < 10) left = 10;
+                    if (left + tooltipRect.width > window.innerWidth - 10) {
+                        left = window.innerWidth - tooltipRect.width - 10;
+                    }
+
+                    let top = rect.top - tooltipRect.height - 10;
+                    // If tooltip would go off top of screen, show below element
+                    if (top < 5) {
+                        top = rect.bottom + 10;
+                    }
+
+                    tooltip.style.left = left + 'px';
+                    tooltip.style.top = top + 'px';
                 }
             });
-            
+
+            this.tooltipId = tooltip.id;
+
+            // Allow hovering over the tooltip itself
+            tooltip.addEventListener('mouseenter', function() {
+                if (tooltipState.hideTimeout) {
+                    clearTimeout(tooltipState.hideTimeout);
+                    tooltipState.hideTimeout = null;
+                }
+            });
+
             tooltip.addEventListener('mouseleave', function() {
-                hideTimeout = setTimeout(() => {
+                tooltipState.hideTimeout = setTimeout(() => {
                     tooltip.remove();
+                    if (tooltipState.activeTooltip === tooltip) {
+                        tooltipState.activeTooltip = null;
+                    }
                 }, 100);
             });
         });
-        
+
         item.addEventListener('mouseleave', function(e) {
             // Delay hiding to allow moving to tooltip
-            hideTimeout = setTimeout(() => {
+            tooltipState.hideTimeout = setTimeout(() => {
                 if (this.tooltipId) {
                     const tooltip = document.getElementById(this.tooltipId);
                     if (tooltip) {
                         tooltip.remove();
+                        if (tooltipState.activeTooltip === tooltip) {
+                            tooltipState.activeTooltip = null;
+                        }
                     }
                     this.tooltipId = null;
                 }
