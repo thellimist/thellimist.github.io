@@ -1,3 +1,8 @@
+# Agents Documentation
+
+## Writing Voice
+Before writing or editing any blog post, read `VOICE.md` — it captures the writing style, tone, and structure to follow.
+
 # Custom CSS Documentation for Agents
 
 This document explains the custom CSS classes and styles available in the blog template that agents can use when creating or editing posts.
