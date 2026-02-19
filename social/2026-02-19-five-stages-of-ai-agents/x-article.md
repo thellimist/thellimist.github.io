@@ -1,4 +1,4 @@
-# Coding Agents Are at Stage 5. Everything Else Is Stuck at Stage 1.
+# Coding Agents Are at Stage 5 Everything Else Is Stuck at Stage 1
 
 Coding agents feel magical. You describe a task, walk away, and come back to a working pull request.
 

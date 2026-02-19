@@ -34,8 +34,10 @@ Content here...
 
 ```
 _posts/
-  YYYY-MM-DD-slug.md                    # simple post
-  YYYY-MM-DD-slug/                      # post with social versions
+  YYYY-MM-DD-slug.md                    # blog post (Jekyll reads this)
+
+social/
+  YYYY-MM-DD-slug/                      # social versions (NOT in _posts — Jekyll would index them)
     x-article.md
     linkedin.md
     reddit.md

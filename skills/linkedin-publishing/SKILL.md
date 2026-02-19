@@ -38,7 +38,7 @@ Adapt a blog post into a LinkedIn native post. Not the full blog — a compresse
 - Conversational but sharp. Like explaining it to a smart colleague.
 
 ## File Location
-Save as `_posts/YYYY-MM-DD-slug/linkedin.md` alongside the main blog post.
+Save as `social/YYYY-MM-DD-slug/linkedin.md` alongside the main blog post.
 
 ## Publishing Steps
 

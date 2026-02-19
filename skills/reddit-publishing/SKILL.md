@@ -113,7 +113,7 @@ If a subreddit bans self-promotion or AI content, skip it. Don't try to sneak ar
 
 ## Step 2: Draft the Post
 
-Save as `_posts/YYYY-MM-DD-slug/reddit.md` with metadata:
+Save as `social/YYYY-MM-DD-slug/reddit.md` with metadata:
 
 ```markdown
 # Reddit Draft

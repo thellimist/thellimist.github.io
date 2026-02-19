@@ -43,7 +43,7 @@ brew install wkhtmltopdf  # includes wkhtmltoimage
 - Keep it one line at the end.
 
 ## File Location
-Save as `_posts/YYYY-MM-DD-slug/x-article.md` alongside the main blog post.
+Save as `social/YYYY-MM-DD-slug/x-article.md` alongside the main blog post.
 
 ## Step 1: Generate Table Screenshots
 
