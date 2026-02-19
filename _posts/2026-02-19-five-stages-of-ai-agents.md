@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Coding Agents Are at Stage 5. Everything Else Is Stuck at Stage 1."
+title: "Coding Agents Are at Stage 5 Everything Else Is Stuck at Stage 1"
 date: 2026-02-19
 image: "/assets/posts/five_stages.png"
 ---
