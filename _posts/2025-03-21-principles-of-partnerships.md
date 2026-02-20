@@ -8,6 +8,7 @@ image: "/assets/posts/emotional_support_tree.png"
 # First Principles of Partnerships (Romance or Business)
 
 > .. sounds a bit like online dating, that's no coincidence. Like a romantic partner, a co-founder is someone you'll depend on and spend a great deal of time with, hopefully for many years.  
+>
 > — *Catheryn Li (YCombinator)*
 
 Those who have experienced a romantic partner and a co-founder will say it's very similar.
