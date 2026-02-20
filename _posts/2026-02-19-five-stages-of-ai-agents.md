@@ -43,21 +43,24 @@ I grade agent output E through A. Each stage roughly moves the agent up one grad
 
 The history of coding agents maps perfectly to these stages.
 
-**OpenAI (2022) — Stage 0, Grade E.** Glorified search engine. You copy paste everything from GPT to your editor. AI never touches your codebase.  
-
-**Cursor (2023) — Stage 1, Grade D.** Tool access. It could read and write files. Understands your codebase, and updates. No need to copy paste code. The result was still low quality code. Needed constant audits.
-
-**Claude Code (2025) — Stages 1-4, Grade B.** Bash access allowing it to run scripts, step-by-step planning, running tests to check its own work, reading your project conventions via AGENTS.md. It disrupted the market almost overnight.
-
-**Future Systems — Stage 5, Grade A.** Codex/Claude are now working on stage 5. Spawn custom agents with a lead to review and QA to test. Each agent personalized, memory/context refreshed per task. [GSD](https://github.com/gsd-build/get-shit-done/), [VBW](https://github.com/yidakee/vibe-better-with-claude-code-vbw) like orchestrators successfully take the flow to Stage 5.
+| System | Year | Stage | Grade | What Changed |
+|--------|------|-------|-------|--------------|
+| **OpenAI** | 2022 | 0 | E | Glorified search engine. You copy paste everything from GPT to your editor. AI never touches your codebase. |
+| **Cursor** | 2023 | 1 | D | Tool access. It could read and write files. Understands your codebase, and updates. No need to copy paste code. The result was still low quality code. Needed constant audits. |
+| **Claude Code** | 2025 | 1–4 | B | Bash access allowing it to run scripts, step-by-step planning, running tests to check its own work, reading your project conventions via AGENTS.md. It disrupted the market almost overnight. |
+| **Future Systems** | 2026 | 5 | A | Codex/Claude are now working on stage 5. Spawn custom agents with a lead to review and QA to test. Each agent personalized, memory/context refreshed per task. [GSD](https://github.com/gsd-build/get-shit-done/), [VBW](https://github.com/yidakee/vibe-better-with-claude-code-vbw) like orchestrators successfully take the flow to Stage 5. |
 
 ## Everything Else Is Stuck at Stage 1
 
-My SEO orchestration had stages 2 through 5. Planning, verification, QA agents, specialized skills, parallel execution. **None of it mattered.**
+I built a multi-agent SEO system with stages 2 through 5 - planning, verification, QA agents, specialized skills, parallel execution. Then I actually ran it. It did not work.
 
-The agent couldn't access Google Analytics and Search Console. Ahrefs data only worked via CSV export that I had to do manually. After fixing all that, it analyzed everything and produced a solid list of actions. Then it couldn't execute any of them because it had no write access to the production CMS.
+The agent had no access to Google Analytics, Search Console and ahrefs. Once I fixed that, it analyzed everything and produced a solid action list. Then it couldn't execute any of it - no write access to the CMS. It did not work.
 
-After giving access to main SEO tools and my CMS - it was able to update the website fixing technical audits, write blogs, and publish. It still couldn't do half the work. Product Hunt launches, G2, PR campaigns, backlink creation.. Needed to add 15 more tools to get the list completed. 
+I gave it access. It started updating the website, fixing technical audits, writing and publishing blogs. Real output. It worked?
+
+Then it hit the next wall: Product Hunt launches, G2, PR campaigns, backlink creation. Fifteen more tools needed before the list was done.
+
+Each time I unblocked it, it performed. That's the pattern. To make it useful, needs to add many many tools accesses. 
 
 Here's what this gap looks like across different workflows:
 
