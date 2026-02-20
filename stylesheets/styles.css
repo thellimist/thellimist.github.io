@@ -980,7 +980,10 @@ section blockquote {
 
 /* Fix for blockquote paragraph margin issue */
 section blockquote p {
-  margin-bottom: 0; /* Remove bottom margin from paragraphs in blockquotes */
+  margin-bottom: 1em;
+}
+section blockquote p:last-child {
+  margin-bottom: 0;
 }
 
 /* Strong elements in headings */

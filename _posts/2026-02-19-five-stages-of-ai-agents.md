@@ -7,11 +7,10 @@ image: "/assets/posts/five_stages.png"
 
 # Coding Agents Are at Stage 5 Everything Else Is Stuck at Stage 1
 
-Coding agents feel magical. You describe a task, walk away, and come back to a working pull request. 
+> Coding agents feel magical. You describe a task, walk away, and come back to a working pull request.
+>
+> Other AI agents (GTM, Marketing, Ops) hand you a to-do list and wish you luck.
 
-Other AI agents (GTM, Marketing, Ops) hand you a to-do list and wish you luck.
-
----
 
 The models aren't the problem. GPT, Claude, Gemini can all reason well enough. The problem is that most agents can't actually *do* anything.
 
@@ -77,7 +76,7 @@ Same wall, every time. The AI can think. It can plan. It can check its own work.
 
 Most AI agent startups are building better planning, better orchestration, better multi-agent frameworks. Stages 2 through 5.
 
-The bottleneck is stage 1. Until an SEO agent can connect to your analytics, read your CMS, and push changes to production as easily as Claude Code runs `bash`, the output stays at D regardless of how smart the orchestration is.
+> Until a non-coding agent can access its tools as easily as Claude Code runs `bash`, the output stays at D grade regardless of how smart the orchestration is.
 
 MCP, Skills are the main attempts to solve agent access. So are tool-use platforms and API aggregators. They only partially work. We're still early. There is no consistent way to access dozens of tools reliably.
 
