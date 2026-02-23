@@ -366,22 +366,22 @@ section > * {
   font-style: italic;
 }
 
-/* Improved code blocks */
-.post-content code {
+/* Inline code */
+code {
   background: rgba(0,0,0,0.05);
-  padding: 2px 4px;
-  border-radius: 3px;
-  font-size: 15px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
   font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+  line-height: 1.5;
 }
 
-.post-content pre {
-  background: rgba(0,0,0,0.05);
-  padding: var(--space-2);
-  border-radius: 5px;
-  overflow-x: auto;
-  margin: var(--space-2) 0;
-  border: none;
+/* Code inside pre blocks inherits pre styling */
+pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
 }
 
 /* Improved table styling */
@@ -1130,4 +1130,64 @@ details li {
 
 .spoiler:hover {
   color: #333333;
+}
+
+/* Side-by-side comparison grid */
+.comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.comparison-block {
+  background: rgba(0,0,0,0.03);
+  border-radius: 4px;
+  padding: 16px;
+  overflow-x: auto;
+  min-width: 0;
+}
+
+.comparison-block strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+pre {
+  margin: 0;
+  background: rgba(0,0,0,0.05);
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  overflow-x: auto;
+  line-height: 1.5;
+}
+
+/* Footnote superscript links - muted and small */
+sup a {
+  color: var(--text-primary);
+  text-decoration: underline;
+  font-size: 0.75em;
+}
+
+/* Footnotes section at bottom */
+.footnotes {
+  font-size: 13px;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+.footnotes p {
+  margin: 4px 0;
+}
+
+.footnotes a {
+  color: var(--text-primary);
+}
+
+@media screen and (max-width: 768px) {
+  .comparison-grid {
+    grid-template-columns: 1fr;
+  }
 }
