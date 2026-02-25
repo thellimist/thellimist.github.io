@@ -153,6 +153,17 @@ def count_markdown_tables(body: str) -> int:
     return count
 
 
+def count_custom_visual_blocks(body: str) -> int:
+    # Count only wrapper blocks that are likely to need rasterization in X.
+    patterns = [
+        r"<div\b[^>]*class=['\"][^'\"]*\bcomparison-grid\b[^'\"]*['\"][^>]*>",
+        r"<div\b[^>]*class=['\"][^'\"]*\bcomparison-table\b[^'\"]*['\"][^>]*>",
+        r"<div\b[^>]*class=['\"][^'\"]*\bworkflow-comparison\b[^'\"]*['\"][^>]*>",
+        r"<div\b[^>]*class=['\"][^'\"]*\b(?:visual|diagram|timeline|matrix|chart)-[a-z0-9_-]+\b[^'\"]*['\"][^>]*>",
+    ]
+    return sum(len(re.findall(pattern, body, flags=re.IGNORECASE)) for pattern in patterns)
+
+
 def extract_title_tokens(title: str) -> Set[str]:
     tokens = {
         token
@@ -192,7 +203,7 @@ def load_source_post(social_dir: Path, posts_root: Path, issues: List[Issue]) ->
 
     markdown_table_count = count_markdown_tables(body)
     html_table_count = len(re.findall(r"<table\b", body, flags=re.IGNORECASE))
-    custom_block_count = len(re.findall(r"<div\b[^>]*class=", body, flags=re.IGNORECASE))
+    custom_block_count = count_custom_visual_blocks(body)
     code_fence_count = len(re.findall(r"^```", body, flags=re.MULTILINE))
 
     return SourcePost(

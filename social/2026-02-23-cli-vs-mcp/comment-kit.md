@@ -1,7 +1,8 @@
 # Comment Kit
 
 ## X publish notes
-Cover image: /assets/posts/cli_vs_mcp_x_cover_5x2.jpg
+Source cover image (frontmatter): /assets/posts/cli_vs_mcp.png
+X article cover upload (5:2): /assets/posts/cli_vs_mcp_x_cover_5x2.jpg
 
 ## X first comment
 Full blog post: https://kanyilmaz.me/2026/02/23/cli-vs-mcp.html
