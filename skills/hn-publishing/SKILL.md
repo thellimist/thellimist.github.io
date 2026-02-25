@@ -6,6 +6,7 @@ description: Submit a blog post to Hacker News with optimal title and timing.
 # Hacker News Publishing Skill
 
 Submit a blog post to Hacker News. Minimal adaptation — HN readers click through to the original.
+Read `skills/blog-writing/references/social-draft-contract.md` before drafting optional HN notes.
 
 ## Tools Required
 
@@ -38,7 +39,7 @@ TZ="America/New_York" date "+%A %H:%M ET"
 - The blog post itself is the HN-ready version.
 
 ## File Location
-No separate file needed. Optionally note the submission title in `_posts/YYYY-MM-DD-slug/hn-title.md` if it differs from the blog title.
+No separate file needed. Optionally note submission title candidates in `social/YYYY-MM-DD-slug/hn.md` if title differs from the blog title.
 
 ## Publishing Steps
 
@@ -56,7 +57,7 @@ TZ="America/New_York" date "+%A %H:%M ET"
 6. **DO NOT click Submit** — leave the form filled for Kan to review
 7. **Take a screenshot** of the filled form
 8. **After Kan submits:** Monitor Check `https://news.ycombinator.com/newest` to confirm it appeared
-9. **Engage: Be ready to reply to comments. HN rewards authors who respond thoughtfully and directly.
+9. **Engage:** Be ready to reply to comments. HN rewards authors who respond thoughtfully and directly.
 
 ## Checklist Before Submitting
 - [ ] Title is factual, under 80 chars, no hype

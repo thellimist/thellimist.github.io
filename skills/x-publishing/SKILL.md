@@ -1,139 +1,139 @@
 ---
 name: x-publishing
-description: Adapt a blog post into an X (Twitter) long-form article optimized for skimmability and mobile reading.
+description: Adapt a blog post into an X (Twitter) long-form article and preserve unsupported visuals by capturing tables/custom sections as images, then inserting each image at matching [IMAGE: ...] placeholders in the X editor.
 ---
 
 # X (Twitter) Publishing Skill
 
-Adapt a blog post into an X long-form article. X Articles support rich text on Premium accounts.
+Adapt a blog post into an X article without losing tables or custom-styled blocks.
+Read `skills/blog-writing/references/social-draft-contract.md` before drafting.
 
 ## Tools Required
 
-- **browser** (OpenClaw browser tool) — for screenshots, navigating X, publishing
-- **wkhtmltoimage** — for rendering HTML tables to images from CLI
+- `browser` (OpenClaw browser tool) - draft and review in X editor
+- `node` + `npm`
+- Local Chromium (default path usually `/opt/homebrew/bin/chromium`)
 
-Install if missing:
-```bash
-brew install wkhtmltopdf  # includes wkhtmltoimage
-```
+## Non-Negotiable Rule
 
-## Format Rules
+X Articles do not render markdown tables/custom HTML blocks reliably. Convert each unsupported section into an image and place it exactly where `[IMAGE: filename.png]` appears in `x-article.md`.
 
-### Structure for Skimmability
-- **Short paragraphs:** 2-4 lines max. One idea per paragraph.
-- **Subheadings:** Every 3-5 paragraphs. Bold text as headers (X Articles don't render markdown headers).
-- **Lists over walls of text:** Use bullet points and numbered lists aggressively.
-- **Bold the key insight** in almost every section. Readers skim bold text first.
-- **Mobile-first:** Most X users read on mobile. If a paragraph looks long on a phone screen, break it up.
+## File Locations
 
-### Content Adaptation
-- **Replace tables with images.** Screenshot the rendered tables from the blog post and embed them as inline images in the article. X Articles don't render markdown tables — images are the only way to preserve table formatting.
-- **Include visual elements throughout.** Break up text with images every 3-5 paragraphs. Screenshots, diagrams, charts from the blog all work. Visual elements increase time-on-post and engagement.
-- **Links:** Use plain text URLs. The X editor will auto-link them.
-- **Rich formatting is supported.** X Articles have a native editor with headings (H1, H2), bold, italic, bullet lists, numbered lists, blockquotes, and inline media. Use them. The `x-article.md` file uses markdown as a 1:1 mapping to the X editor — apply the same formatting when pasting into the editor.
-- **Keep the full argument.** This is the complete post republished natively, not a summary.
-- **Header image:** Upload the blog header image as the article cover.
+- Article draft: `social/YYYY-MM-DD-slug/x-article.md`
+- Comment templates: `social/YYYY-MM-DD-slug/comment-kit.md`
+- Capture manifest: `social/YYYY-MM-DD-slug/x-image-manifest.json`
+- Captured images: `assets/posts/slug/x-article/`
+- Example manifest: `skills/x-publishing/assets/section-manifest.example.json`
+- Capture tool: `skills/x-publishing/scripts/capture_x_article_images.mjs`
 
-### Tone
-- Identical to the blog. No softening for the platform.
-- Direct, opinionated, first-person.
+## Step 1: Add Placeholders in `x-article.md`
 
-### CTA
-- Plain email address, no mailto links.
-- Keep it one line at the end.
+Use this exact syntax where visuals should appear:
 
-## File Location
-Save as `social/YYYY-MM-DD-slug/x-article.md` alongside the main blog post.
-
-## Step 1: Generate Table Screenshots
-
-The X article uses `[IMAGE: filename.png]` placeholders where tables should go. Before publishing, generate an image for each placeholder.
-
-### Option A: Screenshot from the live blog (preferred)
-
-```bash
-# Serve blog locally
-cd /Users/kan/Code/Projects/thellimist.github.io
-bundle exec jekyll serve --port 4000 &
-sleep 5
-```
-
-Then use the browser tool:
-1. `browser navigate` to `http://localhost:4000/post-slug`
-2. For each table, use `browser screenshot` with `element="table"` (or `selector="table:nth-of-type(N)"` for specific tables)
-3. Save each screenshot to `assets/posts/SLUG/table_name.png`
-
-```bash
-# Kill Jekyll after screenshots
-kill %1
-```
-
-### Option B: Render tables as standalone HTML images
-
-```bash
-ASSETS_DIR="assets/posts/SLUG"
-mkdir -p "$ASSETS_DIR"
-
-# For each table, create a minimal HTML file with the table content
-# Then render to image
-cat > /tmp/table.html << 'EOF'
-<html><head><style>
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 20px; background: white; }
-  table { border-collapse: collapse; width: 100%; font-size: 15px; }
-  th { background: #1a1a2e; color: white; padding: 12px 16px; text-align: left; }
-  td { padding: 10px 16px; border-bottom: 1px solid #eee; }
-  tr:nth-child(even) { background: #f8f9fa; }
-  strong { color: #1a1a2e; }
-</style></head><body>
-<!-- PASTE TABLE HTML HERE FROM THE BLOG POST -->
-</body></html>
-EOF
-
-wkhtmltoimage --width 800 --quality 95 /tmp/table.html "$ASSETS_DIR/table_name.png"
-```
-
-### Placeholder Format
-
-In the X article, tables are marked as:
-```
+```markdown
 [IMAGE: table_five_stages.png]
-[IMAGE: table_grades.png]
-[IMAGE: table_workflows.png]
+[IMAGE: pricing_matrix.png]
+[IMAGE: custom_workflow_block.png]
 ```
 
-Each `[IMAGE: X]` corresponds to a screenshot that must be generated and inserted inline when drafting in the X editor.
+Keep placeholder names stable. The tool and insertion order depend on them.
 
-## Step 2: Serve Blog Locally (if needed for screenshots)
+## Step 2: Create the Selector Manifest
+
+Create `social/YYYY-MM-DD-slug/x-image-manifest.json`:
+
+```json
+{
+  "items": [
+    {
+      "placeholder": "table_five_stages.png",
+      "selector": "article table:nth-of-type(1)",
+      "note": "Five stages table"
+    },
+    {
+      "placeholder": "custom_workflow_block.png",
+      "selector": ".workflow-comparison",
+      "wait_ms": 400,
+      "note": "Custom styled section"
+    }
+  ]
+}
+```
+
+Guidance:
+- Use wrapper selectors (not just `table`) when title/caption/context must be visible.
+- Use `wait_ms` for animated or late-rendering components.
+
+## Step 3: Capture Images with the Tool
+
+Start the local blog:
 
 ```bash
 cd /Users/kan/Code/Projects/thellimist.github.io
-bundle exec jekyll serve --port 4000 &
-# Blog available at http://localhost:4000
-# Kill after screenshots: kill %1
+bundle exec jekyll serve --port 4000
 ```
 
-## Step 3: Publish to X
+In another shell:
 
-Use the browser tool for all steps.
+```bash
+node skills/x-publishing/scripts/capture_x_article_images.mjs \
+  --url http://localhost:4000/post-slug \
+  --article social/YYYY-MM-DD-slug/x-article.md \
+  --manifest social/YYYY-MM-DD-slug/x-image-manifest.json \
+  --out-dir assets/posts/slug/x-article \
+  --chromium-path /opt/homebrew/bin/chromium
+```
 
-1. **Open X:** `browser navigate` to `https://x.com` (use profile="openclaw", logged in as Kan)
-2. **Create Article:** Navigate to `https://x.com/compose/article` or click compose → "Write Article"
-3. **Add cover image:** `browser upload` the blog header image from `assets/posts/`
-4. **Paste content:** Type/paste the `x-article.md` content into the article editor using `browser act`
-5. **Insert table images inline:** Find each `[IMAGE: filename.png]` placeholder in the article. At each one, use the editor's image insert to upload the corresponding screenshot from `assets/posts/SLUG/`. Remove the placeholder text after inserting.
-6. **Add any other visuals** from the blog (diagrams, charts) to break up long text
-7. **Preview the article** — DO NOT publish. Leave as draft for Kan to review
-8. **Take a screenshot** of the draft for review
-9. **After Kan approves and publishes:** First comment: Reply to the published article with: "Full blog post: [BLOG_URL]"
-10. **Do NOT put the blog link in the article itself** — it goes in the first comment only
+What the tool does:
+- Validate manifest placeholders against `[IMAGE: ...]` in `x-article.md`
+- Capture each selector as PNG
+- Print insertion order matching article placeholder order
+- Auto-install Playwright into `~/.cache/x-publishing-playwright` when missing
 
-## Checklist Before Publishing
-- [ ] All tables converted to screenshot images and embedded
+## Step 4: Quality Check Captures
+
+Before opening X editor:
+- Confirm each expected file exists in `assets/posts/slug/x-article/`
+- Confirm no clipping/truncation
+- Re-capture with better selector if needed (usually use a larger wrapper selector)
+- Run lint:
+
+```bash
+python3 skills/blog-writing/scripts/lint_social_drafts.py \
+  --social-dir social/YYYY-MM-DD-slug \
+  --blog-url https://YOUR_BLOG_URL
+```
+
+## Step 5: Draft in X (Do Not Publish)
+
+1. Open `https://x.com/compose/article` with `browser`
+2. Add cover image (blog header)
+3. Paste article content from `x-article.md`
+4. For each placeholder in order:
+- Insert matching image file from `assets/posts/slug/x-article/`
+- Remove placeholder line after successful upload
+5. Preview and verify visual placement
+6. Leave as draft and take screenshot for review
+
+## Step 6: Prepare First Comment Text
+
+Create/update `social/YYYY-MM-DD-slug/comment-kit.md` with:
+
+```markdown
+## X first comment
+Full blog post: https://YOUR_BLOG_URL
+```
+
+When handing off, include this exact line in the response so user can copy-paste directly.
+
+## Checklist
+
+- [ ] Every `[IMAGE: ...]` placeholder has a captured file
+- [ ] Every captured file is inserted at correct placeholder location
+- [ ] No placeholder text remains in final draft
 - [ ] No markdown link syntax remains
-- [ ] Every section has a bold key insight
-- [ ] No paragraph longer than 4 lines
-- [ ] Subheading every 3-5 paragraphs
-- [ ] Cover image set (blog header image)
-- [ ] Visuals every 3-5 paragraphs
-- [ ] CTA at the end with plain email
-- [ ] Blog URL is in first comment, NOT in the article
+- [ ] Main blog URL is not in X article body
+- [ ] Cover image set
+- [ ] Draft saved, not published
+- [ ] `comment-kit.md` includes X first-comment text

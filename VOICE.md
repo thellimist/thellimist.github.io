@@ -47,6 +47,7 @@ These are AI fingerprints. Never use them unironically:
 - **Unearned profundity:** "Something shifted." "But here's the thing." "Everything changed." These need to be *earned* by the content around them, not dropped as filler transitions.
 - **Mid-sentence rhetorical questions:** "The solution? Simpler than you think." Feels like a TED talk on autopilot.
 - **Em dash:** Never use em dash. Instead use normal "-". Don't over use it.
+- **Quoted quotes:** Don't wrap blockquotes in quotation marks. The blockquote formatting already signals it's a quote. Use a blank `>` line then `> — Author` (em dash) for attribution.
 - **Emoji bullet points:** 🎵 🚀 💡 as list markers. Never in a blog post.
 - **Parallelism for its own sake:** Repeating the same sentence structure 3+ times in a row for false rhythm.
 - **Bookend summaries:** Restating the intro in the conclusion almost word-for-word. The conclusion should advance the argument, not echo it.

@@ -1,158 +1,147 @@
 ---
 name: reddit-publishing
-description: Research subreddits, verify rules, and draft a Reddit post for a blog article.
+description: Research and rank relevant subreddits for a blog post, audit each subreddit's posting rules (self-promo, link/text format, flair, karma/account limits), and draft subreddit-specific Reddit posts without publishing.
 ---
 
 # Reddit Publishing Skill
 
-Research relevant subreddits, verify their rules allow the content, and draft a Reddit post.
+Find subreddits that are both relevant and actually postable, then draft per-subreddit posts.
+Read `skills/blog-writing/references/social-draft-contract.md` before drafting.
 
 ## Tools Required
 
-- **browser** (OpenClaw browser tool) — for reading subreddit rules and drafting posts
-- **web_fetch** — for reading subreddit rules and sidebar via JSON API
+- `python3`
+- `browser` (OpenClaw browser tool) for final rule verification and drafting
+- Discovery tool: `skills/reddit-publishing/scripts/research_subreddits.py`
 
-## Format Rules
+## File Location
 
-### Post Type
-- **Link post** if the subreddit allows it (title + blog URL)
-- **Text post** if the subreddit requires it (write a summary, link at the bottom)
-- Check subreddit rules — some require text posts only, some ban self-promotion entirely
+Save output as `social/YYYY-MM-DD-slug/reddit.md`.
+If any subreddit uses comment-first linking, also update `social/YYYY-MM-DD-slug/comment-kit.md`.
 
-### Title
-- Match the subreddit's style. Read recent top posts to calibrate.
-- No clickbait. Reddit punishes hype harder than HN.
-- Add flair tag if required (check rules).
+## Step 1: Generate Query Angles
 
-### Content
-- If text post: write a genuine summary with key takeaways, not just "check out my blog"
-- Add value first, link second
-- Never use marketing language
+Create 4-6 query angles from the blog:
+- Core topic
+- Technical topic
+- Audience/profession
+- Adjacent broader topic
+- Contrarian framing keyword (if relevant)
 
-### Tone
-- Reddit-native. Casual, direct, not corporate.
-- Write like you're sharing with peers, not promoting.
+Example:
+- `ai agents`
+- `llm tool use`
+- `developer productivity`
+- `startup automation`
 
-## Step 1: Research Subreddits
-
-Find relevant subreddits and check if the post is allowed.
-
-### 1a. Generate Search Keywords
-
-Read the blog post and extract 4 different keyword angles that would map to different subreddit communities. Think about:
-- The core topic (e.g. "ai agents")
-- The technical angle (e.g. "LLM tool use")
-- The industry/audience angle (e.g. "AI startups")
-- A broader adjacent topic (e.g. "developer productivity AI")
-
-### 1b. Search Subreddits
-
-Run 4 searches with 10 results each to cast a wide net:
+## Step 2: Run Discovery + Rule Audit Script
 
 ```bash
-for QUERY in "ai+agents" "LLM+tool+use" "AI+startups" "developer+productivity+AI"; do
-  echo "=== Query: $QUERY ==="
-  curl -s "https://www.reddit.com/subreddits/search.json?q=$QUERY&limit=10" \
-    -H "User-Agent: blog-research" | python3 -c "
-import json, sys
-data = json.load(sys.stdin)
-for sub in data['data']['children']:
-    d = sub['data']
-    print(f\"r/{d['display_name']} | {d['subscribers']} subs | {d['public_description'][:100]}\")
-"
-  echo ""
-done
+python3 skills/reddit-publishing/scripts/research_subreddits.py \
+  --queries "ai agents" "llm tool use" "developer productivity" "startup automation" \
+  --limit-per-query 18 \
+  --max-candidates 30 \
+  --sample-posts 35 \
+  --json-out /tmp/reddit-research.json \
+  --md-out /tmp/reddit-research.md
 ```
 
-### 1c. Deduplicate and Rank
+The script outputs:
+- Candidate list ranked by `target / maybe / avoid`
+- Activity metrics (posts/day, median comments)
+- Rule risk summary (self-promo, AI policy, post type, requirements)
+- Rule evidence + confidence fields for each classification
 
-From the ~40 results, pick the top 5-8 unique subreddits based on:
-- **Relevance:** Does the blog topic fit what the subreddit discusses?
-- **Size:** Prefer 50k+ subscribers for reach, but niche subs (10k+) with high engagement are fine
-- **Activity:** Check if recent posts get comments (dead subs aren't worth it)
+## Step 3: Manual Verification for Top Candidates
 
-### 1d. Check Rules for Each Candidate
+For top 5-8 `target`/`maybe` subreddits, manually verify with `browser` before drafting:
 
-For each candidate subreddit, check rules:
+1. Open `https://www.reddit.com/r/SUBREDDIT/about/rules`
+2. Open `https://www.reddit.com/r/SUBREDDIT/new`
+3. Check top pinned/mod posts from last 30 days
 
-```bash
-# Fetch subreddit rules
-SUBREDDIT="MachineLearning"
-curl -s "https://www.reddit.com/r/$SUBREDDIT/about/rules.json" \
-  -H "User-Agent: blog-research" | python3 -c "
-import json, sys
-data = json.load(sys.stdin)
-for rule in data.get('rules', []):
-    print(f\"- {rule['short_name']}: {rule.get('description', '')[:200]}\")
-"
+Mandatory checks:
+- Self-promo policy (ban, limited ratio, allowed with conditions)
+- Link post vs text post requirement
+- Flair requirement
+- Title format requirements (`[D]`, prefixes, etc.)
+- Karma/account age limits
+- Posting frequency limits (weekly promo threads, one-per-X-days)
 
-# Also check sidebar for additional rules
-curl -s "https://www.reddit.com/r/$SUBREDDIT/about.json" \
-  -H "User-Agent: blog-research" | python3 -c "
-import json, sys
-data = json.load(sys.stdin)['data']
-print('Sidebar rules:')
-print(data.get('public_description', ''))
-print('---')
-print(data.get('description', '')[:2000])
-"
-```
+If rules conflict or are unclear, mark as `maybe` and avoid auto-selecting it.
+If confidence is low (<0.65), require manual browser verification before selection.
 
-### Rule Checks (mandatory for each subreddit)
+## Step 4: Select Subreddits with Go/No-Go Rules
 
-Verify ALL of the following before drafting:
+Use this filter:
+- `NO-GO`: explicit self-promo ban, or hard mismatch with required post format
+- `GO (text)`: allows self-promo but requires text posts
+- `GO (link)`: allows link posts with no blocking constraints
 
-- [ ] **Self-promotion rules:** Many subreddits ban or limit self-promotion. Check ratio rules (e.g. "90% of posts must not be your own content").
-- [ ] **AI-generated content rules:** Some subreddits ban AI-generated images or AI-written content. Check explicitly.
-- [ ] **Link post vs text post:** Some require text posts only.
-- [ ] **Flair requirements:** Some require specific post flair.
-- [ ] **Minimum karma/account age:** Some have minimum thresholds.
-- [ ] **Posting format:** Some have strict title formats (e.g. "[D]" prefix for discussion in r/MachineLearning).
+Pick 2-4 best targets, not more.
+For each selected subreddit, choose link placement:
+- `body_end` if subreddit expects/permits links in body
+- `first_comment` if subreddit discourages self-promo links in body
 
-If a subreddit bans self-promotion or AI content, skip it. Don't try to sneak around rules.
-
-## Step 2: Draft the Post
-
-Save as `social/YYYY-MM-DD-slug/reddit.md` with metadata:
+## Step 5: Draft `reddit.md`
 
 ```markdown
 # Reddit Draft
 
 ## Target Subreddits
-- r/SubredditName — rules checked ✅, allows link posts, no AI image ban
-- r/OtherSub — rules checked ✅, text post only, requires [D] flair
+- r/SubredditA - GO (text), rules checked YYYY-MM-DD, flair required: Discussion, link placement: first_comment
+- r/SubredditB - GO (link), rules checked YYYY-MM-DD, no flair needed, link placement: body_end
 
-## Post for r/SubredditName
-**Type:** link post
-**Title:** [title here]
-**URL:** [blog URL]
-
-## Post for r/OtherSub
+## Post for r/SubredditA
 **Type:** text post
-**Title:** [title here]
+**Title:** ...
 **Body:**
-[summary text here]
+...
 
-[blog URL at the end]
+Blog URL: ...
+
+## Post for r/SubredditB
+**Type:** link post
+**Title:** ...
+**URL:** ...
 ```
 
-## Step 3: Draft in Reddit (DO NOT PUBLISH)
+Writing rules:
+- Match subreddit tone and title style from current top posts
+- For text posts, provide value first and link last
+- No marketing phrasing
+- If `link placement: first_comment`, do not include blog URL in post body
 
-Use the browser tool. Draft only — Kan reviews and publishes manually.
+If any target uses `first_comment`, add copy-paste text to `comment-kit.md`:
 
-1. **Open Reddit:** `browser navigate` to `https://www.reddit.com/r/SUBREDDIT/submit` (use profile="openclaw", logged in as thellimist)
-2. **Select post type:** Link or text based on subreddit rules
-3. **Fill title and content**
-4. **Add flair** if required
-5. **DO NOT click Submit/Post** — leave as draft for Kan to review
-6. **Take a screenshot** of the draft for review
+```markdown
+## Reddit first comment (r/SubredditA)
+Blog URL: https://YOUR_BLOG_URL
+```
 
-## Checklist Before Drafting
-- [ ] Subreddit rules fetched and reviewed
-- [ ] Self-promotion policy allows this post
-- [ ] AI-generated image policy checked (if post includes the blog header image)
-- [ ] AI-written content policy checked
-- [ ] Correct post type selected (link vs text)
-- [ ] Title matches subreddit style and format requirements
-- [ ] Flair set if required
-- [ ] Draft saved — NOT published
+## Step 6: Draft in Reddit UI (Do Not Publish)
+
+1. Open `https://www.reddit.com/r/SUBREDDIT/submit`
+2. Choose required post type (link/text)
+3. Add required flair and title format
+4. Fill content from `reddit.md`
+5. Leave as draft, do not click `Post`
+6. Capture screenshot for review
+7. When handing off, include copy-paste Reddit first-comment lines for any `first_comment` targets
+
+## Checklist
+
+- [ ] Discovery script run with 4-6 query angles
+- [ ] Top candidates manually rule-verified in browser
+- [ ] Self-promo policy explicitly checked for each chosen subreddit
+- [ ] Required post type/flair/title format respected
+- [ ] `reddit.md` includes per-subreddit rule notes and draft copy
+- [ ] UI drafts prepared but not published
+- [ ] `comment-kit.md` updated for any `first_comment` targets
+- [ ] Lint check passes:
+
+```bash
+python3 skills/blog-writing/scripts/lint_social_drafts.py \
+  --social-dir social/YYYY-MM-DD-slug \
+  --blog-url https://YOUR_BLOG_URL
+```

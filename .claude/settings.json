@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/hook-wrapper.sh social-lint-hook.sh",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

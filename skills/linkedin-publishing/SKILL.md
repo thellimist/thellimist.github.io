@@ -6,6 +6,7 @@ description: Adapt a blog post into a compressed LinkedIn native post that hooks
 # LinkedIn Publishing Skill
 
 Adapt a blog post into a LinkedIn native post. Not the full blog — a compressed version that drives engagement and puts the blog link in the first comment.
+Read `skills/blog-writing/references/social-draft-contract.md` before drafting.
 
 ## Tools Required
 
@@ -39,6 +40,7 @@ Adapt a blog post into a LinkedIn native post. Not the full blog — a compresse
 
 ## File Location
 Save as `social/YYYY-MM-DD-slug/linkedin.md` alongside the main blog post.
+Also save/update `social/YYYY-MM-DD-slug/comment-kit.md`.
 
 ## Publishing Steps
 
@@ -53,6 +55,14 @@ Use the browser tool for all steps.
 7. **Take a screenshot** of the draft for review
 8. **After Kan approves and publishes:** First comment: Immediately comment on your own post with: "Full blog post with detailed breakdown: [BLOG_URL]"
 9. **Do NOT put the blog link in the post itself** — LinkedIn penalizes external links in post body
+10. **Prepare copy-paste comment text:** add to `comment-kit.md`:
+
+```markdown
+## LinkedIn first comment
+Full blog post with detailed breakdown: https://YOUR_BLOG_URL
+```
+
+When handing off, include this exact line in the response so user can copy-paste directly.
 
 ## Checklist Before Publishing
 - [ ] First 2 lines hook without context
@@ -64,3 +74,11 @@ Use the browser tool for all steps.
 - [ ] Header image attached
 - [ ] Blog URL in first comment only
 - [ ] No more than one emoji per line
+- [ ] `comment-kit.md` includes LinkedIn first-comment text
+- [ ] Lint check passes:
+
+```bash
+python3 skills/blog-writing/scripts/lint_social_drafts.py \
+  --social-dir social/YYYY-MM-DD-slug \
+  --blog-url https://YOUR_BLOG_URL
+```

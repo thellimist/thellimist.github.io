@@ -1,0 +1,20 @@
+{
+  "items": [
+    {
+      "placeholder": "table_five_stages.png",
+      "selector": "article table:nth-of-type(1)",
+      "note": "Five stages table"
+    },
+    {
+      "placeholder": "table_grades.png",
+      "selector": "article table:nth-of-type(2)",
+      "note": "Grades table"
+    },
+    {
+      "placeholder": "custom_workflow_block.png",
+      "selector": ".workflow-comparison",
+      "wait_ms": 400,
+      "note": "Custom styled workflow block"
+    }
+  ]
+}
