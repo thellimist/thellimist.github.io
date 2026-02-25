@@ -80,5 +80,6 @@ When handing off, include this exact line in the response so user can copy-paste
 ```bash
 python3 skills/blog-writing/scripts/lint_social_drafts.py \
   --social-dir social/YYYY-MM-DD-slug \
-  --blog-url https://YOUR_BLOG_URL
+  --blog-url https://YOUR_BLOG_URL \
+  --cutoff-date 2026-02-20
 ```

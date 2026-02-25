@@ -45,6 +45,25 @@ def post_slug_from_dir_name(name: str) -> str:
     return name
 
 
+def parse_social_date(name: str) -> Optional[str]:
+    if len(name) < 10:
+        return None
+    candidate = name[:10]
+    if re.match(r"^\d{4}-\d{2}-\d{2}$", candidate):
+        return candidate
+    return None
+
+
+def should_enforce_for_dir(social_dir_name: str, cutoff_date: Optional[str]) -> bool:
+    if not cutoff_date:
+        return True
+    social_date = parse_social_date(social_dir_name)
+    # Unknown format: enforce checks.
+    if not social_date:
+        return True
+    return social_date > cutoff_date
+
+
 def add_issue(issues: List[Issue], level: str, file: Path, message: str) -> None:
     issues.append(Issue(level=level, file=file, message=message))
 
@@ -253,6 +272,7 @@ def main() -> int:
     parser.add_argument("--social-dir", required=True, help="Path like social/YYYY-MM-DD-slug")
     parser.add_argument("--assets-root", default="assets/posts", help="Assets root containing post image folders")
     parser.add_argument("--blog-url", help="Canonical blog URL for link-placement checks")
+    parser.add_argument("--cutoff-date", help="Only enforce for social dirs dated after this (YYYY-MM-DD)")
     parser.add_argument("--strict-warnings", action="store_true", help="Fail on warnings as well as errors")
     args = parser.parse_args()
 
@@ -262,6 +282,14 @@ def main() -> int:
     if not social_dir.exists() or not social_dir.is_dir():
         print(f"Error: social dir does not exist: {social_dir}", file=sys.stderr)
         return 1
+
+    if args.cutoff_date and not re.match(r"^\d{4}-\d{2}-\d{2}$", args.cutoff_date):
+        print(f"Error: --cutoff-date must be YYYY-MM-DD, got: {args.cutoff_date}", file=sys.stderr)
+        return 1
+
+    if not should_enforce_for_dir(social_dir.name, args.cutoff_date):
+        print(f"Skipped lint for {social_dir} (<= cutoff {args.cutoff_date})")
+        return 0
 
     issues = run_checks(social_dir=social_dir, assets_root=assets_root, blog_url=args.blog_url)
     print_issues(issues)

@@ -5,17 +5,6 @@ ROOT_DIR=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
 cd "$ROOT_DIR" || exit 0
 CUTOFF_DATE="${SOCIAL_LINT_CUTOFF_DATE:-2026-02-20}"
 
-is_enforced_social_dir() {
-  local dir="$1"
-  local leaf="${dir#social/}"
-  local date="${leaf:0:10}"
-  # If format is unexpected, fail-safe by enforcing checks.
-  if [[ ! "$date" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
-    return 0
-  fi
-  [[ "$date" > "$CUTOFF_DATE" ]]
-}
-
 INPUT=$(cat 2>/dev/null || true)
 [ -z "$INPUT" ] && exit 0
 
@@ -64,15 +53,11 @@ while IFS= read -r raw_path; do
   case "$rel" in
     social/*/*)
       social_dir=$(printf '%s' "$rel" | cut -d/ -f1-2)
-      if is_enforced_social_dir "$social_dir"; then
-        SOCIAL_DIRS["$social_dir"]=1
-      fi
+      SOCIAL_DIRS["$social_dir"]=1
       ;;
     social/*)
       social_dir=$(printf '%s' "$rel" | cut -d/ -f1-2)
-      if is_enforced_social_dir "$social_dir"; then
-        SOCIAL_DIRS["$social_dir"]=1
-      fi
+      SOCIAL_DIRS["$social_dir"]=1
       ;;
     *)
       ;;
@@ -89,7 +74,7 @@ for dir in "${!SOCIAL_DIRS[@]}"; do
     continue
   fi
 
-  if ! python3 skills/blog-writing/scripts/lint_social_drafts.py --social-dir "$dir"; then
+  if ! python3 skills/blog-writing/scripts/lint_social_drafts.py --social-dir "$dir" --cutoff-date "$CUTOFF_DATE"; then
     FAIL=1
   fi
 done

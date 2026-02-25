@@ -103,7 +103,8 @@ Run lint before handoff:
 ```bash
 python3 skills/blog-writing/scripts/lint_social_drafts.py \
   --social-dir social/YYYY-MM-DD-slug \
-  --blog-url https://YOUR_BLOG_URL
+  --blog-url https://YOUR_BLOG_URL \
+  --cutoff-date 2026-02-20
 ```
 
 When handing off prepared drafts, include copy-paste first-comment text in the response (from `comment-kit.md`) for each platform that prefers links in comments.

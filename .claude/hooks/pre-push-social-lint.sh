@@ -5,17 +5,6 @@ ROOT_DIR=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
 cd "$ROOT_DIR"
 CUTOFF_DATE="${SOCIAL_LINT_CUTOFF_DATE:-2026-02-20}"
 
-is_enforced_social_dir() {
-  local dir="$1"
-  local leaf="${dir#social/}"
-  local date="${leaf:0:10}"
-  # If format is unexpected, fail-safe by enforcing checks.
-  if [[ ! "$date" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
-    return 0
-  fi
-  [[ "$date" > "$CUTOFF_DATE" ]]
-}
-
 collect_files_for_ref() {
   local local_sha="$1"
   local remote_sha="$2"
@@ -49,9 +38,7 @@ while read -r local_ref local_sha remote_ref remote_sha; do
     case "$file" in
       social/*/*)
         d=$(printf '%s' "$file" | cut -d/ -f1-2)
-        if is_enforced_social_dir "$d"; then
-          DIRS["$d"]=1
-        fi
+        DIRS["$d"]=1
         ;;
     esac
   done < <(collect_files_for_ref "$local_sha" "$remote_sha")
@@ -68,7 +55,7 @@ for d in "${!DIRS[@]}"; do
     continue
   fi
   echo "- $d"
-  if ! python3 skills/blog-writing/scripts/lint_social_drafts.py --social-dir "$d"; then
+  if ! python3 skills/blog-writing/scripts/lint_social_drafts.py --social-dir "$d" --cutoff-date "$CUTOFF_DATE"; then
     FAIL=1
   fi
 done
