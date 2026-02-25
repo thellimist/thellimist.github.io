@@ -118,6 +118,7 @@ python3 skills/blog-writing/scripts/lint_social_drafts.py \
 ```
 
 When handing off prepared drafts, include copy-paste first-comment text in the response (from `comment-kit.md`) for each platform that prefers links in comments.
+Also include copy-paste manual-post blocks for `Vibecoding WhatsApp` and `Bookface post` from `comment-kit.md` when present.
 
 ## Enforcement Hooks
 

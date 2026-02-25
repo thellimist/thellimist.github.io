@@ -53,6 +53,7 @@ def ensure_section(lines: List[str], title: str, body_lines: List[str]) -> List[
             lines.append("")
         lines.append(f"## {title}")
         lines.extend(body_lines)
+        lines.append("")
         return lines
 
     for i in range(start + 1, len(lines)):
@@ -62,11 +63,11 @@ def ensure_section(lines: List[str], title: str, body_lines: List[str]) -> List[
     if end is None:
         end = len(lines)
 
-    replacement = [f"## {title}", *body_lines]
+    replacement = [f"## {title}", *body_lines, ""]
     return lines[:start] + replacement + lines[end:]
 
 
-def ensure_comment_kit(comment_kit_path: Path, header_image: str, blog_url: str) -> None:
+def ensure_comment_kit(comment_kit_path: Path, post_title: str, header_image: str, blog_url: str) -> None:
     if comment_kit_path.exists():
         lines = comment_kit_path.read_text(encoding="utf-8").splitlines()
     else:
@@ -75,6 +76,24 @@ def ensure_comment_kit(comment_kit_path: Path, header_image: str, blog_url: str)
     lines = ensure_section(lines, "X publish notes", [f"Cover image: {header_image}"])
     lines = ensure_section(lines, "X first comment", [f"Full blog post: {blog_url}"])
     lines = ensure_section(lines, "LinkedIn first comment", [f"Full blog post with detailed breakdown: {blog_url}"])
+    lines = ensure_section(
+        lines,
+        "Vibecoding WhatsApp",
+        [
+            f"Just published: {post_title}",
+            "Main takeaway: [add one-sentence takeaway]",
+            f"Link: {blog_url}",
+        ],
+    )
+    lines = ensure_section(
+        lines,
+        "Bookface post",
+        [
+            f"New post: {post_title}",
+            "Short take: [add 1-2 sentence summary in your style]",
+            f"Read: {blog_url}",
+        ],
+    )
     comment_kit_path.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
 
 
@@ -152,7 +171,12 @@ def main() -> int:
         header_image = "/assets/posts/your-header-image.png"
 
     comment_kit = social_dir / "comment-kit.md"
-    ensure_comment_kit(comment_kit_path=comment_kit, header_image=header_image, blog_url=args.blog_url)
+    ensure_comment_kit(
+        comment_kit_path=comment_kit,
+        post_title=title,
+        header_image=header_image,
+        blog_url=args.blog_url,
+    )
 
     if args.platform == "x":
         ensure_x_article(social_dir / "x-article.md", title)

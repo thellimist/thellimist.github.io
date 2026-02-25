@@ -57,6 +57,9 @@ Then continue with platform-specific drafting/publishing steps.
   - `## X publish notes` (must include cover image path from source frontmatter)
   - `## X first comment`
   - `## LinkedIn first comment`
+- Recommended manual-post sections:
+  - `## Vibecoding WhatsApp`
+  - `## Bookface post`
 - Use plain text and include the full blog URL.
 - Example template: `skills/blog-writing/assets/comment-kit.example.md`
 

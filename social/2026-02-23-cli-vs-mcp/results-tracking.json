@@ -1,0 +1,14 @@
+{
+  "review_plan": {
+    "updates_per_day": 3,
+    "days": 3,
+    "timezone": "Europe/Madrid",
+    "times_local": [
+      "09:00",
+      "14:00",
+      "20:00"
+    ]
+  },
+  "posts": [],
+  "snapshots": []
+}

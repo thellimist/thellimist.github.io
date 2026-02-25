@@ -13,6 +13,7 @@ Read `skills/blog-writing/references/social-draft-contract.md` before drafting.
 
 - `browser` (OpenClaw browser tool) - draft and review in X editor
 - `node` + `npm`
+- `python3` (for clipboard fallback script)
 - Local Chromium (default path usually `/opt/homebrew/bin/chromium`)
 
 ## Non-Negotiable Rules
@@ -146,12 +147,45 @@ python3 skills/blog-writing/scripts/lint_social_drafts.py \
 
 1. Open `https://x.com/compose/article` with `browser`
 2. Add cover image from source frontmatter `image:` path
+   - For X Article cover, use a dedicated `5:2` image (`2500x1000` preferred, `.jpg`, <2MB)
+   - If source header is not `5:2`, create a dedicated X cover variant and use it
+   - Prefer white side-padding to reach `5:2` rather than cropping important edges/corners
 3. Paste article content from `x-article.md` (keep fenced code blocks)
 4. For each placeholder in order:
 - Insert matching image file from `assets/posts/slug/x-article/`
 - Remove placeholder line after successful upload
 5. Preview and verify visual placement
 6. Leave as draft and take screenshot for review
+
+## Step 5b: Fallback for Inline Image Insert (Known Working)
+
+Use this when normal inline image insert fails in DraftJS.
+
+Known-working method:
+1. Connect Playwright to OpenClaw browser over CDP:
+   - `playwright.chromium.connect_over_cdp("http://localhost:18800")`
+2. Bring target page to front (`page.bring_to_front()`)
+3. Move cursor to the correct DraftJS block via `page.evaluate(...)`
+4. Read local PNG file, base64 encode it
+5. In `page.evaluate(...)`, decode base64 to `Blob("image/png")`
+6. Write image to clipboard:
+   - `navigator.clipboard.write([new ClipboardItem({"image/png": blob})])`
+7. Trigger real keyboard paste:
+   - `page.keyboard.press("Meta+v")`
+8. Verify image appears inline, then remove matching `[IMAGE: ...]` placeholder line
+
+Why this works:
+- X DraftJS ignores synthetic JS paste events.
+- Native clipboard write + real keyboard paste uses browser paste pipeline that DraftJS accepts.
+
+What usually fails (avoid):
+- `setInputFiles` on hidden file input for inline images (cover-only path)
+- "Add media" upload flows that never open a file chooser
+- Synthetic `ClipboardEvent("paste")` + `DataTransfer`
+- Fetching localhost image from `https://x.com` context (CORS/mixed content)
+- Programmatically created `<input type=file>` with artificial file assignment
+
+If you already have a working helper at `/tmp/clipboard_paste.py`, reuse it.
 
 ## Step 6: Prepare First Comment Text
 

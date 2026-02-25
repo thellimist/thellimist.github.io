@@ -104,6 +104,13 @@ Use lowercase, hyphen/underscore file names. Prefer `.png`.
 
 - Default aspect ratio for headers: `16:9`
 - Keep images social-friendly and title-consistent.
+- X/Twitter banner (cover) guidance:
+  - Generate/export a dedicated X Article cover image if needed.
+  - Use `5:2` aspect ratio for X Article cover (empirically reliable).
+  - Recommended export target: `2500x1000` (or any clean 5:2 variant).
+  - Prefer extending/padding with white space to reach 5:2 instead of cropping key content.
+  - Use `.jpg` for cover when upload reliability matters.
+  - Keep file size under `2 MB` (hard max `5 MB`).
 
 ## Required Key
 
