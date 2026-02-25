@@ -851,9 +851,10 @@ section img {
 /* Table wrapper to ensure proper containment */
 .table-wrapper {
   width: 100%;
-  overflow-x: visible; /* Don't cut off the table */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   margin: 24px 0;
-  max-width: 100%; /* Ensure the wrapper takes full width */
+  max-width: 100%;
 }
 
 /* Table styling for post content */
@@ -937,34 +938,21 @@ section table.markdown-table td {
 /* Make tables responsive */
 @media screen and (max-width: 600px) {
   section table {
-    display: block;
     width: 100%;
-    overflow-x: auto;
+    font-size: 13px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-    font-size: 14px;
   }
-  
-  section table th {
-    white-space: nowrap;
-  }
-  
+
+  section table th,
   section table td {
-    padding: 10px 12px;
-  }
-  
-  section table td,
-  section table th {
+    padding: 8px 10px;
     word-break: break-word;
   }
-  
-  section table td:first-child {
-    white-space: normal;
-  }
-  
+
   section table td:first-child,
   section table td:nth-child(2),
   section table td:nth-child(3) {
-    width: auto; /* Remove fixed widths on mobile */
+    width: auto;
   }
 }
 
