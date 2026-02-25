@@ -1,20 +1,21 @@
 {
   "items": [
     {
-      "placeholder": "table_five_stages.png",
+      "placeholder": "table_session_savings.png",
       "selector": "article table:nth-of-type(1)",
-      "note": "Five stages table"
+      "note": "Session/token savings table"
     },
     {
-      "placeholder": "table_grades.png",
-      "selector": "article table:nth-of-type(2)",
-      "note": "Grades table"
+      "placeholder": "comparison_startup_block.png",
+      "selector": ".comparison-grid:nth-of-type(1)",
+      "wait_ms": 300,
+      "note": "Custom comparison grid wrapper"
     },
     {
-      "placeholder": "custom_workflow_block.png",
-      "selector": ".workflow-comparison",
+      "placeholder": "comparison_tool_call_block.png",
+      "selector": ".comparison-grid:nth-of-type(2)",
       "wait_ms": 400,
-      "note": "Custom styled workflow block"
+      "note": "Second comparison grid wrapper"
     }
   ]
 }

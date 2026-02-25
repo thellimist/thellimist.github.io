@@ -6,6 +6,7 @@ description: Research and rank relevant subreddits for a blog post, audit each s
 # Reddit Publishing Skill
 
 Find subreddits that are both relevant and actually postable, then draft per-subreddit posts.
+Read `VOICE.md` in repo root before drafting.
 Read `skills/blog-writing/references/social-draft-contract.md` before drafting.
 
 ## Tools Required
@@ -19,6 +20,21 @@ Read `skills/blog-writing/references/social-draft-contract.md` before drafting.
 Save output as `social/YYYY-MM-DD-slug/reddit.md`.
 If any subreddit uses comment-first linking, also update `social/YYYY-MM-DD-slug/comment-kit.md`.
 
+## Step -1: Prepare Artifacts (Required, Do Not Assume Files Exist)
+
+Run this first, every time:
+
+```bash
+python3 skills/blog-writing/scripts/prepare_social_artifacts.py \
+  --social-dir social/YYYY-MM-DD-slug \
+  --platform reddit \
+  --blog-url https://YOUR_BLOG_URL
+```
+
+This creates/updates if missing:
+- `social/YYYY-MM-DD-slug/reddit.md`
+- `social/YYYY-MM-DD-slug/comment-kit.md`
+
 ## Step 1: Generate Query Angles
 
 Create 4-6 query angles from the blog:
@@ -27,6 +43,7 @@ Create 4-6 query angles from the blog:
 - Audience/profession
 - Adjacent broader topic
 - Contrarian framing keyword (if relevant)
+- Exact protocol/product/acronym terms from title/slug (for example: `MCP`, `CLIHub`)
 
 Example:
 - `ai agents`
@@ -39,8 +56,12 @@ Example:
 ```bash
 python3 skills/reddit-publishing/scripts/research_subreddits.py \
   --queries "ai agents" "llm tool use" "developer productivity" "startup automation" \
+  --source-post _posts/YYYY-MM-DD-slug.md \
   --limit-per-query 18 \
-  --max-candidates 30 \
+  --max-candidates 36 \
+  --require-analyzed 25 \
+  --min-subscribers 1000 \
+  --min-exact-subscribers 200 \
   --sample-posts 35 \
   --json-out /tmp/reddit-research.json \
   --md-out /tmp/reddit-research.md
@@ -48,6 +69,7 @@ python3 skills/reddit-publishing/scripts/research_subreddits.py \
 
 The script outputs:
 - Candidate list ranked by `target / maybe / avoid`
+- Exact-seeded subreddit candidates from title/slug acronyms (for example `r/mcp`) when available
 - Activity metrics (posts/day, median comments)
 - Rule risk summary (self-promo, AI policy, post type, requirements)
 - Rule evidence + confidence fields for each classification
@@ -78,7 +100,8 @@ Use this filter:
 - `GO (text)`: allows self-promo but requires text posts
 - `GO (link)`: allows link posts with no blocking constraints
 
-Pick 2-4 best targets, not more.
+Pick 3-4 best targets from the ~30 analyzed pool.
+If a high-relevance exact-match subreddit exists (example: `r/mcp` for MCP posts), prefer including it unless rules clearly block posting.
 For each selected subreddit, choose link placement:
 - `body_end` if subreddit expects/permits links in body
 - `first_comment` if subreddit discourages self-promo links in body
@@ -89,8 +112,11 @@ For each selected subreddit, choose link placement:
 # Reddit Draft
 
 ## Target Subreddits
+Candidates reviewed: 30
+Selection criteria: relevance + activity + comments + self-promo policy + post type fit + rule confidence
 - r/SubredditA - GO (text), rules checked YYYY-MM-DD, flair required: Discussion, link placement: first_comment
 - r/SubredditB - GO (link), rules checked YYYY-MM-DD, no flair needed, link placement: body_end
+- r/SubredditC - GO (text), rules checked YYYY-MM-DD, flair required: Discussion, link placement: first_comment
 
 ## Post for r/SubredditA
 **Type:** text post
@@ -104,6 +130,12 @@ Blog URL: ...
 **Type:** link post
 **Title:** ...
 **URL:** ...
+
+## Post for r/SubredditC
+**Type:** text post
+**Title:** ...
+**Body:**
+...
 ```
 
 Writing rules:
@@ -132,8 +164,10 @@ Blog URL: https://YOUR_BLOG_URL
 ## Checklist
 
 - [ ] Discovery script run with 4-6 query angles
+- [ ] Analyzed candidate pool is ~30 (minimum 25)
 - [ ] Top candidates manually rule-verified in browser
 - [ ] Self-promo policy explicitly checked for each chosen subreddit
+- [ ] 3-4 final subreddits selected
 - [ ] Required post type/flair/title format respected
 - [ ] `reddit.md` includes per-subreddit rule notes and draft copy
 - [ ] UI drafts prepared but not published

@@ -9,6 +9,8 @@ import subprocess
 import sys
 import time
 import urllib.parse
+import urllib.request
+import urllib.error
 from dataclasses import dataclass
 from typing import Dict, List, Tuple
 
@@ -19,32 +21,150 @@ class Candidate:
     matched_queries: List[str]
 
 
+def add_candidate(discovered: Dict[str, Candidate], name: str, marker: str) -> None:
+    key = name.strip().lower()
+    if not key:
+        return
+    if key not in discovered:
+        discovered[key] = Candidate(name=name.strip(), matched_queries=[marker])
+        return
+    if marker not in discovered[key].matched_queries:
+        discovered[key].matched_queries.append(marker)
+
+
+def parse_frontmatter_title(post_path: str) -> str:
+    with open(post_path, "r", encoding="utf-8") as handle:
+        text = handle.read()
+    match = re.search(r"^title:\s*(.+)$", text, flags=re.MULTILINE)
+    if not match:
+        return ""
+    raw = match.group(1).strip()
+    return raw.strip('"').strip("'")
+
+
+def infer_queries_from_post(post_path: str) -> List[str]:
+    title = parse_frontmatter_title(post_path)
+    filename = post_path.rsplit("/", 1)[-1]
+    stem = re.sub(r"\.(md|markdown)$", "", filename)
+    slug = re.sub(r"^\d{4}-\d{2}-\d{2}-", "", stem)
+
+    inferred: List[str] = []
+    seen = set()
+
+    def add_query(value: str) -> None:
+        q = value.strip()
+        if not q:
+            return
+        key = q.lower()
+        if key in seen:
+            return
+        seen.add(key)
+        inferred.append(q)
+
+    for acronym in re.findall(r"\b[A-Z][A-Z0-9]{1,9}\b", title):
+        add_query(acronym)
+    for token in re.split(r"[^a-z0-9]+", slug.lower()):
+        if len(token) >= 3:
+            add_query(token)
+
+    return inferred
+
+
+def exact_seed_names_from_queries(queries: List[str]) -> List[str]:
+    seeds: List[str] = []
+    seen = set()
+    short_technical = {
+        "mcp",
+        "llm",
+        "gpt",
+        "api",
+        "sdk",
+        "cli",
+        "ga4",
+        "gsc",
+        "seo",
+        "devops",
+        "saas",
+    }
+
+    def add_seed(value: str) -> None:
+        v = value.strip().lower()
+        if len(v) < 2 or len(v) > 24:
+            return
+        if v.isdigit():
+            return
+        if v in seen:
+            return
+        seen.add(v)
+        seeds.append(v)
+
+    for query in queries:
+        for token in re.findall(r"\b[A-Z][A-Z0-9]{1,9}\b", query):
+            add_seed(token)
+
+        split_tokens = [tok for tok in re.split(r"[^a-z0-9_]+", query.lower()) if tok]
+        if len(split_tokens) == 1 and len(split_tokens[0]) >= 3:
+            add_seed(split_tokens[0])
+        for token in split_tokens:
+            if token in short_technical:
+                add_seed(token)
+
+    return seeds
+
+
 def fetch_json(url: str, user_agent: str, timeout: int = 20, retries: int = 3) -> Dict:
     last_error = None
-    for attempt in range(retries):
-        try:
-            result = subprocess.run(
-                [
-                    "curl",
-                    "-sS",
-                    "-fL",
-                    "--max-time",
-                    str(timeout),
-                    "-A",
-                    user_agent,
-                    "-H",
-                    "Accept: application/json",
-                    url,
-                ],
-                check=True,
-                capture_output=True,
-                text=True,
-            )
-            return json.loads(result.stdout)
-        except (subprocess.CalledProcessError, TimeoutError, json.JSONDecodeError) as exc:
-            last_error = exc
-            wait_seconds = 1.25 * (attempt + 1)
-            time.sleep(wait_seconds)
+    urls = [url]
+    if "www.reddit.com" in url:
+        urls.append(url.replace("www.reddit.com", "old.reddit.com"))
+
+    for candidate_url in urls:
+        for attempt in range(retries):
+            try:
+                result = subprocess.run(
+                    [
+                        "curl",
+                        "-sS",
+                        "-fL",
+                        "--http1.1",
+                        "--retry",
+                        "2",
+                        "--retry-all-errors",
+                        "--max-time",
+                        str(timeout),
+                        "-A",
+                        user_agent,
+                        "-H",
+                        "Accept: application/json",
+                        candidate_url,
+                    ],
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                )
+                return json.loads(result.stdout)
+            except (subprocess.CalledProcessError, TimeoutError, json.JSONDecodeError) as exc:
+                last_error = exc
+                wait_seconds = 1.25 * (attempt + 1)
+                time.sleep(wait_seconds)
+
+        # Curl failed for this URL: try Python stdlib HTTP client as fallback.
+        for attempt in range(retries):
+            try:
+                req = urllib.request.Request(
+                    candidate_url,
+                    headers={
+                        "User-Agent": user_agent,
+                        "Accept": "application/json",
+                    },
+                )
+                with urllib.request.urlopen(req, timeout=timeout) as response:
+                    body = response.read().decode("utf-8", errors="replace")
+                return json.loads(body)
+            except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
+                last_error = exc
+                wait_seconds = 1.25 * (attempt + 1)
+                time.sleep(wait_seconds)
     raise RuntimeError(f"Failed to fetch {url}: {last_error}")
 
 
@@ -358,29 +478,54 @@ def to_markdown(results: List[Dict], queries: List[str]) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Find and rank candidate subreddits, then audit posting rules.")
     parser.add_argument("--queries", nargs="+", required=True, help="Search queries (space-separated).")
-    parser.add_argument("--limit-per-query", type=int, default=15, help="Search result count per query.")
-    parser.add_argument("--max-candidates", type=int, default=24, help="Max subreddits to analyze in detail.")
+    parser.add_argument("--source-post", help="Optional source post path (_posts/YYYY-MM-DD-slug.md) to infer extra queries.")
+    parser.add_argument("--limit-per-query", type=int, default=18, help="Search result count per query.")
+    parser.add_argument("--max-candidates", type=int, default=30, help="Max subreddits to analyze in detail.")
+    parser.add_argument("--require-analyzed", type=int, default=25, help="Fail if fewer than this many subreddits are analyzed.")
     parser.add_argument("--sample-posts", type=int, default=30, help="Recent posts to sample for activity metrics.")
     parser.add_argument("--sleep-ms", type=int, default=350, help="Delay between subreddit API calls.")
-    parser.add_argument("--min-subscribers", type=int, default=5000, help="Skip tiny subreddits below this count.")
+    parser.add_argument("--min-subscribers", type=int, default=1000, help="Skip tiny subreddits below this count.")
+    parser.add_argument("--min-exact-subscribers", type=int, default=200, help="Lower subscriber floor for exact-match seeded subreddits.")
     parser.add_argument("--user-agent", default="kanyilmaz-blog-research/1.0", help="User-Agent header for Reddit requests.")
     parser.add_argument("--json-out", help="Optional JSON output path.")
     parser.add_argument("--md-out", help="Optional markdown report path.")
     args = parser.parse_args()
 
     queries = [query.strip() for query in args.queries if query.strip()]
+    if args.source_post:
+        inferred = infer_queries_from_post(args.source_post)
+        query_keys = {q.lower() for q in queries}
+        for query in inferred:
+            key = query.lower()
+            if key not in query_keys:
+                queries.append(query)
+                query_keys.add(key)
+
     if not queries:
         raise RuntimeError("At least one non-empty query is required")
 
     discovered: Dict[str, Candidate] = {}
 
     for query in queries:
-        names = search_subreddits(query, args.limit_per_query, args.user_agent)
+        try:
+            names = search_subreddits(query, args.limit_per_query, args.user_agent)
+        except Exception as exc:
+            print(f"Warning: search failed for query '{query}': {exc}", file=sys.stderr)
+            continue
         for name in names:
-            if name not in discovered:
-                discovered[name] = Candidate(name=name, matched_queries=[query])
-            elif query not in discovered[name].matched_queries:
-                discovered[name].matched_queries.append(query)
+            add_candidate(discovered, name, query)
+
+    exact_seeds = exact_seed_names_from_queries(queries)
+    for seed in exact_seeds:
+        marker = f"exact:{seed}"
+        add_candidate(discovered, seed, marker)
+
+        try:
+            about = fetch_about(seed, args.user_agent)
+        except Exception:
+            continue
+        display_name = about.get("display_name") or seed
+        add_candidate(discovered, str(display_name), marker)
 
     if not discovered:
         raise RuntimeError("No subreddit candidates found")
@@ -392,60 +537,66 @@ def main() -> int:
     results: List[Dict] = []
 
     for index, candidate in enumerate(selected):
-        about = fetch_about(candidate.name, args.user_agent)
-        subscribers = int(about.get("subscribers") or 0)
-        if subscribers < args.min_subscribers:
+        try:
+            about = fetch_about(candidate.name, args.user_agent)
+            subscribers = int(about.get("subscribers") or 0)
+            has_exact_seed = any(marker.startswith("exact:") for marker in candidate.matched_queries)
+            if subscribers < args.min_subscribers:
+                if not has_exact_seed or subscribers < args.min_exact_subscribers:
+                    continue
+
+            rules = fetch_rules(candidate.name, args.user_agent)
+            posts = fetch_new_posts(candidate.name, args.user_agent, args.sample_posts)
+
+            rule_text = combine_rules_text(rules, about.get("description", ""), about.get("public_description", ""))
+            rule_excerpt = re.sub(r"\s+", " ", rule_text).strip()[:240]
+
+            self_promo, self_promo_evidence, self_promo_confidence = classify_self_promo(rule_text)
+            ai_policy, ai_policy_evidence, ai_policy_confidence = classify_ai_policy(rule_text)
+            post_type, post_type_evidence, post_type_confidence = classify_post_type(rule_text)
+            requirements = extract_requirements(rule_text)
+            posts_per_day, median_comments, median_score, hours_since_last_post = compute_post_metrics(posts)
+
+            relevance = compute_relevance(candidate.name, about, candidate.matched_queries)
+            size_score = min(20.0, math.log10(max(1, subscribers)) * 3.2)
+            activity_score = min(25.0, posts_per_day * 5.0 + median_comments * 1.1)
+            engagement_score = min(15.0, median_score / 20.0 + median_comments)
+
+            risk = compute_risk(self_promo, ai_policy, post_type, requirements, posts_per_day)
+            quality = relevance + size_score + activity_score + engagement_score - (risk * 0.4)
+            recommendation = recommendation_from_risk(risk, self_promo, posts_per_day, median_comments)
+            rule_confidence = round((self_promo_confidence + ai_policy_confidence + post_type_confidence) / 3.0, 2)
+
+            results.append(
+                {
+                    "name": candidate.name,
+                    "matched_queries": candidate.matched_queries,
+                    "subscribers": subscribers,
+                    "active_users": int(about.get("active_user_count") or 0),
+                    "posts_per_day": round(posts_per_day, 2),
+                    "median_comments": round(median_comments, 2),
+                    "median_score": round(median_score, 2),
+                    "hours_since_last_post": round(hours_since_last_post, 1),
+                    "self_promo": self_promo,
+                    "self_promo_evidence": self_promo_evidence,
+                    "self_promo_confidence": round(self_promo_confidence, 2),
+                    "ai_policy": ai_policy,
+                    "ai_policy_evidence": ai_policy_evidence,
+                    "ai_policy_confidence": round(ai_policy_confidence, 2),
+                    "post_type": post_type,
+                    "post_type_evidence": post_type_evidence,
+                    "post_type_confidence": round(post_type_confidence, 2),
+                    "requirements": requirements,
+                    "risk": round(risk, 1),
+                    "rule_confidence": rule_confidence,
+                    "quality": round(quality, 2),
+                    "recommendation": recommendation,
+                    "rule_excerpt": rule_excerpt if rule_excerpt else "No explicit rule text fetched.",
+                }
+            )
+        except Exception as exc:
+            print(f"Warning: skipping r/{candidate.name} due to fetch/parse error: {exc}", file=sys.stderr)
             continue
-
-        rules = fetch_rules(candidate.name, args.user_agent)
-        posts = fetch_new_posts(candidate.name, args.user_agent, args.sample_posts)
-
-        rule_text = combine_rules_text(rules, about.get("description", ""), about.get("public_description", ""))
-        rule_excerpt = re.sub(r"\s+", " ", rule_text).strip()[:240]
-
-        self_promo, self_promo_evidence, self_promo_confidence = classify_self_promo(rule_text)
-        ai_policy, ai_policy_evidence, ai_policy_confidence = classify_ai_policy(rule_text)
-        post_type, post_type_evidence, post_type_confidence = classify_post_type(rule_text)
-        requirements = extract_requirements(rule_text)
-        posts_per_day, median_comments, median_score, hours_since_last_post = compute_post_metrics(posts)
-
-        relevance = compute_relevance(candidate.name, about, candidate.matched_queries)
-        size_score = min(20.0, math.log10(max(1, subscribers)) * 3.2)
-        activity_score = min(25.0, posts_per_day * 5.0 + median_comments * 1.1)
-        engagement_score = min(15.0, median_score / 20.0 + median_comments)
-
-        risk = compute_risk(self_promo, ai_policy, post_type, requirements, posts_per_day)
-        quality = relevance + size_score + activity_score + engagement_score - (risk * 0.4)
-        recommendation = recommendation_from_risk(risk, self_promo, posts_per_day, median_comments)
-        rule_confidence = round((self_promo_confidence + ai_policy_confidence + post_type_confidence) / 3.0, 2)
-
-        results.append(
-            {
-                "name": candidate.name,
-                "matched_queries": candidate.matched_queries,
-                "subscribers": subscribers,
-                "active_users": int(about.get("active_user_count") or 0),
-                "posts_per_day": round(posts_per_day, 2),
-                "median_comments": round(median_comments, 2),
-                "median_score": round(median_score, 2),
-                "hours_since_last_post": round(hours_since_last_post, 1),
-                "self_promo": self_promo,
-                "self_promo_evidence": self_promo_evidence,
-                "self_promo_confidence": round(self_promo_confidence, 2),
-                "ai_policy": ai_policy,
-                "ai_policy_evidence": ai_policy_evidence,
-                "ai_policy_confidence": round(ai_policy_confidence, 2),
-                "post_type": post_type,
-                "post_type_evidence": post_type_evidence,
-                "post_type_confidence": round(post_type_confidence, 2),
-                "requirements": requirements,
-                "risk": round(risk, 1),
-                "rule_confidence": rule_confidence,
-                "quality": round(quality, 2),
-                "recommendation": recommendation,
-                "rule_excerpt": rule_excerpt if rule_excerpt else "No explicit rule text fetched.",
-            }
-        )
 
         # Respect Reddit rate limits for unauthenticated API access.
         if index < len(selected) - 1:
@@ -454,8 +605,17 @@ def main() -> int:
     if not results:
         raise RuntimeError("All candidates were filtered out. Lower --min-subscribers or increase queries.")
 
+    if len(results) < args.require_analyzed:
+        raise RuntimeError(
+            f"Only analyzed {len(results)} subreddits; require at least {args.require_analyzed}. "
+            "Increase --max-candidates or lower --min-subscribers."
+        )
+
     results.sort(key=lambda row: (rank_value(row["recommendation"]), -row["quality"], -row["subscribers"]))
 
+    if exact_seeds:
+        print(f"Exact subreddit seeds: {', '.join(exact_seeds)}")
+    print(f"Analyzed subreddits: {len(results)}")
     print_table(results)
 
     if args.json_out:

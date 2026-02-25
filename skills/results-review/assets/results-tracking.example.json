@@ -1,0 +1,43 @@
+{
+  "review_plan": {
+    "updates_per_day": 3,
+    "days": 3,
+    "timezone": "America/Los_Angeles",
+    "times_local": [
+      "09:00",
+      "14:00",
+      "20:00"
+    ]
+  },
+  "posts": [
+    {
+      "post_id": "x_main",
+      "platform": "X",
+      "source": "X",
+      "label": "X article",
+      "url": "https://x.com/..."
+    },
+    {
+      "post_id": "linkedin_main",
+      "platform": "LinkedIn",
+      "source": "LinkedIn",
+      "label": "LinkedIn post",
+      "url": "https://www.linkedin.com/..."
+    },
+    {
+      "post_id": "hn_main",
+      "platform": "HN",
+      "source": "HN",
+      "label": "HN submission",
+      "url": "https://news.ycombinator.com/item?id=..."
+    },
+    {
+      "post_id": "reddit_claudeai",
+      "platform": "Reddit",
+      "source": "r/ClaudeAI",
+      "label": "Reddit discussion",
+      "url": "https://www.reddit.com/r/ClaudeAI/comments/..."
+    }
+  ],
+  "snapshots": []
+}

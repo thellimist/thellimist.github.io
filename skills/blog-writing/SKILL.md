@@ -95,6 +95,16 @@ After publishing the blog, create social versions using the publishing skills:
 | Reddit | `skills/reddit-publishing/SKILL.md` | `social/YYYY-MM-DD-slug/reddit.md` |
 
 Read the relevant skill before creating each social version.
+Do not assume social draft files already exist; run:
+
+```bash
+python3 skills/blog-writing/scripts/prepare_social_artifacts.py \
+  --social-dir social/YYYY-MM-DD-slug \
+  --platform <x|linkedin|reddit> \
+  --blog-url https://YOUR_BLOG_URL
+```
+
+before platform-specific drafting.
 
 ## Social Draft Quality Gate
 

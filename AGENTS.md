@@ -16,5 +16,6 @@
 | **LinkedIn Publishing** | `skills/linkedin-publishing/SKILL.md` | Adapting a blog post for LinkedIn native posts |
 | **HN Publishing** | `skills/hn-publishing/SKILL.md` | Submitting a blog post to Hacker News |
 | **Reddit Publishing** | `skills/reddit-publishing/SKILL.md` | Research subreddits, verify rules, draft a Reddit post |
+| **Results Review** | `skills/results-review/SKILL.md` | Check live performance across posted platforms and report deltas 3x/day for 3 days |
 
 Read the relevant skill before doing the work.

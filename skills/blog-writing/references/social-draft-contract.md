@@ -9,31 +9,52 @@ Canonical contract for all social format outputs.
 - Comment templates: `social/YYYY-MM-DD-slug/comment-kit.md`
 - X capture manifest: `social/YYYY-MM-DD-slug/x-image-manifest.json`
 - X captured assets: `assets/posts/slug/x-article/`
+- Results tracker: `social/YYYY-MM-DD-slug/results-tracking.json`
+- Results updates: `social/YYYY-MM-DD-slug/results-updates/*.md`
 
 `slug` for assets means the post slug without date prefix.
 Example: `2026-02-19-five-stages-of-ai-agents` -> `five-stages-of-ai-agents`.
+
+## Artifact Preparation (Mandatory)
+
+Agents must never assume social artifacts already exist.
+Before platform drafting, run:
+
+```bash
+python3 skills/blog-writing/scripts/prepare_social_artifacts.py \
+  --social-dir social/YYYY-MM-DD-slug \
+  --platform <x|linkedin|reddit> \
+  --blog-url https://YOUR_BLOG_URL
+```
+
+Then continue with platform-specific drafting/publishing steps.
 
 ## `x-article.md`
 
 - Full argument, not summary.
 - Must start with H1 line (`# ...`).
 - No markdown link syntax (`[text](url)`); use plain URLs.
+- If source blog has fenced code blocks, preserve them with triple-backtick code fences in `x-article.md`.
 - Unsupported visuals must use placeholders: `[IMAGE: filename.png]`.
+- Placeholder coverage must match source unsupported visuals (tables + custom HTML blocks).
 - Each placeholder must map to a captured image under `assets/posts/slug/x-article/`.
 - Do not include the main blog URL in the article body.
 - Put the main blog URL in the first comment after publishing.
+- In X editor draft, cover image must be the source post frontmatter `image:` asset.
 
 ## `linkedin.md`
 
-- Target length: 1300-1500 chars.
+- Target length: 600-1200 chars.
 - No markdown syntax (headers, tables, markdown links).
 - No external links in body. Blog URL goes in first comment after publish.
-- Strong first two lines. Personal angle + clear takeaway.
+- Strong first two lines. Preserve the blog title's core claim in the hook.
+- Keep density low: short paragraphs, fast summary.
 
 ## `comment-kit.md`
 
 - Must include copy-paste ready comment text for platforms that prefer links in comments.
 - Minimum sections:
+  - `## X publish notes` (must include cover image path from source frontmatter)
   - `## X first comment`
   - `## LinkedIn first comment`
 - Use plain text and include the full blog URL.
@@ -42,7 +63,9 @@ Example: `2026-02-19-five-stages-of-ai-agents` -> `five-stages-of-ai-agents`.
 ## `reddit.md`
 
 - Must include `## Target Subreddits` section.
+- Must include `Candidates reviewed: N` with `N >= 25`.
 - Must include one or more `## Post for r/Subreddit` sections.
+- Must include 3-4 selected target subreddits.
 - Each target must note rule check date and go/no-go status.
 - Draft must match subreddit-required post type (link vs text).
 - For text posts, decide link placement per subreddit:
@@ -54,6 +77,13 @@ Example: `2026-02-19-five-stages-of-ai-agents` -> `five-stages-of-ai-agents`.
 
 - Most HN submissions need no file.
 - If present, include title candidate(s), each <= 80 chars.
+
+## Results Review (optional)
+
+- For live performance tracking, use `skills/results-review/SKILL.md`.
+- Track all published destinations (X, LinkedIn, HN, each Reddit subreddit URL).
+- Cadence target: 3 updates/day for 3 days.
+- Update rows must include: post, source, metrics, diff from last update.
 
 ## Shared Quality Floor
 

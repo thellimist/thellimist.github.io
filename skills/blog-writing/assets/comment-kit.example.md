@@ -1,5 +1,8 @@
 # Comment Kit
 
+## X publish notes
+Cover image: /assets/posts/your-header-image.png
+
 ## X first comment
 Full blog post: https://YOUR_BLOG_URL
 
