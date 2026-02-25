@@ -19,3 +19,5 @@
 | **Results Review** | `skills/results-review/SKILL.md` | Check live performance across posted platforms and report deltas 3x/day for 3 days |
 
 Read the relevant skill before doing the work.
+
+For HN publishing tasks, always run the account-health checks in `skills/hn-publishing/SKILL.md` before preparing a self-link submission.

@@ -1,4 +1,32 @@
 {
-  "timestamp": "YYYY-MM-DDTHH:MM:SS\u00b1HH:MM",
-  "items": []
+  "timestamp": "2026-02-25T21:04:48+01:00",
+  "items": [
+    {
+      "post_id": "hn_main",
+      "score": 1,
+      "comments": 0,
+      "dead": true
+    },
+    {
+      "post_id": "reddit_ai_agents",
+      "upvotes": 14,
+      "comments": 10,
+      "score": 14,
+      "upvote_ratio": 0.89
+    },
+    {
+      "post_id": "reddit_mcp",
+      "upvotes": 1,
+      "comments": 1,
+      "score": 1,
+      "upvote_ratio": 1.0
+    },
+    {
+      "post_id": "reddit_llmdevs",
+      "upvotes": 0,
+      "comments": 1,
+      "score": 0,
+      "upvote_ratio": 0.45
+    }
+  ]
 }

@@ -1,14 +1,84 @@
 {
-  "review_plan": {
-    "updates_per_day": 3,
-    "days": 3,
-    "timezone": "Europe/Madrid",
-    "times_local": [
+  "slug": "2026-02-23-cli-vs-mcp",
+  "blog_url": "https://kanyilmaz.me/2026/02/23/cli-vs-mcp.html",
+  "timezone": "Europe/Madrid",
+  "cadence": {
+    "times": [
       "09:00",
       "14:00",
       "20:00"
-    ]
+    ],
+    "days": 3
   },
-  "posts": [],
-  "snapshots": []
+  "started_at": "2026-02-25T21:00:00+01:00",
+  "posts": [
+    {
+      "id": "hn_main",
+      "platform": "HN",
+      "url": "https://news.ycombinator.com/item?id=47153839",
+      "note": "Post appears dead/flagged as of first check"
+    },
+    {
+      "id": "reddit_ai_agents",
+      "platform": "Reddit",
+      "subreddit": "r/AI_Agents",
+      "url": "https://www.reddit.com/r/AI_Agents/comments/1rei6km/i_made_mcps_94_cheaper_by_generating_clis_from/"
+    },
+    {
+      "id": "reddit_mcp",
+      "platform": "Reddit",
+      "subreddit": "r/mcp",
+      "url": "https://www.reddit.com/r/mcp/comments/1rembfo/i_generated_clis_from_mcp_servers_and_cut_token/"
+    },
+    {
+      "id": "reddit_llmdevs",
+      "platform": "Reddit",
+      "subreddit": "r/LLMDevs",
+      "url": "https://www.reddit.com/r/LLMDevs/comments/1remcn3/i_made_mcp_94_cheaper_and_it_only_took_one_command/"
+    },
+    {
+      "id": "x_article",
+      "platform": "X",
+      "url": "https://x.com/thellimist/status/2026747624473182545"
+    },
+    {
+      "id": "linkedin_main",
+      "platform": "LinkedIn",
+      "url": "https://www.linkedin.com/feed/update/urn:li:activity:7432500238961123328/"
+    }
+  ],
+  "snapshots": [
+    {
+      "timestamp": "2026-02-25T21:04:48+01:00",
+      "items": [
+        {
+          "post_id": "hn_main",
+          "score": 1,
+          "comments": 0,
+          "dead": true
+        },
+        {
+          "post_id": "reddit_ai_agents",
+          "upvotes": 14,
+          "comments": 10,
+          "score": 14,
+          "upvote_ratio": 0.89
+        },
+        {
+          "post_id": "reddit_mcp",
+          "upvotes": 1,
+          "comments": 1,
+          "score": 1,
+          "upvote_ratio": 1.0
+        },
+        {
+          "post_id": "reddit_llmdevs",
+          "upvotes": 0,
+          "comments": 1,
+          "score": 0,
+          "upvote_ratio": 0.45
+        }
+      ]
+    }
+  ]
 }
