@@ -156,7 +156,7 @@
         "name": "Extra - Negro Fondente Almendras Enteras",
         "tier": "D",
         "brand": "Extra (Carrefour)",
-        "picture": "https://static.carrefour.es/hd_510x_/img_pim_food/482709_00_1.jpg",
+        "picture": "/assets/chocolate-images/extra-negro-fondente-almonds.webp",
         "country": "Spain",
         "location": "",
         "comments": "Slightly worse than Lindt"
@@ -165,7 +165,7 @@
         "name": "J.D. Gross - Ecuador 70% Cacao",
         "tier": "D",
         "brand": "J.D. Gross",
-        "picture": "https://images.openfoodfacts.org/images/products/000/002/009/5291/front_en.270.400.jpg",
+        "picture": "/assets/chocolate-images/jd-gross-70.jpg",
         "country": "Global",
         "location": "",
         "comments": "Very bad"
