@@ -7,6 +7,55 @@ description: Generate and edit blog images for kanyilmaz.me posts using Gemini A
 
 Generate or edit blog images for kanyilmaz.me.
 
+## Required Workflow
+
+This skill always runs in 2 phases:
+
+## 1. Ideation
+
+Before generating any image, propose exactly 10 image ideas for the post.
+
+Ideation rules:
+- Capture the single core takeaway of the post in one visual.
+- Keep the image simple: one focal idea, low clutter, easy to parse in 2 seconds.
+- Prefer minimal text or no text.
+- If the post compares two approaches, prefer left/right comparison panels.
+- If comparison is not suitable, use one simple image and optional short text summary.
+- Optional text overlay must be very short (max 5 words).
+
+Ideation output format (use this shape):
+1. `Idea 1`
+Main idea: ...
+Image: ...
+Layout: `left/right comparison` or `single scene`
+Text: `none` or `...`
+
+Repeat through `Idea 10`.
+
+Stop after ideation and wait for user selection.
+
+### Ideation Examples
+
+Use these as pattern references in future ideation. Format: `main idea ..., image ...`
+
+- main idea: CLI and MCP do the same job, but CLI 94% cheaper. image: left/right comparison; left a stressed stick-monster wrapped in JSON-like cables labeled MCP, right a relaxed cool stick figure in sunglasses labeled CLI.
+- main idea: coding agents complete work while most other agents return task lists. image: left/right comparison; left relaxed person at desk with checked tasks under "CODING AGENTS", right stressed person with long to-do paper under "EVERY OTHER AGENT".
+- main idea: future generations will judge today’s accepted pain as barbaric. image: simple dark-on-amber scene with two human silhouettes arguing around a monitor pedestal, with headline text "Our kids will call us Barbaric".
+- main idea: coding has evolved through clear eras into agentic engineering. image: single clean timeline labeled "Evolution of Coding" with five dated stages/icons (1940 to 2025+).
+- main idea: a culture without "aunties" (social enforcers) becomes a distinct place. image: single illustrated scene with a large road-sign reading "LAND WITH NO AUNTIES" (no-auntie symbol), SF skyline and Golden Gate bridge in background.
+- main idea: durable partnerships depend on three foundations. image: single centered tree composition labeled "Emotional Support" with roots/ground labels: Communication, Longevity, Shared values.
+
+## 2. Creation
+
+After user picks one or more ideas, generate images only for selected ideas.
+
+Creation rules:
+- For each selected idea, convert the ideation entry into a concrete generation prompt.
+- Keep composition simple and centered on the selected main idea.
+- Preserve house style (below).
+- Generate one primary version first; generate alternates only if requested.
+- Save output to the correct path and update frontmatter `image:` for header image tasks.
+
 ## House Style (from existing headers)
 
 Use only these recent (non-1000x) images as style anchors:
@@ -40,9 +89,8 @@ Avoid:
 - Neon/rainbow palettes and overly glossy 3D icon packs.
 - Flat clip-art style unless the post is explicitly diagram-focused.
 
-## Before Generating
-
-- Read `VOICE.md` in repo root to match the post's tone and visual direction.
+Before ideation and creation:
+- Read `VOICE.md` in repo root to match tone and intent.
 - Confirm target path in advance.
 
 ## Output Paths
@@ -71,6 +119,7 @@ Prompt structure:
 - Palette direction (light editorial or earthy dramatic)
 - Composition notes (foreground/mid/background, negative space)
 - Style constraints (editorial illustration, cinematic digital painting, minimal text)
+- Optional micro text (0-5 words only; prefer none)
 
 Prompt template:
 
@@ -81,7 +130,7 @@ Scene: <environment and subject action>.
 Style: editorial digital illustration, cinematic lighting, high depth, clean composition.
 Palette: <light editorial OR earthy dramatic>, 2-4 dominant colors with one accent.
 Composition: wide hero frame, clear central focal point, strong negative space for title overlay.
-Do not add logos, UI chrome, or visible text.
+Do not add logos or UI chrome. Keep text minimal (prefer none; max 5 words if needed).
 ```
 
 ```bash
