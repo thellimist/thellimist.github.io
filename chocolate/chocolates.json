@@ -36,13 +36,13 @@
         "comments": ""
     },
     {
-        "name": "Soma Chocolatemaker - Mr. Salazar Ecuador",
-        "tier": "A",
+        "name": "Soma Chocolatemaker - Mr. Salazar Costa Esmeraldas Ecuador 70%",
+        "tier": "C",
         "brand": "Soma Chocolatemaker",
-        "picture": "/assets/chocolate-images/soma-ecuador.png",
+        "picture": "/assets/chocolate-images/soma-esmeraldas-70-official.jpg",
         "country": "Toronto",
         "location": "https://maps.app.goo.gl/YULp9K4Kr6C8cdYM7",
-        "comments": ""
+        "comments": "Lindt like"
     },
     {
         "name": "Hu - Salty Dark Chocolate",
@@ -151,5 +151,50 @@
         "country": "Global",
         "location": "",
         "comments": ""
+    },
+    {
+        "name": "Extra - Negro Fondente Almendras Enteras",
+        "tier": "D",
+        "brand": "Extra (Carrefour)",
+        "picture": "https://static.carrefour.es/hd_510x_/img_pim_food/482709_00_1.jpg",
+        "country": "Spain",
+        "location": "",
+        "comments": "Slightly worse than Lindt"
+    },
+    {
+        "name": "J.D. Gross - Ecuador 70% Cacao",
+        "tier": "D",
+        "brand": "J.D. Gross",
+        "picture": "https://images.openfoodfacts.org/images/products/000/002/009/5291/front_en.270.400.jpg",
+        "country": "Global",
+        "location": "",
+        "comments": "Very bad"
+    },
+    {
+        "name": "Soma Chocolatemaker - Bejofo Madagascar 70%",
+        "tier": "A",
+        "brand": "Soma Chocolatemaker",
+        "picture": "/assets/chocolate-images/soma-bejofo-70-official.jpg",
+        "country": "Toronto",
+        "location": "https://maps.app.goo.gl/YULp9K4Kr6C8cdYM7",
+        "comments": "A tier"
+    },
+    {
+        "name": "Fin Carre - Negro/Preto Almendras Enteras 72%",
+        "tier": "D",
+        "brand": "Fin Carre",
+        "picture": "/assets/chocolate-images/fin-carre-72-almonds.png",
+        "country": "Global",
+        "location": "",
+        "comments": ""
+    },
+    {
+        "name": "Ferrero Rochero",
+        "tier": "A",
+        "brand": "Ferrero Rocher",
+        "picture": "/assets/chocolate-images/ferrero-rocher.jpg",
+        "country": "Global",
+        "location": "",
+        "comments": "Has vegetable oil"
     }
 ]
