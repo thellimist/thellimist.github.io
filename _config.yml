@@ -1,9 +1,17 @@
 name: Kan Yilmaz's site
+title: Kan Yilmaz
+description: Essays on AI, engineering, and decision-making.
 markdown: kramdown
 highlighter: rouge
 plugins:
   - jekyll-redirect-from
+  - jekyll-feed
 whitelist:
   - jekyll-redirect-from
+  - jekyll-feed
+feed:
+  path: feed.xml
+  posts_limit: 30
+  excerpt_only: false
 url: https://kanyilmaz.me
 enforce_ssl: http://kanyilmaz.me
