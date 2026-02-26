@@ -25,7 +25,7 @@ def write_json(path: Path, payload: dict) -> None:
 def build_snapshot_template(tracker: dict) -> dict:
     items = []
     for post in tracker.get("posts", []):
-        post_id = str(post.get("post_id", "")).strip()
+        post_id = str(post.get("post_id") or post.get("id") or "").strip()
         if not post_id:
             continue
         items.append(

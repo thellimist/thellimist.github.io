@@ -92,6 +92,17 @@ This appends the snapshot, computes deltas from prior update, and writes:
 - timestamped report under `results-updates/`
 - `results-latest.md`
 
+Do not manually patch `results-tracking.json` snapshots with text replacement.
+Always use the script above so updates are JSON-safe and schema-compatible (`post_id` or legacy `id`).
+
+If an update failed and you only need to re-sync the latest report from already-stored snapshots:
+
+```bash
+python3 skills/results-review/scripts/record_results_snapshot.py \
+  --social-dir social/YYYY-MM-DD-slug \
+  --refresh-latest-only
+```
+
 ## Step 4: Send Update to User
 
 Use `results-latest.md` content in the update message.
