@@ -1,6 +1,10 @@
 name: Kan Yilmaz's site
 title: Kan Yilmaz
 description: Essays on AI, engineering, and decision-making.
+author:
+  name: Kan Yilmaz
+  email: kan.yilmaz.me@gmail.com
+  uri: https://kanyilmaz.me
 markdown: kramdown
 highlighter: rouge
 plugins:

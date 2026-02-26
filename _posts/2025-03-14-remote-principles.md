@@ -2,6 +2,7 @@
 layout: default
 title:  "Why Some Companies Thrive Remotely (And Others Fail)"
 date:   2025-3-14
+last_modified_at: 2025-04-25T19:55:02+02:00
 image: "/assets/posts/work_type.png"
 ---
 

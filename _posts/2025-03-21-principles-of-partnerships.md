@@ -2,6 +2,7 @@
 layout: default
 title:  "Why do romantic partnerships and a co-founder feel similar?"
 date:   2025-3-14
+last_modified_at: 2026-02-20T15:00:17+01:00
 image: "/assets/posts/emotional_support_tree.png"
 ---
 
