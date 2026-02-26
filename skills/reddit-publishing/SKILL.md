@@ -57,12 +57,20 @@ Example:
 python3 skills/reddit-publishing/scripts/research_subreddits.py \
   --queries "ai agents" "llm tool use" "developer productivity" "startup automation" \
   --source-post _posts/YYYY-MM-DD-slug.md \
-  --limit-per-query 18 \
-  --max-candidates 36 \
+  --limit-per-query 14 \
+  --max-candidates 28 \
   --require-analyzed 25 \
   --min-subscribers 1000 \
   --min-exact-subscribers 200 \
-  --sample-posts 35 \
+  --sample-posts 20 \
+  --request-timeout 8 \
+  --request-retries 1 \
+  --prefer-old-reddit \
+  --max-rate-limit-errors 8 \
+  --cache-file ~/.cache/reddit-publishing/subreddit-research-cache.json \
+  --cache-ttl-hours 2160 \
+  --max-runtime-seconds 420 \
+  --max-consecutive-failures 10 \
   --json-out /tmp/reddit-research.json \
   --md-out /tmp/reddit-research.md
 ```
@@ -73,6 +81,16 @@ The script outputs:
 - Activity metrics (posts/day, median comments)
 - Rule risk summary (self-promo, AI policy, post type, requirements)
 - Rule evidence + confidence fields for each classification
+
+Reliability notes:
+- Script now prints live progress (`[query ...]`, `[candidate ...]`) so it does not look hung.
+- Script prefers `old.reddit.com` first to avoid slow anonymous API stalls on `www`.
+- If Reddit returns many `429 Too Many Requests`, it fails fast by design.
+- Script caches per-query search results and per-subreddit (`about`, `rules`, `new`) snapshots.
+- Cache is reused automatically before making network calls (default: `~/.cache/reddit-publishing/subreddit-research-cache.json`, TTL 90 days).
+- On rate-limit bursts, retry with fewer candidates first, then expand:
+  - first pass: `--max-candidates 12 --require-analyzed 8 --sleep-ms 600 --no-infer-from-source`
+  - second pass (if healthy): increase back to 24-28 candidates.
 
 ## Step 3: Manual Verification for Top Candidates
 

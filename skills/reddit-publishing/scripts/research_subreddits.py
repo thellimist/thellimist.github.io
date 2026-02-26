@@ -3,6 +3,7 @@
 import argparse
 import json
 import math
+import os
 import re
 import statistics
 import subprocess
@@ -12,6 +13,7 @@ import urllib.parse
 import urllib.request
 import urllib.error
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Dict, List, Tuple
 
 
@@ -19,6 +21,15 @@ from typing import Dict, List, Tuple
 class Candidate:
     name: str
     matched_queries: List[str]
+
+
+@dataclass
+class RequestConfig:
+    timeout_seconds: int
+    retries: int
+    backoff_seconds: float
+    prefer_old_reddit: bool
+    max_rate_limit_errors: int
 
 
 def add_candidate(discovered: Dict[str, Candidate], name: str, marker: str) -> None:
@@ -112,14 +123,113 @@ def exact_seed_names_from_queries(queries: List[str]) -> List[str]:
     return seeds
 
 
-def fetch_json(url: str, user_agent: str, timeout: int = 20, retries: int = 3) -> Dict:
+def now_ts() -> int:
+    return int(time.time())
+
+
+def cache_template() -> Dict:
+    return {"version": 1, "updated_at": now_ts(), "queries": {}, "subreddits": {}}
+
+
+def load_cache(cache_file: str) -> Dict:
+    path = Path(os.path.expanduser(cache_file))
+    if not path.exists():
+        return cache_template()
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return cache_template()
+    if not isinstance(payload, dict):
+        return cache_template()
+    payload.setdefault("queries", {})
+    payload.setdefault("subreddits", {})
+    payload.setdefault("version", 1)
+    payload.setdefault("updated_at", now_ts())
+    return payload
+
+
+def save_cache(cache_file: str, cache_payload: Dict) -> None:
+    path = Path(os.path.expanduser(cache_file))
+    path.parent.mkdir(parents=True, exist_ok=True)
+    cache_payload["updated_at"] = now_ts()
+    tmp_path = path.with_suffix(path.suffix + ".tmp")
+    tmp_path.write_text(json.dumps(cache_payload, indent=2) + "\n", encoding="utf-8")
+    tmp_path.replace(path)
+
+
+def is_fresh(entry: Dict, ttl_seconds: int) -> bool:
+    fetched_at = entry.get("fetched_at")
+    if not isinstance(fetched_at, (int, float)):
+        return False
+    return (time.time() - float(fetched_at)) <= ttl_seconds
+
+
+def query_cache_key(query: str, limit: int) -> str:
+    return f"{query.strip().lower()}|{limit}"
+
+
+def get_cached_query_names(cache_payload: Dict, query: str, limit: int, ttl_seconds: int) -> List[str]:
+    entry = cache_payload.get("queries", {}).get(query_cache_key(query, limit))
+    if not isinstance(entry, dict):
+        return []
+    if not is_fresh(entry, ttl_seconds):
+        return []
+    names = entry.get("names")
+    if not isinstance(names, list):
+        return []
+    return [str(name) for name in names if str(name).strip()]
+
+
+def set_cached_query_names(cache_payload: Dict, query: str, limit: int, names: List[str]) -> None:
+    cache_payload.setdefault("queries", {})[query_cache_key(query, limit)] = {
+        "fetched_at": now_ts(),
+        "names": names,
+    }
+
+
+def subreddit_cache_key(name: str) -> str:
+    return name.strip().lower()
+
+
+def get_cached_subreddit_bundle(
+    cache_payload: Dict,
+    name: str,
+    sample_posts: int,
+    ttl_seconds: int,
+) -> Tuple[Dict, List[Dict], List[Dict]]:
+    entry = cache_payload.get("subreddits", {}).get(subreddit_cache_key(name))
+    if not isinstance(entry, dict):
+        return {}, [], []
+    if not is_fresh(entry, ttl_seconds):
+        return {}, [], []
+    about = entry.get("about")
+    rules = entry.get("rules")
+    posts = entry.get("posts")
+    if not isinstance(about, dict) or not isinstance(rules, list) or not isinstance(posts, list):
+        return {}, [], []
+    if len(posts) < sample_posts:
+        return {}, [], []
+    return about, rules, posts[:sample_posts]
+
+
+def set_cached_subreddit_bundle(cache_payload: Dict, name: str, about: Dict, rules: List[Dict], posts: List[Dict]) -> None:
+    cache_payload.setdefault("subreddits", {})[subreddit_cache_key(name)] = {
+        "fetched_at": now_ts(),
+        "about": about,
+        "rules": rules,
+        "posts": posts,
+    }
+
+
+def fetch_json(url: str, user_agent: str, config: RequestConfig) -> Dict:
     last_error = None
     urls = [url]
     if "www.reddit.com" in url:
-        urls.append(url.replace("www.reddit.com", "old.reddit.com"))
+        old_url = url.replace("www.reddit.com", "old.reddit.com")
+        urls = [old_url, url] if config.prefer_old_reddit else [url, old_url]
 
     for candidate_url in urls:
-        for attempt in range(retries):
+        for attempt in range(max(config.retries, 1)):
             try:
                 result = subprocess.run(
                     [
@@ -127,11 +237,8 @@ def fetch_json(url: str, user_agent: str, timeout: int = 20, retries: int = 3) -
                         "-sS",
                         "-fL",
                         "--http1.1",
-                        "--retry",
-                        "2",
-                        "--retry-all-errors",
                         "--max-time",
-                        str(timeout),
+                        str(config.timeout_seconds),
                         "-A",
                         user_agent,
                         "-H",
@@ -141,15 +248,12 @@ def fetch_json(url: str, user_agent: str, timeout: int = 20, retries: int = 3) -
                     check=True,
                     capture_output=True,
                     text=True,
+                    timeout=max(config.timeout_seconds + 2, 4),
                 )
                 return json.loads(result.stdout)
-            except (subprocess.CalledProcessError, TimeoutError, json.JSONDecodeError) as exc:
+            except (subprocess.CalledProcessError, subprocess.TimeoutExpired, TimeoutError, json.JSONDecodeError) as exc:
                 last_error = exc
-                wait_seconds = 1.25 * (attempt + 1)
-                time.sleep(wait_seconds)
 
-        # Curl failed for this URL: try Python stdlib HTTP client as fallback.
-        for attempt in range(retries):
             try:
                 req = urllib.request.Request(
                     candidate_url,
@@ -158,44 +262,62 @@ def fetch_json(url: str, user_agent: str, timeout: int = 20, retries: int = 3) -
                         "Accept": "application/json",
                     },
                 )
-                with urllib.request.urlopen(req, timeout=timeout) as response:
+                with urllib.request.urlopen(req, timeout=config.timeout_seconds) as response:
                     body = response.read().decode("utf-8", errors="replace")
                 return json.loads(body)
             except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
                 last_error = exc
-                wait_seconds = 1.25 * (attempt + 1)
+            if attempt < max(config.retries, 1) - 1:
+                wait_seconds = config.backoff_seconds * (attempt + 1)
                 time.sleep(wait_seconds)
     raise RuntimeError(f"Failed to fetch {url}: {last_error}")
 
 
-def search_subreddits(query: str, limit: int, user_agent: str) -> List[str]:
+def is_rate_limited_error(exc: Exception) -> bool:
+    text = str(exc).lower()
+    return "429" in text or "too many requests" in text
+
+
+def search_subreddits(
+    query: str,
+    limit: int,
+    user_agent: str,
+    config: RequestConfig,
+    cache_payload: Dict,
+    cache_ttl_seconds: int,
+) -> Tuple[List[str], bool]:
+    cached_names = get_cached_query_names(cache_payload, query, limit, cache_ttl_seconds)
+    if cached_names:
+        return cached_names, True
+
     encoded = urllib.parse.quote_plus(query)
     url = f"https://www.reddit.com/subreddits/search.json?q={encoded}&limit={limit}&include_over_18=off"
-    data = fetch_json(url, user_agent)
+    data = fetch_json(url, user_agent, config)
     names = []
     for child in data.get("data", {}).get("children", []):
         info = child.get("data", {})
         name = info.get("display_name")
         if name:
             names.append(name)
-    return names
+    set_cached_query_names(cache_payload, query, limit, names)
+    return names, False
 
 
-def fetch_about(name: str, user_agent: str) -> Dict:
+def fetch_about(name: str, user_agent: str, config: RequestConfig) -> Dict:
     url = f"https://www.reddit.com/r/{name}/about.json"
-    data = fetch_json(url, user_agent)
+    data = fetch_json(url, user_agent, config)
     return data.get("data", {})
 
 
-def fetch_rules(name: str, user_agent: str) -> List[Dict]:
+def fetch_rules(name: str, user_agent: str, config: RequestConfig) -> List[Dict]:
     url = f"https://www.reddit.com/r/{name}/about/rules.json"
-    data = fetch_json(url, user_agent)
+    data = fetch_json(url, user_agent, config)
     return data.get("rules", [])
 
 
-def fetch_new_posts(name: str, user_agent: str, limit: int) -> List[Dict]:
+def fetch_new_posts(name: str, user_agent: str, limit: int, config: RequestConfig) -> List[Dict]:
     url = f"https://www.reddit.com/r/{name}/new.json?limit={limit}"
-    data = fetch_json(url, user_agent)
+    data = fetch_json(url, user_agent, config)
     posts = []
     for child in data.get("data", {}).get("children", []):
         posts.append(child.get("data", {}))
@@ -479,20 +601,78 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Find and rank candidate subreddits, then audit posting rules.")
     parser.add_argument("--queries", nargs="+", required=True, help="Search queries (space-separated).")
     parser.add_argument("--source-post", help="Optional source post path (_posts/YYYY-MM-DD-slug.md) to infer extra queries.")
-    parser.add_argument("--limit-per-query", type=int, default=18, help="Search result count per query.")
-    parser.add_argument("--max-candidates", type=int, default=30, help="Max subreddits to analyze in detail.")
+    parser.add_argument(
+        "--no-infer-from-source",
+        action="store_true",
+        help="Do not append inferred queries/acronyms from --source-post (fewer network calls).",
+    )
+    parser.add_argument("--limit-per-query", type=int, default=14, help="Search result count per query.")
+    parser.add_argument("--max-candidates", type=int, default=28, help="Max subreddits to analyze in detail.")
     parser.add_argument("--require-analyzed", type=int, default=25, help="Fail if fewer than this many subreddits are analyzed.")
-    parser.add_argument("--sample-posts", type=int, default=30, help="Recent posts to sample for activity metrics.")
+    parser.add_argument("--sample-posts", type=int, default=20, help="Recent posts to sample for activity metrics.")
     parser.add_argument("--sleep-ms", type=int, default=350, help="Delay between subreddit API calls.")
     parser.add_argument("--min-subscribers", type=int, default=1000, help="Skip tiny subreddits below this count.")
     parser.add_argument("--min-exact-subscribers", type=int, default=200, help="Lower subscriber floor for exact-match seeded subreddits.")
+    parser.add_argument("--request-timeout", type=int, default=8, help="Per-request timeout in seconds.")
+    parser.add_argument("--request-retries", type=int, default=1, help="Retry count per URL before skipping.")
+    parser.add_argument("--request-backoff-ms", type=int, default=500, help="Linear retry backoff in milliseconds.")
+    parser.add_argument(
+        "--prefer-old-reddit",
+        action="store_true",
+        default=True,
+        help="Try old.reddit.com before www.reddit.com to avoid slow anonymous API stalls.",
+    )
+    parser.add_argument(
+        "--no-prefer-old-reddit",
+        dest="prefer_old_reddit",
+        action="store_false",
+        help="Try www.reddit.com first.",
+    )
+    parser.add_argument(
+        "--max-rate-limit-errors",
+        type=int,
+        default=8,
+        help="Abort early after this many 429 responses to avoid long stalled runs.",
+    )
+    parser.add_argument(
+        "--cache-file",
+        default="~/.cache/reddit-publishing/subreddit-research-cache.json",
+        help="Cache file for query + subreddit rule snapshots.",
+    )
+    parser.add_argument(
+        "--cache-ttl-hours",
+        type=int,
+        default=2160,
+        help="Reuse cached subreddit/query data newer than this many hours.",
+    )
+    parser.add_argument("--max-runtime-seconds", type=int, default=420, help="Soft cap for total runtime.")
+    parser.add_argument(
+        "--max-consecutive-failures",
+        type=int,
+        default=10,
+        help="Abort candidate loop if this many subreddits fail in a row.",
+    )
     parser.add_argument("--user-agent", default="kanyilmaz-blog-research/1.0", help="User-Agent header for Reddit requests.")
     parser.add_argument("--json-out", help="Optional JSON output path.")
     parser.add_argument("--md-out", help="Optional markdown report path.")
     args = parser.parse_args()
 
+    request_config = RequestConfig(
+        timeout_seconds=max(args.request_timeout, 2),
+        retries=max(args.request_retries, 1),
+        backoff_seconds=max(args.request_backoff_ms, 0) / 1000.0,
+        prefer_old_reddit=args.prefer_old_reddit,
+        max_rate_limit_errors=max(args.max_rate_limit_errors, 1),
+    )
+    start_time = time.time()
+    rate_limit_errors = 0
+    cache_ttl_seconds = max(args.cache_ttl_hours, 1) * 3600
+    cache_payload = load_cache(args.cache_file)
+    query_cache_hits = 0
+    subreddit_cache_hits = 0
+
     queries = [query.strip() for query in args.queries if query.strip()]
-    if args.source_post:
+    if args.source_post and not args.no_infer_from_source:
         inferred = infer_queries_from_post(args.source_post)
         query_keys = {q.lower() for q in queries}
         for query in inferred:
@@ -506,11 +686,28 @@ def main() -> int:
 
     discovered: Dict[str, Candidate] = {}
 
-    for query in queries:
+    for query_index, query in enumerate(queries, start=1):
+        print(f"[query {query_index}/{len(queries)}] searching '{query}'", file=sys.stderr, flush=True)
         try:
-            names = search_subreddits(query, args.limit_per_query, args.user_agent)
+            names, from_cache = search_subreddits(
+                query,
+                args.limit_per_query,
+                args.user_agent,
+                request_config,
+                cache_payload,
+                cache_ttl_seconds,
+            )
+            if from_cache:
+                query_cache_hits += 1
         except Exception as exc:
             print(f"Warning: search failed for query '{query}': {exc}", file=sys.stderr)
+            if is_rate_limited_error(exc):
+                rate_limit_errors += 1
+                if rate_limit_errors >= request_config.max_rate_limit_errors:
+                    raise RuntimeError(
+                        "Reddit is globally rate-limiting this environment (multiple 429 responses). "
+                        "Retry later, use OAuth credentials, or run from a different IP."
+                    )
             continue
         for name in names:
             add_candidate(discovered, name, query)
@@ -521,8 +718,9 @@ def main() -> int:
         add_candidate(discovered, seed, marker)
 
         try:
-            about = fetch_about(seed, args.user_agent)
+            about = fetch_about(seed, args.user_agent, request_config)
         except Exception:
+            # Seed lookups are optional; ignore failures.
             continue
         display_name = about.get("display_name") or seed
         add_candidate(discovered, str(display_name), marker)
@@ -535,18 +733,49 @@ def main() -> int:
     selected = ordered[: args.max_candidates]
 
     results: List[Dict] = []
+    consecutive_failures = 0
 
     for index, candidate in enumerate(selected):
+        elapsed = time.time() - start_time
+        if elapsed > args.max_runtime_seconds:
+            print(
+                f"Warning: stopping early at {index}/{len(selected)} candidates after {elapsed:.1f}s runtime cap.",
+                file=sys.stderr,
+            )
+            break
+
+        print(
+            f"[candidate {index + 1}/{len(selected)}] r/{candidate.name}",
+            file=sys.stderr,
+            flush=True,
+        )
         try:
-            about = fetch_about(candidate.name, args.user_agent)
+            about, rules, posts = get_cached_subreddit_bundle(
+                cache_payload,
+                candidate.name,
+                args.sample_posts,
+                cache_ttl_seconds,
+            )
+            if about and rules and posts:
+                subreddit_cache_hits += 1
+            else:
+                about = fetch_about(candidate.name, args.user_agent, request_config)
+                subscribers = int(about.get("subscribers") or 0)
+                has_exact_seed = any(marker.startswith("exact:") for marker in candidate.matched_queries)
+                if subscribers < args.min_subscribers:
+                    if not has_exact_seed or subscribers < args.min_exact_subscribers:
+                        consecutive_failures = 0
+                        continue
+                rules = fetch_rules(candidate.name, args.user_agent, request_config)
+                posts = fetch_new_posts(candidate.name, args.user_agent, args.sample_posts, request_config)
+                set_cached_subreddit_bundle(cache_payload, candidate.name, about, rules, posts)
+
             subscribers = int(about.get("subscribers") or 0)
             has_exact_seed = any(marker.startswith("exact:") for marker in candidate.matched_queries)
             if subscribers < args.min_subscribers:
                 if not has_exact_seed or subscribers < args.min_exact_subscribers:
+                    consecutive_failures = 0
                     continue
-
-            rules = fetch_rules(candidate.name, args.user_agent)
-            posts = fetch_new_posts(candidate.name, args.user_agent, args.sample_posts)
 
             rule_text = combine_rules_text(rules, about.get("description", ""), about.get("public_description", ""))
             rule_excerpt = re.sub(r"\s+", " ", rule_text).strip()[:240]
@@ -594,8 +823,23 @@ def main() -> int:
                     "rule_excerpt": rule_excerpt if rule_excerpt else "No explicit rule text fetched.",
                 }
             )
+            consecutive_failures = 0
         except Exception as exc:
             print(f"Warning: skipping r/{candidate.name} due to fetch/parse error: {exc}", file=sys.stderr)
+            if is_rate_limited_error(exc):
+                rate_limit_errors += 1
+                if rate_limit_errors >= request_config.max_rate_limit_errors:
+                    raise RuntimeError(
+                        "Reddit is globally rate-limiting this environment (multiple 429 responses). "
+                        "Retry later, use OAuth credentials, or run from a different IP."
+                    )
+            consecutive_failures += 1
+            if consecutive_failures >= args.max_consecutive_failures:
+                print(
+                    f"Warning: aborting after {consecutive_failures} consecutive candidate failures.",
+                    file=sys.stderr,
+                )
+                break
             continue
 
         # Respect Reddit rate limits for unauthenticated API access.
@@ -603,9 +847,11 @@ def main() -> int:
             time.sleep(max(args.sleep_ms, 0) / 1000.0)
 
     if not results:
+        save_cache(args.cache_file, cache_payload)
         raise RuntimeError("All candidates were filtered out. Lower --min-subscribers or increase queries.")
 
     if len(results) < args.require_analyzed:
+        save_cache(args.cache_file, cache_payload)
         raise RuntimeError(
             f"Only analyzed {len(results)} subreddits; require at least {args.require_analyzed}. "
             "Increase --max-candidates or lower --min-subscribers."
@@ -615,6 +861,8 @@ def main() -> int:
 
     if exact_seeds:
         print(f"Exact subreddit seeds: {', '.join(exact_seeds)}")
+    print(f"Query cache hits: {query_cache_hits}/{len(queries)}")
+    print(f"Subreddit cache hits: {subreddit_cache_hits}/{len(selected)}")
     print(f"Analyzed subreddits: {len(results)}")
     print_table(results)
 
@@ -628,6 +876,7 @@ def main() -> int:
             handle.write(to_markdown(results, queries))
             handle.write("\n")
 
+    save_cache(args.cache_file, cache_payload)
     return 0
 
 
