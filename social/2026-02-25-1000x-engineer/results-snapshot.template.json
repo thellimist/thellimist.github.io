@@ -1,0 +1,54 @@
+{
+  "timestamp": "2026-02-27T14:00:00+01:00",
+  "items": [
+    {
+      "post_id": "x_article",
+      "likes": 2,
+      "comments": 0,
+      "reposts": 0,
+      "bookmarks": 2,
+      "views": 63,
+      "notes": "browser unavailable - carried forward"
+    },
+    {
+      "post_id": "linkedin",
+      "likes": 11,
+      "comments": 1,
+      "reposts": 0,
+      "views": 1059,
+      "notes": "browser unavailable - carried forward"
+    },
+    {
+      "post_id": "reddit_chatgptcoding",
+      "upvotes": 0,
+      "comments": 55,
+      "score": 0
+    },
+    {
+      "post_id": "reddit_ai_agents",
+      "upvotes": 5,
+      "comments": 11,
+      "score": 5,
+      "notes": "still removed by automod"
+    },
+    {
+      "post_id": "reddit_artificialinteligence",
+      "upvotes": 0,
+      "comments": 8,
+      "score": 0
+    },
+    {
+      "post_id": "reddit_agentsofai",
+      "upvotes": 4,
+      "comments": 20,
+      "score": 4
+    },
+    {
+      "post_id": "hn",
+      "upvotes": 1,
+      "comments": 1,
+      "score": 1,
+      "notes": "dead/flagged"
+    }
+  ]
+}

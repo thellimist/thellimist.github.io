@@ -1,0 +1,232 @@
+{
+  "review_plan": {
+    "updates_per_day": 3,
+    "days": 3,
+    "timezone": "Europe/Madrid",
+    "times_local": [
+      "09:00",
+      "14:00",
+      "20:00"
+    ]
+  },
+  "posts": [
+    {
+      "id": "x_article",
+      "platform": "X",
+      "url": "https://x.com/thellimist/status/2027031462575231143",
+      "post_id": "x_article",
+      "source": "X",
+      "label": "x_article"
+    },
+    {
+      "id": "linkedin",
+      "platform": "LinkedIn",
+      "url": "https://www.linkedin.com/feed/update/urn:li:activity:7432797868408860673/",
+      "post_id": "linkedin",
+      "source": "LinkedIn",
+      "label": "linkedin"
+    },
+    {
+      "id": "reddit_chatgptcoding",
+      "platform": "Reddit",
+      "source": "r/ChatGPTCoding",
+      "url": "https://www.reddit.com/r/ChatGPTCoding/comments/1rfc26z/how_one_engineer_uses_ai_coding_agents_to_ship/",
+      "post_id": "reddit_chatgptcoding",
+      "label": "reddit_chatgptcoding"
+    },
+    {
+      "id": "reddit_ai_agents",
+      "platform": "Reddit",
+      "source": "r/AI_Agents",
+      "url": "https://www.reddit.com/r/AI_Agents/comments/1rfc44m/i_reverseengineered_how_one_engineer_made_8471/",
+      "post_id": "reddit_ai_agents",
+      "label": "reddit_ai_agents"
+    },
+    {
+      "id": "reddit_artificialinteligence",
+      "platform": "Reddit",
+      "source": "r/ArtificialInteligence",
+      "url": "https://www.reddit.com/r/ArtificialInteligence/comments/1rfc506/case_study_how_one_engineer_uses_ai_agents_to/",
+      "post_id": "reddit_artificialinteligence",
+      "label": "reddit_artificialinteligence"
+    },
+    {
+      "id": "reddit_agentsofai",
+      "platform": "Reddit",
+      "source": "r/AgentsOfAI",
+      "url": "https://www.reddit.com/r/AgentsOfAI/comments/1rfc5np/the_tooling_pattern_behind_8471_commits_in_72/",
+      "post_id": "reddit_agentsofai",
+      "label": "reddit_agentsofai"
+    },
+    {
+      "id": "hn",
+      "platform": "HN",
+      "url": "https://news.ycombinator.com/item?id=47167007",
+      "post_id": "hn",
+      "source": "HN",
+      "label": "hn"
+    }
+  ],
+  "snapshots": [
+    {
+      "timestamp": "2026-02-26T20:00:00+01:00",
+      "items": [
+        {
+          "post_id": "x_article",
+          "likes": 2,
+          "comments": 0,
+          "reposts": 0,
+          "bookmarks": 2,
+          "views": 63
+        },
+        {
+          "post_id": "linkedin",
+          "likes": 11,
+          "comments": 1,
+          "reposts": 0,
+          "views": 1059
+        },
+        {
+          "post_id": "reddit_chatgptcoding",
+          "upvotes": 0,
+          "comments": 52,
+          "score": 0
+        },
+        {
+          "post_id": "reddit_ai_agents",
+          "upvotes": 4,
+          "comments": 12,
+          "score": 4,
+          "notes": "removed by automod"
+        },
+        {
+          "post_id": "reddit_artificialinteligence",
+          "upvotes": 1,
+          "comments": 4,
+          "score": 1
+        },
+        {
+          "post_id": "reddit_agentsofai",
+          "upvotes": 1,
+          "comments": 13,
+          "score": 1
+        },
+        {
+          "post_id": "hn",
+          "upvotes": 1,
+          "comments": 1,
+          "score": 1,
+          "notes": "dead/flagged"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-02-27T09:00:00+01:00",
+      "items": [
+        {
+          "post_id": "x_article",
+          "likes": 2,
+          "comments": 0,
+          "reposts": 0,
+          "bookmarks": 2,
+          "views": 63,
+          "notes": "browser unavailable - carried forward from last snapshot"
+        },
+        {
+          "post_id": "linkedin",
+          "likes": 11,
+          "comments": 1,
+          "reposts": 0,
+          "views": 1059,
+          "notes": "browser unavailable - carried forward from last snapshot"
+        },
+        {
+          "post_id": "reddit_chatgptcoding",
+          "upvotes": 0,
+          "comments": 54,
+          "score": 0
+        },
+        {
+          "post_id": "reddit_ai_agents",
+          "upvotes": 5,
+          "comments": 11,
+          "score": 5,
+          "notes": "still removed by automod"
+        },
+        {
+          "post_id": "reddit_artificialinteligence",
+          "upvotes": 0,
+          "comments": 8,
+          "score": 0
+        },
+        {
+          "post_id": "reddit_agentsofai",
+          "upvotes": 3,
+          "comments": 19,
+          "score": 3
+        },
+        {
+          "post_id": "hn",
+          "upvotes": 1,
+          "comments": 1,
+          "score": 1,
+          "notes": "dead/flagged"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-02-27T14:00:00+01:00",
+      "items": [
+        {
+          "post_id": "x_article",
+          "likes": 2,
+          "comments": 0,
+          "reposts": 0,
+          "bookmarks": 2,
+          "views": 63,
+          "notes": "browser unavailable - carried forward"
+        },
+        {
+          "post_id": "linkedin",
+          "likes": 11,
+          "comments": 1,
+          "reposts": 0,
+          "views": 1059,
+          "notes": "browser unavailable - carried forward"
+        },
+        {
+          "post_id": "reddit_chatgptcoding",
+          "upvotes": 0,
+          "comments": 55,
+          "score": 0
+        },
+        {
+          "post_id": "reddit_ai_agents",
+          "upvotes": 5,
+          "comments": 11,
+          "score": 5,
+          "notes": "still removed by automod"
+        },
+        {
+          "post_id": "reddit_artificialinteligence",
+          "upvotes": 0,
+          "comments": 8,
+          "score": 0
+        },
+        {
+          "post_id": "reddit_agentsofai",
+          "upvotes": 4,
+          "comments": 20,
+          "score": 4
+        },
+        {
+          "post_id": "hn",
+          "upvotes": 1,
+          "comments": 1,
+          "score": 1,
+          "notes": "dead/flagged"
+        }
+      ]
+    }
+  ]
+}
