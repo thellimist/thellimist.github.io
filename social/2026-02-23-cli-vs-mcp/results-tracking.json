@@ -15,36 +15,54 @@
     {
       "id": "hn_main",
       "platform": "HN",
-      "url": "https://news.ycombinator.com/item?id=47153839",
-      "note": "Post appears dead/flagged as of first check"
+      "url": "https://news.ycombinator.com/item?id=47157398",
+      "note": "Post appears dead/flagged as of first check",
+      "post_id": "hn_main",
+      "source": "HN",
+      "label": "hn_main"
     },
     {
       "id": "reddit_ai_agents",
       "platform": "Reddit",
       "subreddit": "r/AI_Agents",
-      "url": "https://www.reddit.com/r/AI_Agents/comments/1rei6km/i_made_mcps_94_cheaper_by_generating_clis_from/"
+      "url": "https://www.reddit.com/r/AI_Agents/comments/1rei6km/i_made_mcps_94_cheaper_by_generating_clis_from/",
+      "post_id": "reddit_ai_agents",
+      "source": "r/AI_Agents",
+      "label": "reddit_ai_agents"
     },
     {
       "id": "reddit_mcp",
       "platform": "Reddit",
       "subreddit": "r/mcp",
-      "url": "https://www.reddit.com/r/mcp/comments/1rembfo/i_generated_clis_from_mcp_servers_and_cut_token/"
+      "url": "https://www.reddit.com/r/mcp/comments/1rembfo/i_generated_clis_from_mcp_servers_and_cut_token/",
+      "post_id": "reddit_mcp",
+      "source": "r/mcp",
+      "label": "reddit_mcp"
     },
     {
       "id": "reddit_llmdevs",
       "platform": "Reddit",
       "subreddit": "r/LLMDevs",
-      "url": "https://www.reddit.com/r/LLMDevs/comments/1remcn3/i_made_mcp_94_cheaper_and_it_only_took_one_command/"
+      "url": "https://www.reddit.com/r/LLMDevs/comments/1remcn3/i_made_mcp_94_cheaper_and_it_only_took_one_command/",
+      "post_id": "reddit_llmdevs",
+      "source": "r/LLMDevs",
+      "label": "reddit_llmdevs"
     },
     {
       "id": "x_article",
       "platform": "X",
-      "url": "https://x.com/thellimist/status/2026747624473182545"
+      "url": "https://x.com/thellimist/status/2026747624473182545",
+      "post_id": "x_article",
+      "source": "X",
+      "label": "x_article"
     },
     {
       "id": "linkedin_main",
       "platform": "LinkedIn",
-      "url": "https://www.linkedin.com/feed/update/urn:li:activity:7432500238961123328/"
+      "url": "https://www.linkedin.com/feed/update/urn:li:activity:7432500238961123328/",
+      "post_id": "linkedin_main",
+      "source": "LinkedIn",
+      "label": "linkedin_main"
     }
   ],
   "snapshots": [
@@ -77,6 +95,205 @@
           "comments": 1,
           "score": 0,
           "upvote_ratio": 0.45
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-02-26T09:00:00+01:00",
+      "items": [
+        {
+          "post_id": "hn_main",
+          "score": 0,
+          "comments": 0,
+          "dead": true
+        },
+        {
+          "post_id": "reddit_ai_agents",
+          "upvotes": 26,
+          "comments": 18,
+          "score": 26,
+          "upvote_ratio": 0.88
+        },
+        {
+          "post_id": "reddit_mcp",
+          "upvotes": 68,
+          "comments": 20,
+          "score": 68,
+          "upvote_ratio": 0.95
+        },
+        {
+          "post_id": "reddit_llmdevs",
+          "upvotes": 0,
+          "comments": 5,
+          "score": 0,
+          "upvote_ratio": 0.44
+        },
+        {
+          "post_id": "x_article",
+          "note": "browser unavailable - no metrics collected"
+        },
+        {
+          "post_id": "linkedin_main",
+          "note": "browser unavailable - no metrics collected"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-02-26T14:00:00+01:00",
+      "items": [
+        {
+          "post_id": "hn_main",
+          "score": 247,
+          "comments": 99
+        },
+        {
+          "post_id": "reddit_ai_agents",
+          "upvotes": 26,
+          "comments": 18,
+          "score": 26,
+          "upvote_ratio": 0.88,
+          "note": "carried forward - Reddit 429"
+        },
+        {
+          "post_id": "reddit_mcp",
+          "upvotes": 68,
+          "comments": 20,
+          "score": 68,
+          "upvote_ratio": 0.95,
+          "note": "carried forward - Reddit 429"
+        },
+        {
+          "post_id": "reddit_llmdevs",
+          "upvotes": 0,
+          "comments": 5,
+          "score": 0,
+          "upvote_ratio": 0.44,
+          "note": "carried forward - Reddit 429"
+        },
+        {
+          "post_id": "x_article",
+          "note": "browser unavailable"
+        },
+        {
+          "post_id": "linkedin_main",
+          "note": "browser unavailable"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-02-26T20:00:00+01:00",
+      "items": [
+        {
+          "post_id": "hn_main",
+          "score": 298,
+          "comments": 112
+        },
+        {
+          "post_id": "reddit_ai_agents",
+          "upvotes": 35,
+          "comments": 23,
+          "score": 35,
+          "upvote_ratio": 0.91
+        },
+        {
+          "post_id": "reddit_mcp",
+          "upvotes": 112,
+          "comments": 31,
+          "score": 112,
+          "upvote_ratio": 0.94
+        },
+        {
+          "post_id": "reddit_llmdevs",
+          "upvotes": 0,
+          "comments": 9,
+          "score": 0,
+          "upvote_ratio": 0.44
+        },
+        {
+          "post_id": "x_article",
+          "note": "browser unavailable"
+        },
+        {
+          "post_id": "linkedin_main",
+          "note": "browser unavailable"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-02-27T09:00:00+01:00",
+      "items": [
+        {
+          "post_id": "hn_main",
+          "score": 313,
+          "comments": 118
+        },
+        {
+          "post_id": "reddit_ai_agents",
+          "upvotes": 37,
+          "comments": 23,
+          "score": 37,
+          "upvote_ratio": 0.91
+        },
+        {
+          "post_id": "reddit_mcp",
+          "upvotes": 128,
+          "comments": 33,
+          "score": 128,
+          "upvote_ratio": 0.94
+        },
+        {
+          "post_id": "reddit_llmdevs",
+          "upvotes": 0,
+          "comments": 9,
+          "score": 0,
+          "upvote_ratio": 0.44
+        },
+        {
+          "post_id": "x_article",
+          "note": "browser unavailable"
+        },
+        {
+          "post_id": "linkedin_main",
+          "note": "browser unavailable"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-02-27T14:00:00+01:00",
+      "items": [
+        {
+          "post_id": "hn_main",
+          "score": 316,
+          "comments": 118
+        },
+        {
+          "post_id": "reddit_ai_agents",
+          "upvotes": 39,
+          "comments": 23,
+          "score": 39,
+          "upvote_ratio": 0.91
+        },
+        {
+          "post_id": "reddit_mcp",
+          "upvotes": 134,
+          "comments": 35,
+          "score": 134,
+          "upvote_ratio": 0.94
+        },
+        {
+          "post_id": "reddit_llmdevs",
+          "upvotes": 0,
+          "comments": 9,
+          "score": 0,
+          "upvote_ratio": 0.47
+        },
+        {
+          "post_id": "x_article",
+          "note": "browser unavailable"
+        },
+        {
+          "post_id": "linkedin_main",
+          "note": "browser unavailable"
         }
       ]
     }

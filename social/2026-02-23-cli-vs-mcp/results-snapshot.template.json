@@ -1,32 +1,39 @@
 {
-  "timestamp": "2026-02-25T21:04:48+01:00",
+  "timestamp": "2026-02-27T14:00:00+01:00",
   "items": [
     {
       "post_id": "hn_main",
-      "score": 1,
-      "comments": 0,
-      "dead": true
+      "score": 316,
+      "comments": 118
     },
     {
       "post_id": "reddit_ai_agents",
-      "upvotes": 14,
-      "comments": 10,
-      "score": 14,
-      "upvote_ratio": 0.89
+      "upvotes": 39,
+      "comments": 23,
+      "score": 39,
+      "upvote_ratio": 0.91
     },
     {
       "post_id": "reddit_mcp",
-      "upvotes": 1,
-      "comments": 1,
-      "score": 1,
-      "upvote_ratio": 1.0
+      "upvotes": 134,
+      "comments": 35,
+      "score": 134,
+      "upvote_ratio": 0.94
     },
     {
       "post_id": "reddit_llmdevs",
       "upvotes": 0,
-      "comments": 1,
+      "comments": 9,
       "score": 0,
-      "upvote_ratio": 0.45
+      "upvote_ratio": 0.47
+    },
+    {
+      "post_id": "x_article",
+      "note": "browser unavailable"
+    },
+    {
+      "post_id": "linkedin_main",
+      "note": "browser unavailable"
     }
   ]
 }
