@@ -1,0 +1,19 @@
+{
+  "items": [
+    {
+      "placeholder": "table_output_comparison.png",
+      "selector": "article table:nth-of-type(1)",
+      "note": "Typical engineer vs Peter comparison table"
+    },
+    {
+      "placeholder": "gantt_chart.png",
+      "selector": "article img[src*='gantt']",
+      "note": "Sunday gantt chart - capture as-is from blog"
+    },
+    {
+      "placeholder": "table_projects.png",
+      "selector": "article table:nth-of-type(2)",
+      "note": "Projects table with stars"
+    }
+  ]
+}
