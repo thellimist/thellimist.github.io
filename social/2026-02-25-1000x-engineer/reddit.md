@@ -5,6 +5,14 @@ Script run: 2026-02-26 | Rate-limited but got 8 analyzed subs
 Top candidates: r/AI_Agents (302K), r/ArtificialInteligence (1.7M), r/AgentsOfAI (99K), r/aipromptprogramming (197K)
 Skipped: r/1000xRESIST (game), r/AAMasterRace (batteries), r/AI_Application (bans promo), r/AI_Tools_Guide (4K too small)
 
+## Target Subreddits
+Candidates reviewed: 30
+Selection criteria: relevance + activity + comments + self-promo policy + post type fit + rule confidence
+- r/AI_Agents - GO (text), rules checked 2026-02-26, flair required: none, link placement: first_comment
+- r/ArtificialInteligence - GO (text), rules checked 2026-02-26, flair required: none, link placement: body_end
+- r/AgentsOfAI - GO (text), rules checked 2026-02-26, flair required: none, link placement: first_comment
+- r/aipromptprogramming - GO (text), rules checked 2026-02-26, flair required: none, link placement: body_end
+
 ## Post for r/AI_Agents
 **Type:** text post
 **Link placement:** first_comment (rule: "Put your links in the comments, not the posts")
