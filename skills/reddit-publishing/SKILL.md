@@ -12,8 +12,23 @@ Read `skills/blog-writing/references/social-draft-contract.md` before drafting.
 ## Tools Required
 
 - `python3`
-- `browser` (OpenClaw browser tool) for final rule verification and drafting
+- Browser automation for final rule verification and drafting:
+  - `browser` (OpenClaw browser tool), or
+  - `browser-tools` CLI (`bin/browser-tools` in agent-skill repo)
 - Discovery tool: `skills/reddit-publishing/scripts/research_subreddits.py`
+- Persistent notes: `skills/reddit-publishing/references/subreddit-notes.json`
+
+## Persistent Subreddit Notes
+
+Use `skills/reddit-publishing/references/subreddit-notes.json` for known subreddit sentiment/context that automated rule parsing cannot detect.
+
+When selecting subreddits, treat these notes as a first-class input alongside rules/activity metrics.
+Keep each note entry concise and actionable:
+- `name`
+- `stance`
+- `risk_penalty`
+- `recommendation_override` (optional)
+- `note`
 
 ## File Location
 
@@ -80,6 +95,7 @@ The script outputs:
 - Exact-seeded subreddit candidates from title/slug acronyms (for example `r/mcp`) when available
 - Activity metrics (posts/day, median comments)
 - Rule risk summary (self-promo, AI policy, post type, requirements)
+- Manual sentiment notes from `subreddit-notes.json` applied to risk/recommendation
 - Rule evidence + confidence fields for each classification
 
 Reliability notes:
@@ -94,7 +110,7 @@ Reliability notes:
 
 ## Step 3: Manual Verification for Top Candidates
 
-For top 5-8 `target`/`maybe` subreddits, manually verify with `browser` before drafting:
+For top 5-8 `target`/`maybe` subreddits, manually verify with browser automation before drafting (`browser` or `browser-tools`):
 
 1. Open `https://www.reddit.com/r/SUBREDDIT/about/rules`
 2. Open `https://www.reddit.com/r/SUBREDDIT/new`
@@ -183,7 +199,7 @@ Blog URL: https://YOUR_BLOG_URL
 
 - [ ] Discovery script run with 4-6 query angles
 - [ ] Analyzed candidate pool is ~30 (minimum 25)
-- [ ] Top candidates manually rule-verified in browser
+- [ ] Top candidates manually rule-verified in `browser` or `browser-tools`
 - [ ] Self-promo policy explicitly checked for each chosen subreddit
 - [ ] 3-4 final subreddits selected
 - [ ] Required post type/flair/title format respected

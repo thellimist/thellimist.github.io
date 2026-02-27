@@ -10,7 +10,9 @@ Read `skills/blog-writing/references/social-draft-contract.md` before drafting o
 
 ## Tools Required
 
-- **browser** (OpenClaw browser tool) — for navigating HN and submitting
+- Browser automation (choose one):
+  - **browser** (OpenClaw browser tool)
+  - **browser-tools** CLI (`bin/browser-tools` in agent-skill repo)
 
 ## Account Health Checks (Required)
 
@@ -68,7 +70,7 @@ No separate file needed. Optionally note submission title candidates in `social/
 
 ## Publishing Steps
 
-Use the browser tool for all steps.
+Use browser automation for all steps (`browser` or `browser-tools`).
 
 1. **Run account health checks:** verify Go state from the required checks above.
 2. **Check timing:**
@@ -76,7 +78,10 @@ Use the browser tool for all steps.
 TZ="America/New_York" date "+%A %H:%M ET"
 # Ideal: weekday, 9-11am ET
 ```
-3. **Open HN:** `browser navigate` to `https://news.ycombinator.com/submit` (use profile="openclaw", logged in as thellimist)
+3. **Open HN:** open `https://news.ycombinator.com/submit`
+   - `browser`: `browser navigate`
+   - `browser-tools`: `browser-tools nav`
+   - Use profile/session logged in as `thellimist`
 4. **Fill title:** Type the blog title (or adapted version under 80 chars) into the title field
 5. **Fill URL:** Paste the blog post URL into the url field
 6. **Leave text field empty** — this is a link submission, not a self-post

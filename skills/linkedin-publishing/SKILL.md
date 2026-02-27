@@ -11,7 +11,9 @@ Read `skills/blog-writing/references/social-draft-contract.md` before drafting.
 
 ## Tools Required
 
-- **browser** (OpenClaw browser tool) — for navigating LinkedIn and publishing
+- Browser automation (choose one):
+  - **browser** (OpenClaw browser tool)
+  - **browser-tools** CLI (`bin/browser-tools` in agent-skill repo)
 
 ## Format Rules
 
@@ -62,11 +64,14 @@ This creates/updates if missing:
 
 ## Publishing Steps
 
-Use the browser tool for all steps.
+Use browser automation for all steps (`browser` or `browser-tools`).
 
-1. **Open LinkedIn:** `browser navigate` to `https://www.linkedin.com` (use profile="openclaw", logged in as Kan Yilmaz)
+1. **Open LinkedIn:** navigate to `https://www.linkedin.com`
+   - `browser`: `browser navigate`
+   - `browser-tools`: `browser-tools nav`
+   - Use profile/session logged in as Kan Yilmaz
 2. **Create post:** Click "Start a post" on the feed
-3. **Paste content:** Type/paste the `linkedin.md` content into the post editor using `browser act`
+3. **Paste content:** Type/paste the `linkedin.md` content into the post editor using browser automation
 4. **Add image:** Click the image icon and upload the blog header image from `assets/posts/`
 5. **Review:** Check first 2 lines carry title claim + hook before "see more"
 6. **DO NOT click Post** — leave as draft for Kan to review

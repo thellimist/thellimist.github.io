@@ -11,7 +11,9 @@ Read `skills/blog-writing/references/social-draft-contract.md` before drafting.
 
 ## Tools Required
 
-- `browser` (OpenClaw browser tool) - draft and review in X editor
+- Browser automation for drafting/review (choose one):
+  - `browser` (OpenClaw browser tool)
+  - `browser-tools` CLI (`bin/browser-tools` in agent-skill repo)
 - `node` + `npm`
 - `python3` (for clipboard fallback script)
 - Local Chromium (default path usually `/opt/homebrew/bin/chromium`)
@@ -145,7 +147,7 @@ python3 skills/blog-writing/scripts/lint_social_drafts.py \
 
 ## Step 5: Draft in X (Do Not Publish)
 
-1. Open `https://x.com/compose/article` with `browser`
+1. Open `https://x.com/compose/article` with browser automation (`browser` or `browser-tools nav`)
 2. Add cover image from source frontmatter `image:` path
    - For X Article cover, use a dedicated `5:2` image (`2500x1000` preferred, `.jpg`, <2MB)
    - If source header is not `5:2`, create a dedicated X cover variant and use it
@@ -162,7 +164,7 @@ python3 skills/blog-writing/scripts/lint_social_drafts.py \
 Use this when normal inline image insert fails in DraftJS.
 
 Known-working method:
-1. Connect Playwright to OpenClaw browser over CDP:
+1. Connect Playwright to browser instance over CDP:
    - `playwright.chromium.connect_over_cdp("http://localhost:18800")`
 2. Bring target page to front (`page.bring_to_front()`)
 3. Move cursor to the correct DraftJS block via `page.evaluate(...)`
