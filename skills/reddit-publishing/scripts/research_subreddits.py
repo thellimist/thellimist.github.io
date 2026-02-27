@@ -32,6 +32,43 @@ class RequestConfig:
     max_rate_limit_errors: int
 
 
+def default_subreddit_notes_file() -> str:
+    return str(Path(__file__).resolve().parents[1] / "references" / "subreddit-notes.json")
+
+
+def load_subreddit_notes(notes_file: str) -> Dict[str, Dict]:
+    if not notes_file:
+        return {}
+    path = Path(os.path.expanduser(notes_file))
+    if not path.exists():
+        return {}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+    if isinstance(payload, dict):
+        entries = payload.get("subreddits", [])
+    elif isinstance(payload, list):
+        entries = payload
+    else:
+        return {}
+
+    if not isinstance(entries, list):
+        return {}
+
+    notes: Dict[str, Dict] = {}
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        raw_name = str(entry.get("name") or entry.get("subreddit") or "").strip().lower()
+        if not raw_name:
+            continue
+        name = raw_name[2:] if raw_name.startswith("r/") else raw_name
+        notes[name] = entry
+    return notes
+
+
 def add_candidate(discovered: Dict[str, Candidate], name: str, marker: str) -> None:
     key = name.strip().lower()
     if not key:
@@ -552,7 +589,7 @@ def rank_value(rec: str) -> int:
 
 def print_table(results: List[Dict]) -> None:
     header = (
-        "Recommendation | Subreddit | Subs | Posts/day | Median comments | Self promo | Post type | Risk | Rule conf"
+        "Recommendation | Subreddit | Subs | Posts/day | Median comments | Self promo | Post type | Risk | Rule conf | Manual note"
     )
     print(header)
     print("-" * len(header))
@@ -560,7 +597,7 @@ def print_table(results: List[Dict]) -> None:
         print(
             f"{row['recommendation']:>13} | r/{row['name']:<20} | {row['subscribers']:>8} | "
             f"{fmt(row['posts_per_day']):>9} | {fmt(row['median_comments']):>15} | {row['self_promo']:<10} | "
-            f"{row['post_type']:<15} | {fmt(row['risk']):>4} | {row['rule_confidence']:.2f}"
+            f"{row['post_type']:<15} | {fmt(row['risk']):>4} | {row['rule_confidence']:.2f} | {row['manual_note_stance']:<11}"
         )
 
 
@@ -570,13 +607,14 @@ def to_markdown(results: List[Dict], queries: List[str]) -> str:
     lines.append("")
     lines.append(f"Queries: {', '.join(queries)}")
     lines.append("")
-    lines.append("| Recommendation | Subreddit | Subscribers | Posts/day | Median comments | Self-promo policy | AI policy | Post type | Requirements |")
-    lines.append("|---|---|---:|---:|---:|---|---|---|---|")
+    lines.append("| Recommendation | Subreddit | Subscribers | Posts/day | Median comments | Self-promo policy | AI policy | Post type | Requirements | Manual notes |")
+    lines.append("|---|---|---:|---:|---:|---|---|---|---|---|")
     for row in results:
         requirements = "; ".join(row["requirements"]) if row["requirements"] else "-"
+        manual_note = row["manual_note_stance"] if row["manual_note_stance"] != "-" else "-"
         lines.append(
             f"| {row['recommendation']} | r/{row['name']} | {row['subscribers']} | {fmt(row['posts_per_day'])} | "
-            f"{fmt(row['median_comments'])} | {row['self_promo']} | {row['ai_policy']} | {row['post_type']} | {requirements} |"
+            f"{fmt(row['median_comments'])} | {row['self_promo']} | {row['ai_policy']} | {row['post_type']} | {requirements} | {manual_note} |"
         )
 
     lines.append("")
@@ -592,6 +630,13 @@ def to_markdown(results: List[Dict], queries: List[str]) -> str:
         lines.append(f"  Evidence: {row['ai_policy_evidence']}")
         lines.append(f"- Post type: {row['post_type']} (confidence {row['post_type_confidence']:.2f})")
         lines.append(f"  Evidence: {row['post_type_evidence']}")
+        if row["manual_note_stance"] != "-":
+            lines.append(f"- Manual note: {row['manual_note_stance']} (risk +{fmt(row['manual_note_penalty'])})")
+            lines.append(f"  Context: {row['manual_note']}")
+            if row["manual_note_override"] != "-":
+                lines.append(f"  Recommendation override: {row['manual_note_override']}")
+        else:
+            lines.append("- Manual note: -")
         lines.append(f"- Rule excerpt: {row['rule_excerpt']}")
         lines.append("")
     return "\n".join(lines)
@@ -653,6 +698,11 @@ def main() -> int:
         help="Abort candidate loop if this many subreddits fail in a row.",
     )
     parser.add_argument("--user-agent", default="kanyilmaz-blog-research/1.0", help="User-Agent header for Reddit requests.")
+    parser.add_argument(
+        "--subreddit-notes",
+        default=default_subreddit_notes_file(),
+        help="Optional JSON file with manual subreddit sentiment/risk notes.",
+    )
     parser.add_argument("--json-out", help="Optional JSON output path.")
     parser.add_argument("--md-out", help="Optional markdown report path.")
     args = parser.parse_args()
@@ -668,6 +718,7 @@ def main() -> int:
     rate_limit_errors = 0
     cache_ttl_seconds = max(args.cache_ttl_hours, 1) * 3600
     cache_payload = load_cache(args.cache_file)
+    manual_notes = load_subreddit_notes(args.subreddit_notes)
     query_cache_hits = 0
     subreddit_cache_hits = 0
 
@@ -777,6 +828,23 @@ def main() -> int:
                     consecutive_failures = 0
                     continue
 
+            resolved_name = str(about.get("display_name") or candidate.name).strip().lower()
+            manual_note_entry = manual_notes.get(candidate.name.strip().lower()) or manual_notes.get(resolved_name)
+            manual_note_stance = "-"
+            manual_note = "-"
+            manual_note_penalty = 0.0
+            manual_note_override = "-"
+            if isinstance(manual_note_entry, dict):
+                manual_note_stance = str(manual_note_entry.get("stance") or "-").strip() or "-"
+                manual_note = str(manual_note_entry.get("note") or "-").strip() or "-"
+                try:
+                    manual_note_penalty = max(0.0, float(manual_note_entry.get("risk_penalty", 0)))
+                except (TypeError, ValueError):
+                    manual_note_penalty = 0.0
+                override_value = str(manual_note_entry.get("recommendation_override") or "").strip().lower()
+                if override_value in {"target", "maybe", "avoid"}:
+                    manual_note_override = override_value
+
             rule_text = combine_rules_text(rules, about.get("description", ""), about.get("public_description", ""))
             rule_excerpt = re.sub(r"\s+", " ", rule_text).strip()[:240]
 
@@ -791,9 +859,12 @@ def main() -> int:
             activity_score = min(25.0, posts_per_day * 5.0 + median_comments * 1.1)
             engagement_score = min(15.0, median_score / 20.0 + median_comments)
 
-            risk = compute_risk(self_promo, ai_policy, post_type, requirements, posts_per_day)
+            base_risk = compute_risk(self_promo, ai_policy, post_type, requirements, posts_per_day)
+            risk = min(120.0, base_risk + manual_note_penalty)
             quality = relevance + size_score + activity_score + engagement_score - (risk * 0.4)
             recommendation = recommendation_from_risk(risk, self_promo, posts_per_day, median_comments)
+            if manual_note_override != "-":
+                recommendation = manual_note_override
             rule_confidence = round((self_promo_confidence + ai_policy_confidence + post_type_confidence) / 3.0, 2)
 
             results.append(
@@ -817,10 +888,15 @@ def main() -> int:
                     "post_type_confidence": round(post_type_confidence, 2),
                     "requirements": requirements,
                     "risk": round(risk, 1),
+                    "base_risk": round(base_risk, 1),
                     "rule_confidence": rule_confidence,
                     "quality": round(quality, 2),
                     "recommendation": recommendation,
                     "rule_excerpt": rule_excerpt if rule_excerpt else "No explicit rule text fetched.",
+                    "manual_note_stance": manual_note_stance,
+                    "manual_note": manual_note,
+                    "manual_note_penalty": round(manual_note_penalty, 1),
+                    "manual_note_override": manual_note_override,
                 }
             )
             consecutive_failures = 0
@@ -861,6 +937,7 @@ def main() -> int:
 
     if exact_seeds:
         print(f"Exact subreddit seeds: {', '.join(exact_seeds)}")
+    print(f"Manual subreddit notes loaded: {len(manual_notes)}")
     print(f"Query cache hits: {query_cache_hits}/{len(queries)}")
     print(f"Subreddit cache hits: {subreddit_cache_hits}/{len(selected)}")
     print(f"Analyzed subreddits: {len(results)}")

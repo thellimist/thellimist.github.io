@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "updated_at": "2026-02-26",
+  "subreddits": [
+    {
+      "name": "ChatGPTCoding",
+      "stance": "anti_ai_swe",
+      "risk_penalty": 28,
+      "recommendation_override": "avoid",
+      "note": "Community sentiment is frequently hostile to AI-SWE workflows. Threads often bash AI coding approaches more than engage constructively."
+    }
+  ]
+}
