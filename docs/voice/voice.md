@@ -1,3 +1,9 @@
+---
+summary: "Kan's writing voice, tone, structure, and anti-AI-slop rules."
+read_when:
+  - Drafting or editing any public writing in Kan's voice.
+---
+
 # VOICE.md - Kan's Writing Voice
 
 Reference this when co-writing blogs or drafting content.

@@ -7,7 +7,7 @@ read_when:
 # X (Twitter) Publishing Skill
 
 Adapt a blog post into an X article without losing tables or custom-styled blocks.
-Read `VOICE.md` in repo root before drafting.
+Read `docs/voice/voice.md` before drafting.
 Read `docs/blog-writing/references/social-draft-contract.md` before drafting.
 
 ## Tools Required

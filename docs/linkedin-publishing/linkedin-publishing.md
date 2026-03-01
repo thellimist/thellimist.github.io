@@ -7,7 +7,7 @@ read_when:
 # LinkedIn Publishing Skill
 
 Adapt a blog post into a LinkedIn native post. Not the full blog — a compressed version that drives engagement and puts the blog link in the first comment.
-Read `VOICE.md` in repo root before drafting.
+Read `docs/voice/voice.md` before drafting.
 Read `docs/blog-writing/references/social-draft-contract.md` before drafting.
 
 ## Tools Required

@@ -7,9 +7,9 @@ read_when:
 # X Short Post Writing Skill
 
 Turn raw thoughts into short X posts that feel native to the platform without losing Kan's voice.
-Read `VOICE.md` in repo root before drafting.
+Read `docs/voice/voice.md` before drafting.
 
-Use this for short posts only (single-post or short thread style). For long-form X Articles, use `docs/skills/x-publishing.md`.
+Use this for short posts only (single-post or short thread style). For long-form X Articles, use `docs/x-publishing/x-publishing.md`.
 
 ## Calibration Source (Style Benchmark)
 
@@ -38,7 +38,7 @@ Use these as structural references, not copy templates. (add good examples here 
 - Target 120-250 chars for most posts.
 - One core idea per post.
 - No hashtags unless user asks.
-- No AI-slop phrasing banned in `VOICE.md`.
+- No AI-slop phrasing banned in `docs/voice/voice.md`.
 - No em dash.
 - Avoid generic motivational filler.
 
@@ -122,4 +122,4 @@ Angles:
 - [ ] 120-250 chars target (unless user wants longer)
 - [ ] No hashtags (unless requested)
 - [ ] No em dash
-- [ ] No banned AI wording from `VOICE.md`
+- [ ] No banned AI wording from `docs/voice/voice.md`

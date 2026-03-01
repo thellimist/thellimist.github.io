@@ -7,7 +7,7 @@ read_when:
 # Reddit Publishing Skill
 
 Find subreddits that are both relevant and actually postable, then draft per-subreddit posts.
-Read `VOICE.md` in repo root before drafting.
+Read `docs/voice/voice.md` before drafting.
 Read `docs/blog-writing/references/social-draft-contract.md` before drafting.
 
 ## Tools Required

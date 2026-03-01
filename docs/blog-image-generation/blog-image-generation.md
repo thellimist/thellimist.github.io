@@ -91,7 +91,7 @@ Avoid:
 - Flat clip-art style unless the post is explicitly diagram-focused.
 
 Before ideation and creation:
-- Read `VOICE.md` in repo root to match tone and intent.
+- Read `docs/voice/voice.md` to match tone and intent.
 - Confirm target path in advance.
 
 ## Output Paths

@@ -88,14 +88,14 @@ Then continue with platform-specific drafting/publishing steps.
 
 ## Results Review (optional)
 
-- For live performance tracking, use `docs/results-review.md`.
+- For live performance tracking, use `docs/results-review/results-review.md`.
 - Track all published destinations (X, LinkedIn, HN, each Reddit subreddit URL).
 - Cadence target: 3 updates/day for 3 days.
 - Update rows must include: post, source, metrics, diff from last update.
 
 ## Shared Quality Floor
 
-- Avoid banned AI-slop phrasing in `VOICE.md`.
+- Avoid banned AI-slop phrasing in `docs/voice/voice.md`.
 - Fix obvious grammar breakages before draft handoff.
 - When handing off drafts, include copy-paste first-comment text in the agent response.
 - Hook enforcement (Claude Code): `.claude/settings.json` runs social lint automatically after `Write|Edit|MultiEdit` on social files.

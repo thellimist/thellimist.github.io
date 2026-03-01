@@ -10,9 +10,9 @@ Write and edit blog posts for kanyilmaz.me.
 
 ## Before Writing
 
-Read `VOICE.md` in the repo root. It defines Kan's tone, structure, content patterns, and anti-AI-slop rules. Every draft must follow it.
+Read `docs/voice/voice.md`. It defines Kan's tone, structure, content patterns, and anti-AI-slop rules. Every draft must follow it.
 Read `docs/blog-writing/references/social-draft-contract.md` before generating any social format draft.
-If the task includes generating or editing blog images, use `docs/blog-image-generation.md`.
+If the task includes generating or editing blog images, use `docs/blog-image-generation/blog-image-generation.md`.
 
 ## Blog Post Format
 
@@ -69,7 +69,7 @@ Tables render natively from markdown. Use standard markdown table syntax.
 ## Images
 
 - Header images go in `assets/posts/`.
-- For generation/editing workflow and commands, use `docs/blog-image-generation.md`.
+- For generation/editing workflow and commands, use `docs/blog-image-generation/blog-image-generation.md`.
 
 ## Publishing
 
@@ -90,10 +90,10 @@ After publishing the blog, create social versions using the publishing skills:
 
 | Platform | Skill | File |
 |----------|-------|------|
-| X | `docs/x-publishing.md` | `social/YYYY-MM-DD-slug/x-article.md` |
-| LinkedIn | `docs/linkedin-publishing.md` | `social/YYYY-MM-DD-slug/linkedin.md` |
-| HN | `docs/hn-publishing.md` | (no file needed) |
-| Reddit | `docs/reddit-publishing.md` | `social/YYYY-MM-DD-slug/reddit.md` |
+| X | `docs/x-publishing/x-publishing.md` | `social/YYYY-MM-DD-slug/x-article.md` |
+| LinkedIn | `docs/linkedin-publishing/linkedin-publishing.md` | `social/YYYY-MM-DD-slug/linkedin.md` |
+| HN | `docs/hn-publishing/hn-publishing.md` | (no file needed) |
+| Reddit | `docs/reddit-publishing/reddit-publishing.md` | `social/YYYY-MM-DD-slug/reddit.md` |
 
 Read the relevant skill before creating each social version.
 Do not assume social draft files already exist; run:
