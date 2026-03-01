@@ -1,23 +1,23 @@
 {
-  "timestamp": "2026-02-27T14:00:00+01:00",
+  "timestamp": "2026-02-28T14:00:00+01:00",
   "items": [
     {
       "post_id": "hn_main",
-      "score": 316,
+      "score": 319,
       "comments": 118
     },
     {
       "post_id": "reddit_ai_agents",
       "upvotes": 39,
-      "comments": 23,
+      "comments": 24,
       "score": 39,
       "upvote_ratio": 0.91
     },
     {
       "post_id": "reddit_mcp",
-      "upvotes": 134,
-      "comments": 35,
-      "score": 134,
+      "upvotes": 141,
+      "comments": 40,
+      "score": 141,
       "upvote_ratio": 0.94
     },
     {

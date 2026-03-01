@@ -296,6 +296,45 @@
           "note": "browser unavailable"
         }
       ]
+    },
+    {
+      "timestamp": "2026-02-28T14:00:00+01:00",
+      "items": [
+        {
+          "post_id": "hn_main",
+          "score": 319,
+          "comments": 118
+        },
+        {
+          "post_id": "reddit_ai_agents",
+          "upvotes": 39,
+          "comments": 24,
+          "score": 39,
+          "upvote_ratio": 0.91
+        },
+        {
+          "post_id": "reddit_mcp",
+          "upvotes": 141,
+          "comments": 40,
+          "score": 141,
+          "upvote_ratio": 0.94
+        },
+        {
+          "post_id": "reddit_llmdevs",
+          "upvotes": 0,
+          "comments": 9,
+          "score": 0,
+          "upvote_ratio": 0.47
+        },
+        {
+          "post_id": "x_article",
+          "note": "browser unavailable"
+        },
+        {
+          "post_id": "linkedin_main",
+          "note": "browser unavailable"
+        }
+      ]
     }
   ]
 }
