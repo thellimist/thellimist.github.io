@@ -55,7 +55,7 @@ for d in "${!DIRS[@]}"; do
     continue
   fi
   echo "- $d"
-  if ! python3 docs/skills/blog-writing/scripts/lint_social_drafts.py --social-dir "$d" --cutoff-date "$CUTOFF_DATE"; then
+  if ! python3 docs/blog-writing/scripts/lint_social_drafts.py --social-dir "$d" --cutoff-date "$CUTOFF_DATE"; then
     FAIL=1
   fi
 done
