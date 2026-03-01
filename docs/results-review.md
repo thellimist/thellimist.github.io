@@ -1,6 +1,7 @@
 ---
-name: results-review
-description: Review published social post performance across platforms, record snapshots 3 times per day for 3 days, and report metric deltas from the previous update.
+summary: "Track cross-platform post metrics on cadence, record snapshots, and report deltas from prior updates."
+read_when:
+  - Reviewing live results after social publishing and reporting performance deltas.
 ---
 
 # Results Review Skill
@@ -37,7 +38,7 @@ Suggested times (local): `09:00`, `14:00`, `20:00`
 Run once before the first update:
 
 ```bash
-python3 skills/results-review/scripts/prepare_results_review.py \
+python3 docs/results-review/scripts/prepare_results_review.py \
   --social-dir social/YYYY-MM-DD-slug \
   --timezone America/Los_Angeles
 ```
@@ -164,7 +165,7 @@ Write the collected metrics into a snapshot JSON:
 Then run:
 
 ```bash
-python3 skills/results-review/scripts/record_results_snapshot.py \
+python3 docs/results-review/scripts/record_results_snapshot.py \
   --social-dir social/YYYY-MM-DD-slug \
   --snapshot social/YYYY-MM-DD-slug/results-snapshot.template.json
 ```
@@ -179,7 +180,7 @@ Always use the script so updates stay schema-compatible (`post_id` or legacy `id
 If an update failed and you only need to re-sync the latest report from already-stored snapshots:
 
 ```bash
-python3 skills/results-review/scripts/record_results_snapshot.py \
+python3 docs/results-review/scripts/record_results_snapshot.py \
   --social-dir social/YYYY-MM-DD-slug \
   --refresh-latest-only
 ```

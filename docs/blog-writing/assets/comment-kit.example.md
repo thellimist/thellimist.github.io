@@ -1,3 +1,8 @@
+---
+summary: "Example Comment Kit scaffold for social first-comment and manual-post handoff text."
+read_when:
+  - Creating or validating comment-kit.md content in social artifact directories.
+---
 # Comment Kit
 
 ## X publish notes

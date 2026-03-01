@@ -1,6 +1,7 @@
 ---
-name: blog-image-generation
-description: Generate and edit blog images for kanyilmaz.me posts using Gemini APIs (Imagen for new images, Gemini Flash Image for edits). Use when a blog needs a header image, inline visual, or image refinement.
+summary: "Generate and edit blog header/inline images using Gemini APIs and house style constraints."
+read_when:
+  - Generating or editing blog visuals, or updating post frontmatter image assets.
 ---
 
 # Blog Image Generation Skill

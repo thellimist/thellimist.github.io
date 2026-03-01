@@ -40,7 +40,7 @@ function parseIntFlag(name, value, fallback) {
 
 function usage() {
   console.log(`Usage:
-  node skills/x-publishing/scripts/capture_x_article_images.mjs \\
+  node docs/x-publishing/scripts/capture_x_article_images.mjs \\
     --url http://localhost:4000/post-slug \\
     --manifest social/YYYY-MM-DD-slug/x-image-manifest.json \\
     --out-dir assets/posts/slug/x-article

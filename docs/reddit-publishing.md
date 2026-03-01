@@ -1,13 +1,14 @@
 ---
-name: reddit-publishing
-description: Research and rank relevant subreddits for a blog post, audit each subreddit's posting rules (self-promo, link/text format, flair, karma/account limits), and draft subreddit-specific Reddit posts without publishing.
+summary: "Research subreddits, verify posting rules, and draft subreddit-specific Reddit posts without publishing."
+read_when:
+  - Researching Reddit targets or drafting Reddit variants for a blog post.
 ---
 
 # Reddit Publishing Skill
 
 Find subreddits that are both relevant and actually postable, then draft per-subreddit posts.
 Read `VOICE.md` in repo root before drafting.
-Read `skills/blog-writing/references/social-draft-contract.md` before drafting.
+Read `docs/blog-writing/references/social-draft-contract.md` before drafting.
 
 ## Tools Required
 
@@ -15,12 +16,12 @@ Read `skills/blog-writing/references/social-draft-contract.md` before drafting.
 - Browser automation for final rule verification and drafting:
   - `browser` (OpenClaw browser tool), or
   - `browser-tools` CLI (`bin/browser-tools` in agent-skill repo)
-- Discovery tool: `skills/reddit-publishing/scripts/research_subreddits.py`
-- Persistent notes: `skills/reddit-publishing/references/subreddit-notes.json`
+- Discovery tool: `docs/reddit-publishing/scripts/research_subreddits.py`
+- Persistent notes: `docs/reddit-publishing/references/subreddit-notes.json`
 
 ## Persistent Subreddit Notes
 
-Use `skills/reddit-publishing/references/subreddit-notes.json` for known subreddit sentiment/context that automated rule parsing cannot detect.
+Use `docs/reddit-publishing/references/subreddit-notes.json` for known subreddit sentiment/context that automated rule parsing cannot detect.
 
 When selecting subreddits, treat these notes as a first-class input alongside rules/activity metrics.
 Keep each note entry concise and actionable:
@@ -40,7 +41,7 @@ If any subreddit uses comment-first linking, also update `social/YYYY-MM-DD-slug
 Run this first, every time:
 
 ```bash
-python3 skills/blog-writing/scripts/prepare_social_artifacts.py \
+python3 docs/blog-writing/scripts/prepare_social_artifacts.py \
   --social-dir social/YYYY-MM-DD-slug \
   --platform reddit \
   --blog-url https://YOUR_BLOG_URL
@@ -69,7 +70,7 @@ Example:
 ## Step 2: Run Discovery + Rule Audit Script
 
 ```bash
-python3 skills/reddit-publishing/scripts/research_subreddits.py \
+python3 docs/reddit-publishing/scripts/research_subreddits.py \
   --queries "ai agents" "llm tool use" "developer productivity" "startup automation" \
   --source-post _posts/YYYY-MM-DD-slug.md \
   --limit-per-query 14 \
@@ -209,7 +210,7 @@ Blog URL: https://YOUR_BLOG_URL
 - [ ] Lint check passes:
 
 ```bash
-python3 skills/blog-writing/scripts/lint_social_drafts.py \
+python3 docs/blog-writing/scripts/lint_social_drafts.py \
   --social-dir social/YYYY-MM-DD-slug \
   --blog-url https://YOUR_BLOG_URL \
   --cutoff-date 2026-02-20

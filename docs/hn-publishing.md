@@ -1,12 +1,13 @@
 ---
-name: hn-publishing
-description: Submit a blog post to Hacker News with account-health checks, optimal title, and timing.
+summary: "Prepare Hacker News link submissions with required account-health checks and timing/title rules."
+read_when:
+  - Preparing an HN submission for a published blog post.
 ---
 
 # Hacker News Publishing Skill
 
 Submit a blog post to Hacker News. Minimal adaptation — HN readers click through to the original.
-Read `skills/blog-writing/references/social-draft-contract.md` before drafting optional HN notes.
+Read `docs/blog-writing/references/social-draft-contract.md` before drafting optional HN notes.
 
 ## Tools Required
 

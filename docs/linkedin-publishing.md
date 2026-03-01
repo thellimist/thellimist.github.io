@@ -1,13 +1,14 @@
 ---
-name: linkedin-publishing
-description: Adapt a blog post into a compressed LinkedIn native post that hooks readers and drives clicks to the full article.
+summary: "Adapt blog posts into compressed LinkedIn-native drafts optimized for hook and comment-first linking."
+read_when:
+  - Preparing or drafting LinkedIn-native post content from a blog post.
 ---
 
 # LinkedIn Publishing Skill
 
 Adapt a blog post into a LinkedIn native post. Not the full blog — a compressed version that drives engagement and puts the blog link in the first comment.
 Read `VOICE.md` in repo root before drafting.
-Read `skills/blog-writing/references/social-draft-contract.md` before drafting.
+Read `docs/blog-writing/references/social-draft-contract.md` before drafting.
 
 ## Tools Required
 
@@ -52,7 +53,7 @@ Also save/update `social/YYYY-MM-DD-slug/comment-kit.md`.
 Run this first, every time:
 
 ```bash
-python3 skills/blog-writing/scripts/prepare_social_artifacts.py \
+python3 docs/blog-writing/scripts/prepare_social_artifacts.py \
   --social-dir social/YYYY-MM-DD-slug \
   --platform linkedin \
   --blog-url https://YOUR_BLOG_URL
@@ -103,7 +104,7 @@ When handing off, include this exact line in the response so user can copy-paste
 - [ ] Lint check passes:
 
 ```bash
-python3 skills/blog-writing/scripts/lint_social_drafts.py \
+python3 docs/blog-writing/scripts/lint_social_drafts.py \
   --social-dir social/YYYY-MM-DD-slug \
   --blog-url https://YOUR_BLOG_URL \
   --cutoff-date 2026-02-20

@@ -1,13 +1,14 @@
 ---
-name: x-publishing
-description: Adapt a blog post into an X (Twitter) long-form article and preserve unsupported visuals by capturing tables/custom sections as images, then inserting each image at matching [IMAGE: ...] placeholders in the X editor.
+summary: "Adapt blog posts into X long-form articles while preserving unsupported visuals with captured images."
+read_when:
+  - Preparing or drafting X articles from a blog post.
 ---
 
 # X (Twitter) Publishing Skill
 
 Adapt a blog post into an X article without losing tables or custom-styled blocks.
 Read `VOICE.md` in repo root before drafting.
-Read `skills/blog-writing/references/social-draft-contract.md` before drafting.
+Read `docs/blog-writing/references/social-draft-contract.md` before drafting.
 
 ## Tools Required
 
@@ -31,15 +32,15 @@ Convert each unsupported section into an image and place it exactly where `[IMAG
 - Comment templates: `social/YYYY-MM-DD-slug/comment-kit.md`
 - Capture manifest: `social/YYYY-MM-DD-slug/x-image-manifest.json`
 - Captured images: `assets/posts/slug/x-article/`
-- Example manifest: `skills/x-publishing/assets/section-manifest.example.json`
-- Capture tool: `skills/x-publishing/scripts/capture_x_article_images.mjs`
+- Example manifest: `docs/x-publishing/assets/section-manifest.example.json`
+- Capture tool: `docs/x-publishing/scripts/capture_x_article_images.mjs`
 
 ## Step -1: Prepare Artifacts (Required, Do Not Assume Files Exist)
 
 Run this first, every time:
 
 ```bash
-python3 skills/blog-writing/scripts/prepare_social_artifacts.py \
+python3 docs/blog-writing/scripts/prepare_social_artifacts.py \
   --social-dir social/YYYY-MM-DD-slug \
   --platform x \
   --blog-url https://YOUR_BLOG_URL
@@ -108,14 +109,14 @@ Guidance:
 Start the local blog:
 
 ```bash
-cd /Users/kan/Code/Projects/thellimist.github.io
+cd /Users/kan/Projects/code/thellimist.github.io
 bundle exec jekyll serve --port 4000
 ```
 
 In another shell:
 
 ```bash
-node skills/x-publishing/scripts/capture_x_article_images.mjs \
+node docs/x-publishing/scripts/capture_x_article_images.mjs \
   --url http://localhost:4000/post-slug \
   --article social/YYYY-MM-DD-slug/x-article.md \
   --manifest social/YYYY-MM-DD-slug/x-image-manifest.json \
@@ -139,7 +140,7 @@ Before opening X editor:
 - Run lint:
 
 ```bash
-python3 skills/blog-writing/scripts/lint_social_drafts.py \
+python3 docs/blog-writing/scripts/lint_social_drafts.py \
   --social-dir social/YYYY-MM-DD-slug \
   --blog-url https://YOUR_BLOG_URL \
   --cutoff-date 2026-02-20

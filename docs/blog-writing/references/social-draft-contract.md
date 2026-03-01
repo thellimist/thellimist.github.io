@@ -1,3 +1,8 @@
+---
+summary: "Contract and quality gates for generating social drafts from a published blog post."
+read_when:
+  - Preparing social drafts (X, LinkedIn, Reddit, HN) from a source post.
+---
 # Social Draft Contract
 
 Canonical contract for all social format outputs.
@@ -21,7 +26,7 @@ Agents must never assume social artifacts already exist.
 Before platform drafting, run:
 
 ```bash
-python3 skills/blog-writing/scripts/prepare_social_artifacts.py \
+python3 docs/blog-writing/scripts/prepare_social_artifacts.py \
   --social-dir social/YYYY-MM-DD-slug \
   --platform <x|linkedin|reddit> \
   --blog-url https://YOUR_BLOG_URL
@@ -61,7 +66,7 @@ Then continue with platform-specific drafting/publishing steps.
   - `## Vibecoding WhatsApp`
   - `## Bookface post`
 - Use plain text and include the full blog URL.
-- Example template: `skills/blog-writing/assets/comment-kit.example.md`
+- Example template: `docs/blog-writing/assets/comment-kit.example.md`
 
 ## `reddit.md`
 
@@ -83,7 +88,7 @@ Then continue with platform-specific drafting/publishing steps.
 
 ## Results Review (optional)
 
-- For live performance tracking, use `skills/results-review/SKILL.md`.
+- For live performance tracking, use `docs/results-review.md`.
 - Track all published destinations (X, LinkedIn, HN, each Reddit subreddit URL).
 - Cadence target: 3 updates/day for 3 days.
 - Update rows must include: post, source, metrics, diff from last update.
@@ -104,7 +109,7 @@ bash .claude/hooks/install-git-hooks.sh
 - Run social lint before final handoff:
 
 ```bash
-python3 skills/blog-writing/scripts/lint_social_drafts.py \
+python3 docs/blog-writing/scripts/lint_social_drafts.py \
   --social-dir social/YYYY-MM-DD-slug \
   --blog-url https://YOUR_BLOG_URL \
   --cutoff-date 2026-02-20

@@ -1,6 +1,7 @@
 ---
-name: blog-writing
-description: Write, edit, and format blog posts for kanyilmaz.me (Jekyll on GitHub Pages).
+summary: "Write, edit, and format blog posts for kanyilmaz.me"
+read_when:
+  - Writing or editing blog posts, markdown structure, or social artifact prep workflows.
 ---
 
 # Blog Writing Skill
@@ -10,8 +11,8 @@ Write and edit blog posts for kanyilmaz.me.
 ## Before Writing
 
 Read `VOICE.md` in the repo root. It defines Kan's tone, structure, content patterns, and anti-AI-slop rules. Every draft must follow it.
-Read `skills/blog-writing/references/social-draft-contract.md` before generating any social format draft.
-If the task includes generating or editing blog images, use `skills/blog-image-generation/SKILL.md`.
+Read `docs/blog-writing/references/social-draft-contract.md` before generating any social format draft.
+If the task includes generating or editing blog images, use `docs/blog-image-generation.md`.
 
 ## Blog Post Format
 
@@ -68,14 +69,14 @@ Tables render natively from markdown. Use standard markdown table syntax.
 ## Images
 
 - Header images go in `assets/posts/`.
-- For generation/editing workflow and commands, use `skills/blog-image-generation/SKILL.md`.
+- For generation/editing workflow and commands, use `docs/blog-image-generation.md`.
 
 ## Publishing
 
 After the blog post is ready:
 
 ```bash
-cd /Users/kan/Code/Projects/thellimist.github.io
+cd /Users/kan/Projects/code/thellimist.github.io
 git add -A
 git commit -m "Add blog: POST TITLE"
 git push
@@ -89,16 +90,16 @@ After publishing the blog, create social versions using the publishing skills:
 
 | Platform | Skill | File |
 |----------|-------|------|
-| X | `skills/x-publishing/SKILL.md` | `social/YYYY-MM-DD-slug/x-article.md` |
-| LinkedIn | `skills/linkedin-publishing/SKILL.md` | `social/YYYY-MM-DD-slug/linkedin.md` |
-| HN | `skills/hn-publishing/SKILL.md` | (no file needed) |
-| Reddit | `skills/reddit-publishing/SKILL.md` | `social/YYYY-MM-DD-slug/reddit.md` |
+| X | `docs/x-publishing.md` | `social/YYYY-MM-DD-slug/x-article.md` |
+| LinkedIn | `docs/linkedin-publishing.md` | `social/YYYY-MM-DD-slug/linkedin.md` |
+| HN | `docs/hn-publishing.md` | (no file needed) |
+| Reddit | `docs/reddit-publishing.md` | `social/YYYY-MM-DD-slug/reddit.md` |
 
 Read the relevant skill before creating each social version.
 Do not assume social draft files already exist; run:
 
 ```bash
-python3 skills/blog-writing/scripts/prepare_social_artifacts.py \
+python3 docs/blog-writing/scripts/prepare_social_artifacts.py \
   --social-dir social/YYYY-MM-DD-slug \
   --platform <x|linkedin|reddit> \
   --blog-url https://YOUR_BLOG_URL
@@ -111,7 +112,7 @@ before platform-specific drafting.
 Run lint before handoff:
 
 ```bash
-python3 skills/blog-writing/scripts/lint_social_drafts.py \
+python3 docs/blog-writing/scripts/lint_social_drafts.py \
   --social-dir social/YYYY-MM-DD-slug \
   --blog-url https://YOUR_BLOG_URL \
   --cutoff-date 2026-02-20
