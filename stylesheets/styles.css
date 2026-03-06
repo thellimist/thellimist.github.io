@@ -14,7 +14,7 @@
   --text-primary: #222;
   --text-muted: #555;
   --accent: #2563eb;
-  --rss-accent: #f97316;
+  --rss-accent: var(--text-primary);
   --border: #e2e2e2;
   --card-bg: #f9f9f9;
 }
