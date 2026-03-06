@@ -243,17 +243,7 @@ section > * {
   color: var(--accent);
 }
 
-.nav-social a.fa-rss,
-ul.social li a.fa-rss {
-  color: var(--rss-accent);
-  opacity: 0.85;
-}
-
-.nav-social a.fa-rss:hover,
-ul.social li a.fa-rss:hover {
-  color: var(--rss-accent);
-  opacity: 1;
-}
+/* RSS icon inherits same style as other nav-social icons */
 
 /* Remove underline effect from social icons */
 .nav-social a::after {
