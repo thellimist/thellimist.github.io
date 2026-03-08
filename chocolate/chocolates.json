@@ -196,5 +196,50 @@
         "country": "Global",
         "location": "",
         "comments": "Has vegetable oil"
+    },
+    {
+        "name": "Alain Ducasse - Cru d'Exception Perou 75%",
+        "tier": "C",
+        "brand": "Alain Ducasse Chocolat",
+        "picture": "/assets/chocolate-images/alain-ducasse-perou-75.jpg",
+        "country": "France",
+        "location": "",
+        "comments": ""
+    },
+    {
+        "name": "Alain Ducasse - Cru d'Exception Congo 75%",
+        "tier": "C",
+        "brand": "Alain Ducasse Chocolat",
+        "picture": "/assets/chocolate-images/alain-ducasse-congo-75.jpg",
+        "country": "France",
+        "location": "",
+        "comments": ""
+    },
+    {
+        "name": "Alain Ducasse - Cru d'Exception Thailande 75%",
+        "tier": "C",
+        "brand": "Alain Ducasse Chocolat",
+        "picture": "/assets/chocolate-images/alain-ducasse-thailande-75.jpg",
+        "country": "France",
+        "location": "",
+        "comments": ""
+    },
+    {
+        "name": "Alain Ducasse - Cru d'Exception Madagascar 75%",
+        "tier": "C",
+        "brand": "Alain Ducasse Chocolat",
+        "picture": "/assets/chocolate-images/alain-ducasse-madagascar-75.jpg",
+        "country": "France",
+        "location": "",
+        "comments": ""
+    },
+    {
+        "name": "Yves Thuries - Noir Noisettes Entieres",
+        "tier": "C",
+        "brand": "Yves Thuries",
+        "picture": "/assets/chocolate-images/yves-thuries-noir-noisettes-entieres.jpg",
+        "country": "France",
+        "location": "",
+        "comments": ""
     }
 ]
