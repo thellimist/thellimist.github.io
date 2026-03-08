@@ -5,9 +5,13 @@ title: Kan Yilmaz - About
 
 # About
 
-I am a Software Engineer interested in watching [animes](https://docs.google.com/spreadsheets/d/1maa414tmM5iKOrWWkQ6pWR38OrQhUrZaB-KqHjO9M-w/edit?usp=sharing){:target="_blank"}, loves [dark chocolate](/chocolate){:target="_blank"} and [reading books](https://www.goodreads.com/thellimist){:target="_blank"}.
+Currently founder of [Haystack](https://usehaystack.io) ([YC W21](https://www.ycombinator.com/companies/haystack)).
 
-Currently founder of [Haystack](https://usehaystack.io) ([YCW21](https://www.ycombinator.com/companies/haystack)).
+Interested in: 
+
+* Watching [animes](https://docs.google.com/spreadsheets/d/1maa414tmM5iKOrWWkQ6pWR38OrQhUrZaB-KqHjO9M-w/edit?usp=sharing){:target="_blank"}.
+* Dark [chocolate](/chocolate){:target="_blank"}.
+* Reading [books](https://www.goodreads.com/thellimist){:target="_blank"}.
 
 ## Fun
 
@@ -35,18 +39,124 @@ I was a semi-pro League of Legends player earning more than $8000 worth of cash 
 
 ## Opensource
 
-I've created/co-created/led a few opensource libraries having more than 4000 GitHub stars in total and +1M downloads.
+I've created/co-created/led a few opensource libraries having more than 7000 GitHub stars in total and +1M downloads.
 
-* [EZSwiftExtensions](https://github.com/goktugyil/EZSwiftExtensions)
-* [EZLoadingActivity](https://github.com/goktugyil/EZLoadingActivity)
-* [EZAlertController](https://github.com/thellimist/EZAlertController)
-* [EZPods](https://github.com/thellimist/EZPods)
-* [QorumLogs](https://github.com/goktugyil/QorumLogs)
-* [SwiftRandom](https://github.com/thellimist/SwiftRandom)
-* [Cloudflare Wordpress Plugin](https://github.com/cloudflare/Cloudflare-WordPress)
-* [Cloudflare CPanel Plugin](https://github.com/cloudflare/CloudFlare-CPanel)
-* [Cloudflare Magento Plugin](https://github.com/cloudflare/CloudFlare-Magento)
-* [Cloudflare Plugin Frontend](https://github.com/cloudflare/cloudflare-plugin-frontend)
-* [Cloudflare Plugin Backend](https://github.com/cloudflare/cloudflare-plugin-backend)
-* [Cloudflare Frontend Library](https://github.com/cloudflare/cf-ui)
-* [Cloudflare Ip Rewriting Module](https://github.com/cloudflare/cf-ip-rewrite)
+<table id="opensource-table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th style="text-align: right;">Stars</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td colspan="3">Loading GitHub stars...</td>
+    </tr>
+  </tbody>
+</table>
+
+<script>
+(function () {
+  // Descriptions are intentionally hardcoded plain text; do not do emoji shortcode conversion.
+  const repos = [
+    { name: "EZSwiftExtensions", repo: "goktugyil/EZSwiftExtensions", url: "https://github.com/goktugyil/EZSwiftExtensions", description: "Useful Swift extensions and utilities.", snapshotStars: 3000 },
+    { name: "EZLoadingActivity", repo: "goktugyil/EZLoadingActivity", url: "https://github.com/goktugyil/EZLoadingActivity", description: "Simple loading activity indicator for iOS.", snapshotStars: 607 },
+    { name: "EZAlertController", repo: "thellimist/EZAlertController", url: "https://github.com/thellimist/EZAlertController", description: "Easy-to-use alert controller helpers for iOS.", snapshotStars: 365 },
+    { name: "EZPods", repo: "thellimist/EZPods", url: "https://github.com/thellimist/EZPods", description: "Helpers and scripts for CocoaPods workflows.", snapshotStars: 50 },
+    { name: "QorumLogs", repo: "goktugyil/QorumLogs", url: "https://github.com/goktugyil/QorumLogs", description: "Lightweight logging utility for Swift.", snapshotStars: 783 },
+    { name: "SwiftRandom", repo: "thellimist/SwiftRandom", url: "https://github.com/thellimist/SwiftRandom", description: "Random data generation utilities for Swift.", snapshotStars: 558 },
+    { name: "CLIHub", repo: "thellimist/clihub", url: "https://github.com/thellimist/clihub", description: "CLI tooling and workflows.", snapshotStars: 588 },
+    { name: "Cloudflare Wordpress Plugin", repo: "cloudflare/Cloudflare-WordPress", url: "https://github.com/cloudflare/Cloudflare-WordPress", description: "Official Cloudflare plugin for WordPress.", snapshotStars: 237 },
+    { name: "Cloudflare CPanel Plugin", repo: "cloudflare/CloudFlare-CPanel", url: "https://github.com/cloudflare/CloudFlare-CPanel", description: "Official Cloudflare plugin for cPanel.", snapshotStars: 145 },
+    { name: "Cloudflare Magento Plugin", repo: "cloudflare/CloudFlare-Magento", url: "https://github.com/cloudflare/CloudFlare-Magento", description: "Official Cloudflare plugin for Magento.", snapshotStars: 52 },
+    { name: "Cloudflare Plugin Frontend", repo: "cloudflare/cloudflare-plugin-frontend", url: "https://github.com/cloudflare/cloudflare-plugin-frontend", description: "Shared frontend for Cloudflare CMS plugins.", snapshotStars: 36 },
+    { name: "Cloudflare Plugin Backend", repo: "cloudflare/cloudflare-plugin-backend", url: "https://github.com/cloudflare/cloudflare-plugin-backend", description: "Shared backend for Cloudflare CMS plugins.", snapshotStars: 21 },
+    { name: "Cloudflare Frontend Library", repo: "cloudflare/cf-ui", url: "https://github.com/cloudflare/cf-ui", description: "Cloudflare frontend component library.", snapshotStars: 1300 },
+    { name: "Cloudflare Ip Rewriting Module", repo: "cloudflare/cf-ip-rewrite", url: "https://github.com/cloudflare/cf-ip-rewrite", description: "IP rewriting module for Cloudflare integrations.", snapshotStars: 15 }
+  ];
+
+  const tableBody = document.querySelector("#opensource-table tbody");
+  if (!tableBody) return;
+
+  const formatStars = (stars) => (typeof stars === "number" ? stars.toLocaleString() : "N/A");
+  const formatDescription = (description) => {
+    if (!description || !description.trim()) return "No description";
+    return description.trim();
+  };
+
+  const parseStarValue = (value) => {
+    if (!value) return null;
+    const normalized = String(value).trim().toLowerCase().replace(/,/g, "");
+    if (/^\d+(\.\d+)?k$/.test(normalized)) return Math.round(parseFloat(normalized) * 1000);
+    if (/^\d+(\.\d+)?m$/.test(normalized)) return Math.round(parseFloat(normalized) * 1000000);
+    const asNumber = Number(normalized);
+    return Number.isFinite(asNumber) ? asNumber : null;
+  };
+
+  const sortRowsByStars = (rows) => {
+    rows.sort((a, b) => {
+      const aStars = typeof a.stars === "number" ? a.stars : -1;
+      const bStars = typeof b.stars === "number" ? b.stars : -1;
+      if (bStars !== aStars) return bStars - aStars;
+      return a.name.localeCompare(b.name);
+    });
+    return rows;
+  };
+
+  const renderRows = (rows) => {
+    tableBody.innerHTML = "";
+    rows.forEach((item) => {
+      const tr = document.createElement("tr");
+      const nameTd = document.createElement("td");
+      const link = document.createElement("a");
+      link.href = item.url;
+      link.textContent = item.name;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      nameTd.appendChild(link);
+
+      const starTd = document.createElement("td");
+      starTd.style.textAlign = "right";
+      starTd.textContent = formatStars(item.stars);
+
+      const descriptionTd = document.createElement("td");
+      descriptionTd.textContent = formatDescription(item.description);
+
+      tr.appendChild(nameTd);
+      tr.appendChild(starTd);
+      tr.appendChild(descriptionTd);
+      tableBody.appendChild(tr);
+    });
+  };
+
+  const loadStars = async () => {
+    const rows = await Promise.all(
+      repos.map(async (item) => {
+        try {
+          const response = await fetch(`https://img.shields.io/github/stars/${item.repo}.json`);
+          if (!response.ok) {
+            throw new Error(`Stars API error ${response.status}`);
+          }
+          const data = await response.json();
+          const stars = parseStarValue(data.value || data.message);
+          const resolvedStars = typeof stars === "number" ? stars : item.snapshotStars;
+          return { ...item, stars: resolvedStars };
+        } catch (error) {
+          return { ...item, stars: item.snapshotStars };
+        }
+      })
+    );
+
+    renderRows(sortRowsByStars(rows));
+  };
+
+  const renderSnapshotFirst = () => {
+    const snapshotRows = repos.map((item) => ({ ...item, stars: item.snapshotStars }));
+    renderRows(sortRowsByStars(snapshotRows));
+  };
+
+  renderSnapshotFirst();
+  loadStars();
+})();
+</script>
