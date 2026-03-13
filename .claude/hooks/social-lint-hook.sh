@@ -74,7 +74,7 @@ for dir in "${!SOCIAL_DIRS[@]}"; do
     continue
   fi
 
-  if ! python3 docs/skills/blog-writing/scripts/lint_social_drafts.py --social-dir "$dir" --cutoff-date "$CUTOFF_DATE"; then
+  if ! python3 docs/blog-writing/scripts/lint_social_drafts.py --social-dir "$dir" --cutoff-date "$CUTOFF_DATE"; then
     FAIL=1
   fi
 done
