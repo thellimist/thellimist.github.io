@@ -2,6 +2,7 @@
 summary: "Write, edit, and format blog posts for kanyilmaz.me"
 read_when:
   - Writing or editing blog posts, markdown structure, or social artifact prep workflows.
+  - Starting a new blog post (interactive discovery, outline, and drafting workflow).
 ---
 
 # Blog Writing Skill
@@ -13,6 +14,63 @@ Write and edit blog posts for kanyilmaz.me.
 Read `docs/voice/voice.md`. It defines Kan's tone, structure, content patterns, and anti-AI-slop rules. Every draft must follow it.
 Read `docs/blog-writing/references/social-draft-contract.md` before generating any social format draft.
 If the task includes generating or editing blog images, use `docs/blog-image-generation/blog-image-generation.md`.
+
+## Writing Process
+
+**Do not write prose until Kan approves an outline.** No exceptions - not even "just a rough draft." Follow these phases in order.
+
+### Phase 1: Discovery Questions
+
+Before anything else, ask Kan these questions and wait for answers:
+
+1. **Thesis** - What's the core claim in one sentence?
+2. **Audience** - Who's the reader? (developers, founders, general public, mixed?)
+3. **Takeaway** - What's the one thing the reader should walk away with?
+4. **Angle** - What's the contrarian or non-obvious take? Why would someone disagree?
+5. **Anchors** - Any specific experiences, anecdotes, or data to build around?
+6. **Comparisons** - Any existing blog posts this should feel closest to in style/structure?
+7. **Scope** - Short and punchy (~800 words) or long-form deep dive (~2000+ words)?
+
+Don't ask all seven if Kan already provided context. Skip what's already clear, ask what's missing.
+
+### Phase 2: Outline Options
+
+Before outlining, read 2-3 recent posts in `_posts/` to calibrate tone and structure beyond what `voice.md` describes. Match the actual writing, not just the rules.
+
+After getting answers, present **2-3 outline options** with different structures. For each option show:
+
+- Opening hook (the actual first line, not a description of it)
+- Section headings with 1-line summary of each
+- Where tables, quotes, or visuals would go
+- Estimated word count
+
+Example structures to draw from:
+- **Claim-first:** Bold opener → evidence → implications → punch ending
+- **Story-in:** Anecdote → zoom out to principle → apply broadly → land it
+- **Framework:** Taxonomy/model → walk through each part → synthesis
+- **Contrast:** Show the wrong way → flip to the right way → why it matters
+
+### Phase 3: Outline Approval
+
+Wait for Kan to pick an outline (or mix elements from multiple). He may also:
+- Reorder sections
+- Add/remove sections
+- Change the hook
+- Adjust scope
+
+If Kan explicitly says to skip phases, respect that. The gate is a default, not a cage.
+
+If Kan rejects all outlines:
+- If the feedback is specific ("too listicle-y", "wrong angle"), generate a new round incorporating that feedback.
+- If the feedback is vague ("none of these work"), ask what's missing or what feels off before generating more. Don't just throw 3 more random options at the wall.
+
+Incorporate feedback and confirm the final outline before proceeding.
+
+### Phase 4: Draft
+
+Only now write the full post. Follow the approved outline and `docs/voice/voice.md` strictly.
+
+After drafting, self-review against the anti-slop rules in VOICE.md before presenting.
 
 ## Blog Post Format
 
