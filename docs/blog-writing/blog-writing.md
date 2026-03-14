@@ -124,6 +124,23 @@ The blog uses a custom stylesheet. Key classes available:
 
 Tables render natively from markdown. Use standard markdown table syntax.
 
+### Internal Blog Link Cards
+
+Use `.blog-link-card` to link to related posts. Thin bordered rectangle with title and arrow. Max 3 per post.
+
+```html
+<a href="/YYYY/MM/DD/post-slug" class="blog-link-card">
+<span class="blog-link-card-title">Post Title Here</span>
+<span class="blog-link-card-arrow">↗</span>
+</a>
+```
+
+**Important:** Use `<span>` not `<p>` inside the `<a>` tag. Do not indent the inner tags - Kramdown will break the HTML.
+
+Placement rules:
+- **Highly related**: place inline near the relevant section (mid-post)
+- **Less related**: place at the end, before the CTA line
+
 ## Images
 
 - Header images go in `assets/posts/`.

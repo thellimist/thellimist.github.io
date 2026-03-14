@@ -88,4 +88,9 @@ Coding agents will keep polishing stage 5. Better memory, smarter delegation, mo
 
 The big jumps are elsewhere. The first sales agent or accounting agent that fully solves stage 1 will feel like Claude Code did when people first used it. That moment where you stop watching the agent and start trusting it.
 
+<a href="/2026/03/14/from-0-to-1000-skills" class="blog-link-card">
+<span class="blog-link-card-title">Read more on how to make "Stage 4: Personalization" work for more than 1,000 skills</span>
+<span class="blog-link-card-arrow">↗</span>
+</a>
+
 If you need help building vertical AI agents that actually work, reach out: [kan.yilmaz.me@gmail.com](mailto:kan.yilmaz.me@gmail.com)
