@@ -115,11 +115,11 @@ Use lowercase, hyphen/underscore file names. Prefer `.png`.
 
 ## Required Key
 
-Gemini API key must exist at:
+Gemini API key must be available via `GEMINI_API_KEY` env var or configured in `~/.openclaw/openclaw.json` under `skills."nano-banana-pro".apiKey`.
 
-`~/.config/gemini/api_key`
+## Generate New Image (Nano Banana Pro / Gemini 3 Pro Image)
 
-## Generate New Image (Imagen)
+Uses the `nano-banana-pro` OpenClaw skill script for all image generation and editing.
 
 Prompt structure:
 - Subject/metaphor (one sentence)
@@ -142,57 +142,32 @@ Do not add logos or UI chrome. Keep text minimal (prefer none; max 5 words if ne
 ```
 
 ```bash
-GEMINI_KEY=$(cat ~/.config/gemini/api_key)
-curl -s -X POST \
-  "https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict" \
-  -H "x-goog-api-key: $GEMINI_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "instances": [{"prompt": "YOUR PROMPT"}],
-    "parameters": {"sampleCount": 1, "aspectRatio": "16:9"}
-  }' | python3 -c "
-import json, sys, base64
-data = json.load(sys.stdin)
-img = data.get('predictions', [{}])[0].get('bytesBase64Encoded', '')
-if img:
-    open('output.png', 'wb').write(base64.b64decode(img))
-    print('saved output.png')
-"
+uv run /opt/homebrew/lib/node_modules/openclaw/skills/nano-banana-pro/scripts/generate_image.py \
+  --prompt "YOUR PROMPT" \
+  --filename "output.png" \
+  --aspect-ratio 16:9 \
+  --resolution 1K
 ```
 
 Move output to target path after review.
 
-## Edit Existing Image (Gemini Flash Image)
+## Edit Existing Image (Nano Banana Pro)
 
 ```bash
-python3 << 'PYEOF'
-import json, base64, urllib.request
+uv run /opt/homebrew/lib/node_modules/openclaw/skills/nano-banana-pro/scripts/generate_image.py \
+  --prompt "YOUR EDIT INSTRUCTIONS" \
+  --filename "output.png" \
+  -i input.png \
+  --resolution 2K
+```
 
-key = open('/Users/kan/.config/gemini/api_key').read().strip()
-with open('input.png', 'rb') as f:
-    img_b64 = base64.b64encode(f.read()).decode()
+Multi-image composition (up to 14 images):
 
-body = json.dumps({
-    'contents': [{'parts': [
-        {'text': 'YOUR EDIT INSTRUCTIONS'},
-        {'inline_data': {'mime_type': 'image/png', 'data': img_b64}}
-    ]}],
-    'generationConfig': {'responseModalities': ['TEXT', 'IMAGE']}
-}).encode()
-
-req = urllib.request.Request(
-    f'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key={key}',
-    data=body,
-    headers={'Content-Type': 'application/json'}
-)
-
-resp = json.loads(urllib.request.urlopen(req, timeout=120).read())
-for candidate in resp.get('candidates', []):
-    for part in candidate.get('content', {}).get('parts', []):
-        if 'inlineData' in part:
-            open('output.png', 'wb').write(base64.b64decode(part['inlineData']['data']))
-            print('saved output.png')
-PYEOF
+```bash
+uv run /opt/homebrew/lib/node_modules/openclaw/skills/nano-banana-pro/scripts/generate_image.py \
+  --prompt "combine these into one scene" \
+  --filename "output.png" \
+  -i img1.png -i img2.png -i img3.png
 ```
 
 ## Post-Generation Checklist
