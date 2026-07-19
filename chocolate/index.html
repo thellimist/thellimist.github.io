@@ -354,7 +354,11 @@ function populateFilters(chocolates) {
     const brands = new Set();
 
     chocolates.forEach(chocolate => {
-        if (chocolate.country) countries.add(chocolate.country);
+        const chocolateCountries = Array.isArray(chocolate.country)
+            ? chocolate.country
+            : [chocolate.country];
+
+        chocolateCountries.filter(Boolean).forEach(country => countries.add(country));
         if (chocolate.brand) brands.add(chocolate.brand);
     });
 
@@ -390,7 +394,13 @@ function applyFilters() {
     let filteredChocolates = allChocolates;
 
     if (selectedCountry) {
-        filteredChocolates = filteredChocolates.filter(c => c.country === selectedCountry);
+        filteredChocolates = filteredChocolates.filter(chocolate => {
+            const chocolateCountries = Array.isArray(chocolate.country)
+                ? chocolate.country
+                : [chocolate.country];
+
+            return chocolateCountries.includes(selectedCountry);
+        });
     }
 
     if (selectedBrand) {
@@ -459,7 +469,10 @@ function createChocolateElement(chocolate) {
     }
     
     if (chocolate.country) {
-        tooltipContent += `<strong>Country:</strong> ${chocolate.country}<br>`;
+        const countryLabel = Array.isArray(chocolate.country)
+            ? chocolate.country.join(', ')
+            : chocolate.country;
+        tooltipContent += `<strong>Country:</strong> ${countryLabel}<br>`;
     }
     
     if (chocolate.location) {

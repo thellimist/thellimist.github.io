@@ -3,6 +3,7 @@ summary: "Add or update chocolates in the tier list with reliable image sourcing
 read_when:
   - Adding, updating, or fixing entries in chocolate/chocolates.json.
   - Sourcing chocolate images from Notes, local files, prompts, or online references.
+  - Archiving chocolate review notes or deleting migrated source notes.
 ---
 
 # Chocolate Maintenance Skill
@@ -23,7 +24,7 @@ Each JSON object should include:
 - `tier` - one of `S`, `A`, `B`, `C`, `D`.
 - `brand` - brand/manufacturer.
 - `picture` - path like `/assets/chocolate-images/<file>.jpg` or fallback `/assets/no_image.png`.
-- `country` - where Kan bought it or where he wants to classify it (must confirm).
+- `country` - where Kan bought it or where he wants to classify it (must confirm). Use a string for one country or an array of strings when the chocolate should appear under multiple country filters.
 - `location` - optional URL (store google maps link. Used exclusively for shops that are boutique, has one shop only. Not used for chains)
 - `comments` - optional short tasting note.
 
@@ -39,6 +40,28 @@ If any of these are unknown, ask before finalizing:
 - Whether an entry is new or should replace/update an existing one.
 
 First try to get all these information, before asking. 
+
+## Guardrails
+
+- Keep the canonical Apple Note named `Chocolate Archive`.
+- Copy every chocolate entry and its matching image into `Chocolate Archive` before proposing deletion of a source note.
+- Preserve the source note's text-to-image order in the archive.
+- Verify every chocolate and attachment from the source note is present in the archive. If the source note contains unrelated or unmigrated items, do not delete it.
+- After archive verification, ask Kan for explicit approval to delete the original note and its Notes attachments.
+- Adding a chocolate to the website, copying it to the archive, or receiving approval for another deletion does not authorize deletion.
+- Delete only after Kan approves that specific source note in the current conversation. Never delete a photo from Photos or the filesystem unless Kan separately asks.
+
+## Apple Notes Archive Workflow
+
+Run this whenever a chocolate originates from Apple Notes and is added to the website.
+
+1. Inventory every chocolate, text block, and attachment in the source note.
+2. Add or update the website entry and verify the correct image is attached to the correct chocolate.
+3. Append the finalized chocolate text and matching image to `Chocolate Archive`.
+4. Compare source and archive counts, text, image identity, and image order.
+5. Report the verified migration to Kan and ask whether to delete the named source note.
+6. Delete the source note and its Notes attachments only after Kan explicitly approves.
+7. Confirm `Chocolate Archive` is unchanged and the approved source note is gone.
 
 ## Image Source Paths
 
@@ -151,3 +174,4 @@ When reporting back, include:
 2. Final tier per item.
 3. Exact new image filenames.
 4. Any unresolved fields that need Kan confirmation.
+5. Apple Notes archive status and whether deletion approval is still pending.

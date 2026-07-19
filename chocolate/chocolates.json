@@ -73,7 +73,7 @@
     },
     {
         "name": "Mr. Bucket - 75% Dark Davao, Philipines",
-        "tier": "A",
+        "tier": "B",
         "brand": "Mr. Bucket",
         "picture": "/assets/chocolate-images/mrbucket-75.png",
         "country": "Singapore",
@@ -177,7 +177,7 @@
         "picture": "/assets/chocolate-images/soma-bejofo-70-official.jpg",
         "country": "Toronto",
         "location": "https://maps.app.goo.gl/YULp9K4Kr6C8cdYM7",
-        "comments": "A tier"
+        "comments": "Most beginner-friendly single-estate chocolate."
     },
     {
         "name": "Fin Carre - Negro/Preto Almendras Enteras 72%",
@@ -190,7 +190,7 @@
     },
     {
         "name": "Ferrero Rochero",
-        "tier": "A",
+        "tier": "B",
         "brand": "Ferrero Rocher",
         "picture": "/assets/chocolate-images/ferrero-rocher.jpg",
         "country": "Global",
@@ -239,6 +239,108 @@
         "brand": "Yves Thuries",
         "picture": "/assets/chocolate-images/yves-thuries-noir-noisettes-entieres.jpg",
         "country": "France",
+        "location": "",
+        "comments": ""
+    },
+    {
+        "name": "Çitlekçi - Pistachio Chocolate",
+        "tier": "A",
+        "brand": "Çitlekçi",
+        "picture": "/assets/chocolate-images/citlekci-pistachio-chocolate.jpg",
+        "country": "Turkiye",
+        "location": "",
+        "comments": "Best pistachio chocolate."
+    },
+    {
+        "name": "Çitlekçi - Hazelnut Chocolate",
+        "tier": "B",
+        "brand": "Çitlekçi",
+        "picture": "/assets/chocolate-images/citlekci-hazelnut-chocolate.jpg",
+        "country": "Turkiye",
+        "location": "",
+        "comments": ""
+    },
+    {
+        "name": "The Chocolate Line - Almond Dark Chocolate",
+        "tier": "C",
+        "brand": "The Chocolate Line",
+        "picture": "/assets/chocolate-images/the-chocolate-line-almond-dark.jpg",
+        "country": "Belgium",
+        "location": "",
+        "comments": ""
+    },
+    {
+        "name": "The Chocolate Line - Ecuador 71%",
+        "tier": "B",
+        "brand": "The Chocolate Line",
+        "picture": "/assets/chocolate-images/the-chocolate-line-ecuador-71.jpg",
+        "country": "Belgium",
+        "location": "",
+        "comments": ""
+    },
+    {
+        "name": "The Chocolate Line - Mexico 76%",
+        "tier": "D",
+        "brand": "The Chocolate Line",
+        "picture": "/assets/chocolate-images/the-chocolate-line-mexico-76.jpg",
+        "country": "Belgium",
+        "location": "",
+        "comments": ""
+    },
+    {
+        "name": "The Chocolate Line - Hazelnut Milk Chocolate",
+        "tier": "C",
+        "brand": "The Chocolate Line",
+        "picture": "/assets/chocolate-images/the-chocolate-line-hazelnut-milk.jpg",
+        "country": "Belgium",
+        "location": "",
+        "comments": ""
+    },
+    {
+        "name": "Chocolate Factory Belgium - Dark Chocolate with Hazelnuts",
+        "tier": "S",
+        "brand": "Chocolate Factory Belgium",
+        "picture": "/assets/chocolate-images/chocolate-factory-belgium-dark-hazelnut.jpg",
+        "country": "Belgium",
+        "location": "",
+        "comments": "Took me tasting +30 chocolates in belgium to find this. Dark hazelnut chocolate in between milk and marble chocolates."
+    },
+    {
+        "name": "Chocolat Factory - São Tomé 70%",
+        "tier": "C",
+        "brand": "Chocolat Factory",
+        "picture": "/assets/chocolate-images/chocolat-factory-sao-thome-70.jpg",
+        "country": "Spain",
+        "location": "",
+        "comments": ""
+    },
+    {
+        "name": "Lotte Dream Cacao 72%",
+        "tier": "C",
+        "brand": "Lotte",
+        "picture": "/assets/chocolate-images/lotte-dream-cacao-72.jpg",
+        "country": "Singapore",
+        "location": "",
+        "comments": "Contains vegetable oil."
+    },
+    {
+        "name": "Tony's Chocolonely - Dark Chocolate 70%",
+        "tier": "B",
+        "brand": "Tony's Chocolonely",
+        "picture": "/assets/chocolate-images/tonys-chocolonely-dark-70.jpg",
+        "country": "Global",
+        "location": "",
+        "comments": ""
+    },
+    {
+        "name": "Cadbury Old Gold - Dark Chocolate 70%",
+        "tier": "B",
+        "brand": "Cadbury",
+        "picture": "/assets/chocolate-images/cadbury-old-gold-dark-70.jpg",
+        "country": [
+            "Australia",
+            "Singapore"
+        ],
         "location": "",
         "comments": ""
     }
