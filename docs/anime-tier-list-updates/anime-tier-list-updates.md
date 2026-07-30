@@ -3,9 +3,24 @@ summary: "Safely add or change Supabase anime ratings, defaulting every update t
 read_when:
   - "Adding or changing a vote in the Furk Anime Tier List."
   - "Updating a Supabase anime rating for Kan or another family member."
+  - "Determining whether Kan has already watched an anime."
 ---
 
 # Anime tier list updates
+
+## Identity and watched history
+
+Kan Yilmaz is the user and maps to the Supabase profile named `Kan`. Unless Kan
+explicitly names another person, “I” and “my” always mean the `Kan` profile.
+
+The Furk Anime Tier Google Sheet is the legacy watched-history source. Titles in
+its Tier 1 through Tier 5 columns count as watched by Kan. Titles in `To Watch`
+do not. When producing an unwatched list, require both:
+
+- No Kan rating in Supabase.
+- No matching title in the Sheet's Tier 1 through Tier 5 columns.
+
+A missing Kan rating alone does not prove that Kan has not watched a title.
 
 Use the checked-in command to add or change one rating:
 
@@ -34,6 +49,7 @@ printing the token.
   match before writing.
 - Stop on missing or duplicate matches instead of guessing.
 - Read the current vote before writing and verify the stored vote afterward.
+- Cross-check the Sheet before describing a title as unwatched by Kan.
 - Keep the personal access token only in the ignored repository `.env`.
 - Never put a personal access token, service-role key, or database password in
   `animelist/anime-config.js` or other browser code.
