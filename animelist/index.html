@@ -1,5 +1,57 @@
 ---
-title: Furk Anime Tier
-redirect_to:
-  - https://docs.google.com/spreadsheets/d/1maa414tmM5iKOrWWkQ6pWR38OrQhUrZaB-KqHjO9M-w/edit?usp=sharing
+layout: no-section
+title: Kan Yilmaz - Furk Anime Tier List
+description: Furk family anime ratings, grouped into tiers and ordered by average score.
 ---
+
+<link rel="stylesheet" href="/stylesheets/tier-list.css">
+<link rel="stylesheet" href="/animelist/anime.css">
+
+<main class="tier-page anime-page" aria-labelledby="anime-title">
+  <header class="tier-page-header">
+    <div>
+      <p class="tier-page-kicker">The family ranking</p>
+      <h1 id="anime-title" class="tier-page-title">Furk Anime Tier List</h1>
+    </div>
+
+    <div class="tier-filters anime-controls">
+      <div id="anime-voter-filter" class="tier-filter anime-voter-filter">
+        <span id="anime-voter-label">Voters</span>
+        <button
+          id="anime-voter-trigger"
+          class="tier-filter-control tier-filter-control--choice"
+          type="button"
+          aria-expanded="false"
+          aria-controls="anime-voter-options"
+          aria-labelledby="anime-voter-label anime-voter-summary"
+        >
+          <span id="anime-voter-summary">All</span>
+        </button>
+        <fieldset id="anime-voter-options" hidden>
+          <legend>Filter ratings by voter</legend>
+        </fieldset>
+      </div>
+
+      <label class="tier-filter anime-search">
+        <span>Find an anime</span>
+        <input
+          id="anime-search"
+          class="tier-filter-control"
+          type="search"
+          placeholder="Search titles"
+          autocomplete="off"
+        >
+      </label>
+    </div>
+  </header>
+
+  <p id="anime-status" class="anime-status" role="status" aria-live="polite">Loading the family votes…</p>
+
+  <div id="anime-board" class="tier-board" aria-busy="true"></div>
+</main>
+
+<div id="anime-tooltip" class="tier-tooltip" role="tooltip" hidden></div>
+
+<script src="/javascripts/tier-list.js"></script>
+<script src="/animelist/anime-config.js"></script>
+<script src="/animelist/anime.js"></script>

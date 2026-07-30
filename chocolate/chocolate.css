@@ -1,0 +1,10 @@
+.chocolate-status {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin: 0 0 1rem;
+  max-width: none;
+}
+
+.chocolate-status[data-kind="error"] {
+  color: #b42318;
+}

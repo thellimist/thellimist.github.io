@@ -1,0 +1,140 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage() {
+  echo 'Usage: update-rating "Exact Anime Title" <1-5> [Profile]' >&2
+  echo 'Profile defaults to Kan.' >&2
+}
+
+if [[ $# -lt 2 || $# -gt 3 ]]; then
+  usage
+  exit 2
+fi
+
+anime_title=$1
+score=$2
+profile_name=${3:-Kan}
+project_ref=${SUPABASE_PROJECT_REF:-textpzscmnomvktntrsw}
+script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+repo_root=$(git -C "$script_dir" rev-parse --show-toplevel)
+env_file="$repo_root/.env"
+
+if [[ ! $score =~ ^[1-5]$ ]]; then
+  echo 'Score must be one integer from 1 through 5.' >&2
+  exit 2
+fi
+
+for command_name in curl jq base64; do
+  if ! command -v "$command_name" >/dev/null 2>&1; then
+    echo "Missing required command: $command_name" >&2
+    exit 1
+  fi
+done
+
+if [[ ! -f $env_file ]]; then
+  echo "Missing $env_file" >&2
+  exit 1
+fi
+
+access_token=$(awk '
+  /^[[:space:]]*SUPABASE_ACCESS_TOKEN[[:space:]]*[:=]/ {
+    value=$0
+    sub(/^[^:=]*[:=][[:space:]]*/, "", value)
+    sub(/[[:space:]]+$/, "", value)
+    if ((value ~ /^".*"$/) || (value ~ /^'\''.*'\''$/)) {
+      value=substr(value, 2, length(value) - 2)
+    }
+    print value
+    exit
+  }
+' "$env_file")
+
+if [[ -z $access_token ]]; then
+  echo "SUPABASE_ACCESS_TOKEN is missing from $env_file" >&2
+  exit 1
+fi
+
+title_b64=$(printf '%s' "$anime_title" | base64 | tr -d '\n')
+profile_b64=$(printf '%s' "$profile_name" | base64 | tr -d '\n')
+api_url="https://api.supabase.com/v1/projects/$project_ref/database/query"
+
+run_query() {
+  local sql=$1
+  local payload
+  payload=$(jq -n --arg query "$sql" '{query: $query}')
+  curl --silent --show-error --fail-with-body \
+    -X POST "$api_url" \
+    -H "Authorization: Bearer $access_token" \
+    -H 'Content-Type: application/json' \
+    --data "$payload"
+}
+
+lookup_sql="
+with input as (
+  select
+    convert_from(decode('$title_b64', 'base64'), 'utf8') as anime_title,
+    convert_from(decode('$profile_b64', 'base64'), 'utf8') as profile_name
+)
+select
+  (select count(*) from animes, input where lower(animes.title) = lower(input.anime_title)) as anime_matches,
+  (select count(*) from profiles, input where profiles.display_name = input.profile_name) as profile_matches,
+  (select id from animes, input where lower(animes.title) = lower(input.anime_title) limit 1) as anime_id,
+  (select title from animes, input where lower(animes.title) = lower(input.anime_title) limit 1) as resolved_title,
+  (select id from profiles, input where profiles.display_name = input.profile_name limit 1) as user_id,
+  (select display_name from profiles, input where profiles.display_name = input.profile_name limit 1) as resolved_profile,
+  (
+    select ratings.tier
+    from ratings
+    join animes on animes.id = ratings.anime_id
+    join profiles on profiles.id = ratings.user_id
+    cross join input
+    where lower(animes.title) = lower(input.anime_title)
+      and profiles.display_name = input.profile_name
+    limit 1
+  ) as previous_tier;
+"
+
+lookup=$(run_query "$lookup_sql")
+anime_matches=$(jq -r '.[0].anime_matches // 0' <<<"$lookup")
+profile_matches=$(jq -r '.[0].profile_matches // 0' <<<"$lookup")
+
+if [[ $anime_matches != 1 ]]; then
+  echo "Expected one exact anime match for \"$anime_title\"; found $anime_matches." >&2
+  exit 1
+fi
+
+if [[ $profile_matches != 1 ]]; then
+  echo "Expected one exact profile match for \"$profile_name\"; found $profile_matches." >&2
+  exit 1
+fi
+
+anime_id=$(jq -r '.[0].anime_id' <<<"$lookup")
+user_id=$(jq -r '.[0].user_id' <<<"$lookup")
+resolved_title=$(jq -r '.[0].resolved_title' <<<"$lookup")
+resolved_profile=$(jq -r '.[0].resolved_profile' <<<"$lookup")
+previous_tier=$(jq -r '.[0].previous_tier // "unrated"' <<<"$lookup")
+
+write_sql="
+insert into ratings (anime_id, user_id, tier)
+values ('$anime_id'::uuid, '$user_id'::uuid, $score)
+on conflict (anime_id, user_id)
+do update set tier = excluded.tier;
+
+select animes.title, profiles.display_name, ratings.tier
+from ratings
+join animes on animes.id = ratings.anime_id
+join profiles on profiles.id = ratings.user_id
+where ratings.anime_id = '$anime_id'::uuid
+  and ratings.user_id = '$user_id'::uuid;
+"
+
+verified=$(run_query "$write_sql")
+verified_score=$(jq -r '.[0].tier // empty' <<<"$verified")
+
+if [[ $verified_score != "$score" ]]; then
+  echo "Update verification failed for $resolved_profile / $resolved_title." >&2
+  exit 1
+fi
+
+echo "$resolved_profile: $resolved_title changed from $previous_tier to $verified_score (verified)."

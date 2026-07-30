@@ -14,7 +14,11 @@ Use this workflow whenever adding or updating chocolates in the tier list.
 
 - `chocolate/chocolates.json` - source of truth for entries.
 - `assets/chocolate-images/` - chocolate item images.
-- `chocolate/index.html` - rendering logic and filters.
+- `chocolate/index.html` - page structure and filter controls.
+- `chocolate/chocolate.js` - data loading, filtering, cards, and tooltips.
+- `chocolate/chocolate.css` - filter and chocolate-specific presentation.
+- `javascripts/tier-list.js` and `stylesheets/tier-list.css` - shared tier-board
+  component used by both Anime and Chocolate.
 
 ## Data Contract For Each Chocolate
 
@@ -27,6 +31,9 @@ Each JSON object should include:
 - `country` - where Kan bought it or where he wants to classify it (must confirm). Use a string for one country or an array of strings when the chocolate should appear under multiple country filters.
 - `location` - optional URL (store google maps link. Used exclusively for shops that are boutique, has one shop only. Not used for chains)
 - `comments` - optional short tasting note.
+
+When `location` is present, the shared chocolate card is the keyboard- and
+pointer-accessible Maps link. The tooltip describes that action.
 
 ## Mandatory Clarifications To Ask Kan
 
