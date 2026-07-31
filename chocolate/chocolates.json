@@ -343,5 +343,14 @@
         ],
         "location": "",
         "comments": ""
+    },
+    {
+        "name": "The Whisketiers - Chocolate Almond Florentine",
+        "tier": "C",
+        "brand": "The Whisketiers",
+        "picture": "/assets/chocolate-images/the-whisketiers-chocolate-almond-florentine.jpg",
+        "country": "India",
+        "location": "",
+        "comments": ""
     }
 ]

@@ -146,6 +146,15 @@ button.tier-filter-control--choice {
   line-height: 1;
 }
 
+.tier-board-rail[data-tier-description] {
+  cursor: help;
+  outline: none;
+}
+
+.tier-board-rail[data-tier-description]:focus-visible {
+  box-shadow: inset 0 0 0 3px currentColor, inset 0 0 0 5px rgba(17, 24, 39, 0.45);
+}
+
 .tier-board-count {
   font-size: 0.7rem;
   font-weight: 700;

@@ -55,8 +55,9 @@ Individual votes use these tooltip labels:
 
 - Rows and cards render through the shared tier-list component documented in
   `docs/tier-list-component/tier-list-component.md`.
-- Tier labels show the letter and title count; score ranges and aggregate list
-  statistics stay out of the interface.
+- Tier labels show the letter and title count. Hovering or keyboard-focusing
+  the full colored rail shows its matching Masterpiece through Not worth
+  watching label.
 - Hover or keyboard focus shows each vote and every tagged comment.
 - Clicking a card opens its stored source URL when present.
 - Missing or broken covers fall back to `/assets/no_image.png`.

@@ -2,11 +2,11 @@
   'use strict';
 
   var TIERS = [
-    { key: 's', label: 'S' },
-    { key: 'a', label: 'A' },
-    { key: 'b', label: 'B' },
-    { key: 'c', label: 'C' },
-    { key: 'd', label: 'D' }
+    { key: 's', label: 'S', description: 'Best of the best' },
+    { key: 'a', label: 'A', description: 'Amazing' },
+    { key: 'b', label: 'B', description: 'Great' },
+    { key: 'c', label: 'C', description: 'Edible' },
+    { key: 'd', label: 'D', description: 'Meh' }
   ];
 
   var tierList = window.TierList;
@@ -103,6 +103,32 @@
     card.setAttribute('aria-describedby', 'chocolate-tooltip');
   }
 
+  function showTierTooltip(heading) {
+    cancelHide();
+    if (activeCard && activeCard !== heading) {
+      activeCard.removeAttribute('aria-describedby');
+    }
+    activeCard = heading;
+    tooltip.replaceChildren();
+    tierList.addText(tooltip, '', heading.dataset.tierDescription);
+    tooltip.hidden = false;
+    tierList.positionTooltip(tooltip, heading);
+    heading.setAttribute('aria-describedby', 'chocolate-tooltip');
+  }
+
+  function initializeTierTooltips() {
+    board.querySelectorAll('[data-tier-description]').forEach(function (heading) {
+      heading.addEventListener('mouseenter', function () {
+        showTierTooltip(heading);
+      });
+      heading.addEventListener('mouseleave', hideTooltipSoon);
+      heading.addEventListener('focus', function () {
+        showTierTooltip(heading);
+      });
+      heading.addEventListener('blur', hideTooltipSoon);
+    });
+  }
+
   function handleViewportChange() {
     if (!tooltip.hidden && activeCard === document.activeElement) {
       tierList.positionTooltip(tooltip, activeCard);
@@ -158,6 +184,7 @@
       createCard: createChocolateCard,
       emptyMessage: 'No matches in this tier.'
     });
+    initializeTierTooltips();
   }
 
   function applyFilters() {

@@ -10,11 +10,11 @@
     5: 'Not worth watching'
   };
   var TIERS = [
-    { key: 's', label: 'S' },
-    { key: 'a', label: 'A' },
-    { key: 'b', label: 'B' },
-    { key: 'c', label: 'C' },
-    { key: 'd', label: 'D' }
+    { key: 's', label: 'S', description: TIER_NAMES[1] },
+    { key: 'a', label: 'A', description: TIER_NAMES[2] },
+    { key: 'b', label: 'B', description: TIER_NAMES[3] },
+    { key: 'c', label: 'C', description: TIER_NAMES[4] },
+    { key: 'd', label: 'D', description: TIER_NAMES[5] }
   ];
 
   var config = window.ANIME_CONFIG;
@@ -243,6 +243,32 @@
     card.setAttribute('aria-describedby', 'anime-tooltip');
   }
 
+  function showTierTooltip(rail) {
+    activeTooltipCard = rail;
+    tooltip.replaceChildren();
+    addText(tooltip, '', rail.dataset.tierDescription);
+    tooltip.hidden = false;
+    tierList.positionTooltip(tooltip, rail);
+    rail.setAttribute('aria-describedby', 'anime-tooltip');
+  }
+
+  function initializeTierTooltips() {
+    board.querySelectorAll('[data-tier-description]').forEach(function (rail) {
+      rail.addEventListener('mouseenter', function () {
+        showTierTooltip(rail);
+      });
+      rail.addEventListener('mouseleave', function () {
+        hideTooltip(rail);
+      });
+      rail.addEventListener('focus', function () {
+        showTierTooltip(rail);
+      });
+      rail.addEventListener('blur', function () {
+        hideTooltip(rail);
+      });
+    });
+  }
+
   function hideTooltip(card) {
     tooltip.hidden = true;
     card.removeAttribute('aria-describedby');
@@ -321,6 +347,7 @@
       createCard: createCard,
       emptyMessage: state.query ? 'No matches in this tier.' : 'No titles in this tier yet.'
     });
+    initializeTierTooltips();
 
     if (state.query) {
       setStatus(items.length + (items.length === 1 ? ' matching title' : ' matching titles') + '.');

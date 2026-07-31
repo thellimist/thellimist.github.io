@@ -19,7 +19,9 @@ Anime and Chocolate share one presentation and rendering layer:
 `TierList.render` receives:
 
 - `root` - board element.
-- `tiers` - ordered `{ key, label }` definitions.
+- `tiers` - ordered `{ key, label, description? }` definitions. A description
+  makes the tier rail keyboard-focusable and exposes the text to page-owned
+  tooltip behavior.
 - `items` - page-specific data.
 - `getTier(item)` - returns the item's tier key.
 - `createCard(item)` - returns a page-specific card element.
@@ -35,9 +37,10 @@ card without clipping the viewport.
 
 ## Page extensions
 
-- Anime owns Supabase reads, average scoring, search, vote details, and comments.
+- Anime owns Supabase reads, average scoring, search, vote details, comments,
+  and its tier-description tooltips.
 - Chocolate owns JSON loading, country/brand filters, product metadata, and Maps
-  links.
+  links. It also uses tier descriptions for the S-D letter tooltips.
 
 Use `.tier-filters`, `.tier-filter`, and `.tier-filter-control` for filter
 layout, labels, and closed controls. Add `.tier-filter-control--choice` to

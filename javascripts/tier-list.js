@@ -73,6 +73,14 @@
       rail.className = 'tier-board-rail';
       var heading = addText(rail, 'tier-board-letter', definition.label);
       heading.id = idPrefix + '-tier-' + definition.key;
+      if (definition.description) {
+        rail.tabIndex = 0;
+        rail.dataset.tierDescription = definition.description;
+        rail.setAttribute(
+          'aria-label',
+          definition.label + ' tier: ' + definition.description
+        );
+      }
       addText(
         rail,
         'tier-board-count',
