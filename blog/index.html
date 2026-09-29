@@ -18,6 +18,15 @@ title: Kan Yilmaz - Blog
     <div class="post-card">
       <a href="{{ post_url }}" class="post-card-link" {{ target_blank }}>
         <div class="post-image-placeholder bg-color-{{ bg_color }}">
+          {% assign highlight = site.data.post_highlights[post.slug] %}
+          {% if highlight %}
+          <span class="post-highlight" aria-label="{{ highlight.description | escape }}">
+            {% if highlight.platform == 'hn' %}
+            <i class="fa-brands fa-hacker-news post-highlight-logo" aria-hidden="true"></i>
+            {% endif %}
+            <span>{{ highlight.label | escape }}</span>
+          </span>
+          {% endif %}
           {% if post.image %}
           <img class="lazy-image" 
                data-src="{{ post.image }}" 
