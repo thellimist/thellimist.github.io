@@ -1,7 +1,7 @@
 ---
 summary: "Safely add or change Supabase anime ratings, defaulting every update to Kan."
 read_when:
-  - "Adding or changing a vote in the Furk Anime Tier List."
+  - "Adding or changing a vote in the Kan Anime Tier List."
   - "Updating a Supabase anime rating for Kan or another family member."
   - "Determining whether Kan has already watched an anime."
 ---

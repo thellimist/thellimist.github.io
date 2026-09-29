@@ -1,5 +1,5 @@
 ---
-summary: "How the public Furk Anime Tier List reads and ranks shared Supabase data."
+summary: "How the public Kan Anime Tier List reads and ranks shared Supabase data."
 read_when:
   - "Changing the anime tier list UI, score logic, or Supabase reads."
   - "Debugging missing anime, votes, comments, or cover images."
